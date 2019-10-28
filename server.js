@@ -31,9 +31,11 @@ if ((process.env.WEBHOOK) && (process.env.TOKEN) &&
 // The admin will get extra notifications about bot usage
 let adminEmail = '';
 let botName = '';
-if ((process.env.ADMIN_EMAIL) && (process.env.BOTNAME)) {
+let botEmail = ''
+if ((process.env.ADMIN_EMAIL) && (process.env.BOTNAME) && (process.env.BOT_EMAIL)) {
   adminEmail = process.env.ADMIN_EMAIL;
   botName = process.env.BOTNAME;
+  botEmail = process.env.BOT_EMAIL;
 } else {
   logger.error('No ADMIN_EMAIL environment variable.  Will not notify author about bot activity');
 }
@@ -97,7 +99,7 @@ flint.hears(/help/i, function(bot){
     'opportunity to try several types of Buttons and Cards described on the ' +
     '[Adaptive Card Samples website](https://adaptivecards.io/samples/).\n\n' +
     'For each card, we\'ll demonstrate how it renders in Webex Teams, and ' +
-    'provide a description of the card elements being demonstrated.\n We\'ll ' +
+    'provide a description of the card elements being demonstrated.\n\nWe\'ll ' +
     'also provide a link to the source used for the card, along with any ' +
     'descriptions of how the original sample was modified to work more ' +
     'effectively in a Webex Teams environment.');
@@ -201,6 +203,11 @@ function updateAdmin(message, listAll = false) {
 
 // define express path for incoming webhooks
 app.post('/', webhook(flint));
+
+// Health Check
+app.get('/', function(req, res){
+  res.send(`I'm alive.  To use this app add ${botEmail} to a Webex Teams space.`);
+});
 
 // start express server
 var server = app.listen(flintConfig.port, function () {
