@@ -64,6 +64,10 @@ InputForm = require('./res/input-form.js');
 let inputForm = new InputForm(cardsConfig.srcBaseUrl, cardsConfig.contentType);
 FlightDetails = require('./res/flight-details.js');
 let flightDetails = new FlightDetails(cardsConfig.srcBaseUrl, cardsConfig.contentType);
+FlightItinerary = require('./res/flight-itinerary.js');
+let flightItinerary = new FlightItinerary(cardsConfig.srcBaseUrl, cardsConfig.contentType);
+FlightUpdate = require('./res/flight-update.js');
+let flightUpdate = new FlightUpdate(cardsConfig.srcBaseUrl, cardsConfig.contentType);
 StockUpdate = require('./res/stock-update.js');
 let stockUpdate = new StockUpdate(cardsConfig.srcBaseUrl, cardsConfig.contentType);
 
@@ -148,6 +152,14 @@ function renderSelectedCard(bot, cardSelection) {
 
     case ('flightDetails'):
       flightDetails.renderCard(bot, logger);
+      break;
+
+    case ('flightItinerary'):
+      flightItinerary.renderCard(bot, logger);
+      break;
+
+    case ('flightUpdate'):
+      flightUpdate.renderCard(bot, logger);
       break;
 
     case ('stockUpdate'):

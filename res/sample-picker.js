@@ -45,6 +45,14 @@ class SamplePicker {
               "value": "flightDetails"
             },
             {
+              "title": "Flight Itinerary",
+              "value": "flightItinerary"
+            },
+            {
+              "title": "Flight Update",
+              "value": "flightUpdate"
+            },
+            {
               "title": "Stock Update",
               "value": "stockUpdate"
             }

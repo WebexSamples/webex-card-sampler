@@ -94,7 +94,7 @@ class StockUpdate {
     await bot.say('The Stock Update sample demonstrates the following types of controls\n' +
       '* Text Fields with the size, color and isSubtle attributes\n* Fact Set\n\n\n' +
       'Full Source Here:' + this.srcUrl);
-    await bot.say({
+    let message = await bot.say({
       // Fallback text for clients that don't render cards
       markdown: "If you see this your client cannot render our Stock Update example.",
       attachments: [{
@@ -102,8 +102,11 @@ class StockUpdate {
         "content": this.card
       }]
     });
-    bot.say('...Uh-oh, better sell Microsoft!\n\n' +
-      'There is no user input for this card. Post any message if you want to see another card.');
+    bot.say({
+      text: '...Uh-oh, better sell Microsoft!\n\n' +
+        'There is no user input for this card. Post any message if you want to see another card.',
+      parentId: message.id
+    });
   };
 
 };
