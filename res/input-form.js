@@ -125,11 +125,10 @@ class InputForm {
       '* Name: ' + inputs.myName + '\n' +
       '* Email: ' + inputs.myEmail + '\n' +
       '* Phone: ' + inputs.myTel;
-    bot.say(msg);
-    // bot.say({
-    //   text: msg,
-    //   parentId: attachmentAction.messageId
-    // });
+    bot.say({
+      text: msg,
+      parentId: attachmentAction.messageId
+    });
   };  
 
 };

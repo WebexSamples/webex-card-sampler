@@ -146,7 +146,7 @@ class ActivityUpdate {
       '* Fact Set\n' +
       '* ShowCard and Submit actions\n\n' +
       'Full Source Here:' + this.srcUrl);
-    await bot.say({
+    bot.say({
       // Fallback text for clients that don't render cards
       markdown: "If you see this your client cannot render our Activity Update example.",
       attachments: [{
@@ -161,7 +161,6 @@ class ActivityUpdate {
     let msg = submitter.displayName + ' replied with the following:\n' +
       '* Due Date: ' + inputs.dueDate + '\n' +
       '* Comment: ' + inputs.comment;
-    //bot.say(msg);
     bot.say({
       text: msg,
       parentId: attachmentAction.messageId

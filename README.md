@@ -1,6 +1,8 @@
 # webex-card-sampler
 Webex Teams Bot to demonstrate the use of Buttons and Cards using the [Adaptive Cards Samples](https://adaptivecards.io/samples/).
 
+Each time a sample is displayed, we'll provide a link to the source with comments that describe how (if) the original sample was modified to make it more Webex Teams friendly.
+
 ## Checklist (absolute bare minimum to get a jira-notifier bot working)
 
 Prerequisites:

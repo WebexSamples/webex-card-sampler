@@ -2,7 +2,7 @@
  * Adaptive Card Agenda Sample from https://adaptivecards.io/samples/CalendarReminder.html
  * This sample demonstrates the following types of controls
  *   -- Text block with the size, weight, isSubtle, spacing and wrap attributes
- *   -- Input.ChoiceSet with the styel attribute
+ *   -- Input.ChoiceSet with the style attribute
  *   -- Action.Submit buttons
  *
  * We commented out the speak attribute of the card as this is not yet
@@ -67,14 +67,16 @@ class CalendarReminder {
           "type": "Action.Submit",
           "title": "Snooze",
           "data": {
-            "x": "snooze"
+            "cardType": "calendarReminder",
+            "action": "snooze"
           }
         },
         {
           "type": "Action.Submit",
           "title": "I'll be late",
           "data": {
-            "x": "late"
+            "cardType": "calendarReminder",
+            "action": "late"
           }
         }
       ]
@@ -89,12 +91,11 @@ class CalendarReminder {
   async renderCard(bot, logger) {
     try {
       await bot.say('The Calendar Reminder sample demonstrates the following types of controls\n' +
-        '* Text block with the isSubtle, spacing and wrap attributes\n' +
-        '* Image with the size and horizontalAlignment attributes\n' +
-        '* backgroundImage with the fillmode and horizontalAlignment attributes\n' +
-        '* ImageSet with the horizontalAlignment attributes\n' +
+        '* Text block with the size, weight, isSubtle, spacing and wrap attributes\n' +
+        '* Input.ChoiceSet with the style attribute\n' +
+        '* Action.Submit buttons\n' +
         'Full Source Here:' + this.srcUrl);
-      await bot.say({
+      bot.say({
         // Fallback text for clients that don't render cards
         markdown: "If you see this your client cannot render our Calendar Reminder example.",
         attachments: [{
@@ -102,12 +103,21 @@ class CalendarReminder {
           "content": this.card
         }]
       });
-      await bot.say('...don\'t forget to bring a coat to Chicago!\n\n' +
-        'There is no user input for this card. Post any message if you want to see another card.');
     } catch(e) {
       logger.error(`Something went wrong: ${e}`);
     }
   };
+
+  async handleSubmit(attachmentAction, submitter, bot) {
+    let inputs = attachmentAction.inputs;
+    let msg = submitter.displayName + ' replied with the following:\n' +
+      '* action: ' + inputs.action;
+    bot.say({
+      text: msg,
+      parentId: attachmentAction.messageId
+    });
+  };  
+
 
 };
 

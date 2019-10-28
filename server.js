@@ -58,6 +58,8 @@ ActivityUpdate = require('./res/activity-update.js');
 let activityUpdate = new ActivityUpdate(cardsConfig.srcBaseUrl, cardsConfig.contentType);
 Agenda = require('./res/agenda.js');
 let agenda = new Agenda(cardsConfig.srcBaseUrl, cardsConfig.contentType);
+CalendarReminder = require('./res/calendar-reminder.js');
+let calendarReminder = new CalendarReminder(cardsConfig.srcBaseUrl, cardsConfig.contentType);
 InputForm = require('./res/input-form.js');
 let inputForm = new InputForm(cardsConfig.srcBaseUrl, cardsConfig.contentType);
 StockUpdate = require('./res/stock-update.js');
@@ -84,7 +86,7 @@ flint.on('spawn', function (bot) {
 // Respond to message input
 var responded = false;
 
-flint.hears('getAdminStats', function(bot){
+flint.hears('getAdminStats', function (bot) {
   logger.verbose('Processing getAdminStats Request for ' + bot.isDirectTo);
   if (adminEmail === bot.isDirectTo) {
     updateAdmin(`${botName} has been added to the following spaces:`, true);
@@ -94,7 +96,7 @@ flint.hears('getAdminStats', function(bot){
   responded = true;
 });
 
-flint.hears(/help/i, function(bot){
+flint.hears(/help/i, function (bot) {
   bot.say('This bot provides Webex Teams users and developers with an ' +
     'opportunity to try several types of Buttons and Cards described on the ' +
     '[Adaptive Card Samples website](https://adaptivecards.io/samples/).\n\n' +
@@ -133,6 +135,10 @@ function renderSelectedCard(bot, cardSelection) {
       agenda.renderCard(bot, logger);;
       break;
 
+    case ('calendarReminder'):
+      calendarReminder.renderCard(bot);
+      break;
+
     case ('inputForm'):
       inputForm.renderCard(bot);
       break;
@@ -159,6 +165,10 @@ function processSampleCardResponse(bot, attachmentAction) {
 
         case ("activityUpdate"):
           activityUpdate.handleSubmit(attachmentAction, person, bot);
+          break;
+
+        case ('calendarReminder'):
+          calendarReminder.handleSubmit(attachmentAction, person, bot);
           break;
 
         case ("inputForm"):
@@ -205,7 +215,7 @@ function updateAdmin(message, listAll = false) {
 app.post('/', webhook(flint));
 
 // Health Check
-app.get('/', function(req, res){
+app.get('/', function (req, res) {
   res.send(`I'm alive.  To use this app add ${botEmail} to a Webex Teams space.`);
 });
 

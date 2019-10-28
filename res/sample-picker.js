@@ -33,6 +33,10 @@ class SamplePicker {
               "value": "agenda"
             },
             {
+              "title": "Calendar Reminder",
+              "value": "calendarReminder"
+            },
+            {
               "title": "Input Form",
               "value": "inputForm"
             },
