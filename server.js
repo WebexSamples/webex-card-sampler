@@ -62,6 +62,8 @@ CalendarReminder = require('./res/calendar-reminder.js');
 let calendarReminder = new CalendarReminder(cardsConfig.srcBaseUrl, cardsConfig.contentType);
 InputForm = require('./res/input-form.js');
 let inputForm = new InputForm(cardsConfig.srcBaseUrl, cardsConfig.contentType);
+FlightDetails = require('./res/flight-details.js');
+let flightDetails = new FlightDetails(cardsConfig.srcBaseUrl, cardsConfig.contentType);
 StockUpdate = require('./res/stock-update.js');
 let stockUpdate = new StockUpdate(cardsConfig.srcBaseUrl, cardsConfig.contentType);
 
@@ -79,6 +81,7 @@ flint.on('spawn', function (bot) {
   }
   // Notify the admin if the bot has been added to a new space
   if ((flint.initialized) && (adminsBot)) {
+    samplePicker.renderCard(bot, logger);
     adminsBot.say(`${botName} was added to a space: ${bot.room.title}`);
   }
 });
@@ -143,6 +146,10 @@ function renderSelectedCard(bot, cardSelection) {
       inputForm.renderCard(bot);
       break;
 
+    case ('flightDetails'):
+      flightDetails.renderCard(bot, logger);
+      break;
+
     case ('stockUpdate'):
       stockUpdate.renderCard(bot);
       break;
@@ -173,6 +180,10 @@ function processSampleCardResponse(bot, attachmentAction) {
 
         case ("inputForm"):
           inputForm.handleSubmit(attachmentAction, person, bot);
+          break;
+
+        case ("flightDetails"):
+          flightDetails.handleSubmit(attachmentAction, person, bot);
           break;
 
         default:

@@ -41,6 +41,10 @@ class SamplePicker {
               "value": "inputForm"
             },
             {
+              "title": "Flight Details",
+              "value": "flightDetails"
+            },
+            {
               "title": "Stock Update",
               "value": "stockUpdate"
             }
