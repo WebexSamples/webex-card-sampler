@@ -23,6 +23,7 @@ jspm_packages
 .env
 .env-emulator
 .env-real
+.env-production
 .env-devel
 config.json
 mongo.json
