@@ -84,7 +84,7 @@ class CalendarReminder {
     ;
     this.contentType = contentType;
     this.srcUrl = (srcBaseUrl[srcBaseUrl.length - 1] === '/') ?
-      srcBaseUrl + ' calendar-reminder.js' :
+      srcBaseUrl + 'calendar-reminder.js' :
       srcBaseUrl + '/calendar-reminder.js';
   }
 
@@ -93,7 +93,7 @@ class CalendarReminder {
       await bot.say('The Calendar Reminder sample demonstrates the following types of controls\n' +
         '* Text block with the size, weight, isSubtle, spacing and wrap attributes\n' +
         '* Input.ChoiceSet with the style attribute\n' +
-        '* Action.Submit buttons\n' +
+        '* Action.Submit buttons\n\n' +
         'Full Source Here:' + this.srcUrl);
       bot.say({
         // Fallback text for clients that don't render cards
@@ -111,7 +111,8 @@ class CalendarReminder {
   async handleSubmit(attachmentAction, submitter, bot) {
     let inputs = attachmentAction.inputs;
     let msg = submitter.displayName + ' replied with the following:\n' +
-      '* action: ' + inputs.action;
+      '* action: ' + inputs.action +'\n' +
+      '* late: ' + inputs.late;
     bot.say({
       text: msg,
       parentId: attachmentAction.messageId
