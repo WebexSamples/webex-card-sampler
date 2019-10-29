@@ -95,31 +95,38 @@ class InputForm {
         {
           "type": "Action.Submit",
           "title": "Submit",
-          "data": { "cardType": "inputForm"}
+          "data": { "cardType": "inputForm" }
         }
       ]
     };
     this.contentType = contentType;
-    this.srcUrl = (srcBaseUrl[srcBaseUrl.length-1] === '/') ?
+    this.srcUrl = (srcBaseUrl[srcBaseUrl.length - 1] === '/') ?
       srcBaseUrl + 'input-form.js' :
       srcBaseUrl + '/input-form.js';
   }
 
-  async renderCard(bot) {
-    await bot.say('The Input Form sample demonstrates the following types of controls\n' +
-      '* Text Input Fields and the style attribute\n* Embedded Images\n* A Submit button\n\n' +
-      'Full Source Here:' + this.srcUrl);
-    bot.say({
-      // Fallback text for clients that don't render cards
-      markdown: "If you see this your client cannot render our Input Form example.",
-      attachments: [{
-        "contentType": this.contentType,
-        "content": this.card
-      }]
-    });
+  async renderCard(bot, logger) {
+    try {
+      await bot.say('The Input Form sample demonstrates the following types of controls\n' +
+        '* Text Input Fields and the style attribute\n* Embedded Images\n* A Submit button\n\n' +
+        'Full Source Here: ' + this.srcUrl);
+      await bot.say({
+        // Fallback text for clients that don't render cards
+        markdown: "If you see this your client cannot render our Input Form example.",
+        attachments: [{
+          "contentType": this.contentType,
+          "content": this.card
+        }]
+      });
+    } catch (err) {
+      let msg = 'Failed to render Input Form card example.';
+      logger.error(`${msg} Error:${err.message}`);
+      bot.say(`${msg} Please contact the Webex Developer Support: https://developer.webex.com/support`)
+        .catch((e) => logger.error(`Failed to post error message to space. Error:${e.message}`));
+    }
   };
-  
-  async  handleSubmit(attachmentAction, submitter, bot) {
+
+  async  handleSubmit(attachmentAction, submitter, bot, logger) {
     let inputs = attachmentAction.inputs;
     let msg = submitter.displayName + ' replied with the following:\n' +
       '* Name: ' + inputs.myName + '\n' +
@@ -128,8 +135,9 @@ class InputForm {
     bot.say({
       text: msg,
       parentId: attachmentAction.messageId
-    });
-  };  
+    })
+      .catch((e) => logger.error(`Failed to post Input Form response to space. Error:${e.message}`));
+  };
 
 };
 

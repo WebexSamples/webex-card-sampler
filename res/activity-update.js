@@ -126,7 +126,7 @@ class ActivityUpdate {
               {
                 "type": "Action.Submit",
                 "title": "OK",
-                "data": { "cardType": "activityUpdate"}
+                "data": { "cardType": "activityUpdate" }
               }
             ]
           }
@@ -139,24 +139,31 @@ class ActivityUpdate {
       srcBaseUrl + '/activity-update.js';
   }
 
-  async renderCard(bot) {
-    await bot.say('The Activity Update sample demonstrates the following types of controls\n' +
-      '* Text block with the weight, size, isSubtle, spacing and wrap attributes\n' +
-      '* Image with the size and style attributes\n' +
-      '* Fact Set\n' +
-      '* ShowCard and Submit actions\n\n' +
-      'Full Source Here:' + this.srcUrl);
-    bot.say({
-      // Fallback text for clients that don't render cards
-      markdown: "If you see this your client cannot render our Activity Update example.",
-      attachments: [{
-        "contentType": this.contentType,
-        "content": this.card
-      }]
-    });
+  async renderCard(bot, logger) {
+    try {
+      await bot.say('The Activity Update sample demonstrates the following types of controls\n' +
+        '* Text block with the weight, size, isSubtle, spacing and wrap attributes\n' +
+        '* Image with the size and style attributes\n' +
+        '* Fact Set\n' +
+        '* ShowCard and Submit actions\n\n' +
+        'Full Source Here: ' + this.srcUrl);
+      await bot.say({
+        // Fallback text for clients that don't render cards
+        markdown: "If you see this your client cannot render our Activity Update example.",
+        attachments: [{
+          "contentType": this.contentType,
+          "content": this.card
+        }]
+      });
+    } catch (err) {
+      let msg = 'Failed to render Activity Update card example.';
+      logger.error(`${msg} Error:${err.message}`);
+      bot.say(`${msg} Please contact the Webex Developer Support: https://developer.webex.com/support`)
+        .catch((e) => logger.error(`Failed to post error message to space. Error:${e.message}`));
+    }
   };
 
-  async  handleSubmit(attachmentAction, submitter, bot) {
+  async  handleSubmit(attachmentAction, submitter, bot, logger) {
     let inputs = attachmentAction.inputs;
     let msg = submitter.displayName + ' replied with the following:\n' +
       '* Due Date: ' + inputs.dueDate + '\n' +
@@ -164,8 +171,9 @@ class ActivityUpdate {
     bot.say({
       text: msg,
       parentId: attachmentAction.messageId
-    });
-  };  
+    })
+      .catch((e) => logger.error(`Failed to post Activity Update response to space. Error:${e.message}`));
+  };
 
 };
 

@@ -438,8 +438,8 @@ class Agenda {
         '* Text block with the isSubtle, spacing and wrap attributes\n' +
         '* Image with the size and horizontalAlignment attributes\n' +
         '* backgroundImage with the fillmode and horizontalAlignment attributes\n' +
-        '* ImageSet with the horizontalAlignment attributes\n' +
-        'Full Source Here:' + this.srcUrl);
+        '* ImageSet with the horizontalAlignment attributes\n\n' +
+        'Full Source Here: ' + this.srcUrl);
       await bot.say({
         // Fallback text for clients that don't render cards
         markdown: "If you see this your client cannot render our Agenda example.",
@@ -449,12 +449,15 @@ class Agenda {
         }]
       });
       await bot.say('...don\'t forget to bring a coat to Chicago!\n\n' +
-        'There is no user input for this card. Post any message if you want to see another card.');
-    } catch(e) {
-      logger.error(`Something went wrong: ${e}`);
+        'There is no user input for this card. Post any message to me if you want to see another card.')
+        .catch((e) => logger.error(`Failed to send post Agenda Card message to space. Error:${e.message}`));
+    } catch (err) {
+      let msg = 'Failed to render Agenda card example.';
+      logger.error(`${msg} Error:${err.message}`);
+      bot.say(`${msg} Please contact the Webex Developer Support: https://developer.webex.com/support`)
+        .catch((e) => logger.error(`Failed to post error message to space. Error:${e.message}`));
     }
   };
-
 };
 
 module.exports = Agenda;

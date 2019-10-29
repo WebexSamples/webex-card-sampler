@@ -80,8 +80,7 @@ class CalendarReminder {
           }
         }
       ]
-    }
-    ;
+    };
     this.contentType = contentType;
     this.srcUrl = (srcBaseUrl[srcBaseUrl.length - 1] === '/') ?
       srcBaseUrl + 'calendar-reminder.js' :
@@ -94,8 +93,8 @@ class CalendarReminder {
         '* Text block with the size, weight, isSubtle, spacing and wrap attributes\n' +
         '* Input.ChoiceSet with the style attribute\n' +
         '* Action.Submit buttons\n\n' +
-        'Full Source Here:' + this.srcUrl);
-      bot.say({
+        'Full Source Here: ' + this.srcUrl);
+      await bot.say({
         // Fallback text for clients that don't render cards
         markdown: "If you see this your client cannot render our Calendar Reminder example.",
         attachments: [{
@@ -103,21 +102,24 @@ class CalendarReminder {
           "content": this.card
         }]
       });
-    } catch(e) {
-      logger.error(`Something went wrong: ${e}`);
+    } catch (err) {
+      let msg = 'Failed to render Calendar Reminder card example.';
+      logger.error(`${msg} Error:${err.message}`);
+      bot.say(`${msg} Please contact the Webex Developer Support: https://developer.webex.com/support`)
+        .catch((e) => logger.error(`Failed to post error message to space. Error:${e.message}`));
     }
   };
 
-  async handleSubmit(attachmentAction, submitter, bot) {
+  async handleSubmit(attachmentAction, submitter, bot, logger) {
     let inputs = attachmentAction.inputs;
     let msg = submitter.displayName + ' replied with the following:\n' +
-      '* action: ' + inputs.action +'\n' +
-      '* late: ' + inputs.late;
+      '* action: ' + inputs.action;
     bot.say({
       text: msg,
       parentId: attachmentAction.messageId
-    });
-  };  
+    })
+      .catch((e) => logger.error(`Failed to post calendar reminder response to space. Error:${e.message}`));
+  };
 
 
 };

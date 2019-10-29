@@ -222,25 +222,32 @@ class FlightItinerary {
       srcBaseUrl + '/flight-itinerary.js';
   }
 
-  async renderCard(bot) {
-    await bot.say('The Flight Itinerary sample demonstrates the following types of controls\n' +
-      ' * Image\n' +
-      '* Text Blocks with many attributes including size, weight, color, wrap, spacing and horizontalAlignment\n' +
-      'Full Source Here:' + this.srcUrl);
-    let message = await bot.say({
-      // Fallback text for clients that don't render cards
-      markdown: "If you see this your client cannot render our Flight Itinerary example.",
-      attachments: [{
-        "contentType": this.contentType,
-        "content": this.card
-      }]
-    });
-    bot.say({
-      text: '...Not a fan of the two stops on the outbound!\n\n' +
-        'There is no user input for this card. Post any message if you want to see another card.',
-      parentId: message.id
-    });
-
+  async renderCard(bot, logger) {
+    let message = {};
+    try {
+      message = await bot.say('The Flight Itinerary sample demonstrates the following types of controls\n' +
+        ' * Image\n' +
+        '* Text Blocks with many attributes including size, weight, color, wrap, spacing and horizontalAlignment\n\n' +
+        'Full Source Here: ' + this.srcUrl);
+      message = await bot.say({
+        // Fallback text for clients that don't render cards
+        markdown: "If you see this your client cannot render our Flight Itinerary example.",
+        attachments: [{
+          "contentType": this.contentType,
+          "content": this.card
+        }]
+      });
+      await bot.say({
+        text: '...Not a fan of the two stops on the outbound!\n\n' +
+          'There is no user input for this card. Post any message to me if you want to see another card.',
+        parentId: message.id
+      });
+    } catch (err) {
+      let msg = 'Failed to render Flight Itinerary card example.';
+      logger.error(`${msg} Error:${err.message}`);
+      bot.say(`${msg} Please contact the Webex Developer Support: https://developer.webex.com/support`)
+        .catch((e) => logger.error(`Failed to post error message to space. Error:${e.message}`));
+    }
   };
 
 

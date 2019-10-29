@@ -90,23 +90,32 @@ class StockUpdate {
       srcBaseUrl + '/stock-update.js';
   }
 
-  async renderCard(bot) {
-    await bot.say('The Stock Update sample demonstrates the following types of controls\n' +
-      '* Text Fields with the size, color and isSubtle attributes\n* Fact Set\n\n\n' +
-      'Full Source Here:' + this.srcUrl);
-    let message = await bot.say({
-      // Fallback text for clients that don't render cards
-      markdown: "If you see this your client cannot render our Stock Update example.",
-      attachments: [{
-        "contentType": this.contentType,
-        "content": this.card
-      }]
-    });
+  async renderCard(bot, logger) {
+    let message = {};
+    try {
+      await bot.say('The Stock Update sample demonstrates the following types of controls\n' +
+        '* Text Fields with the size, color and isSubtle attributes\n* Fact Set\n\n\n' +
+        'Full Source Here: ' + this.srcUrl);
+      message = await bot.say({
+        // Fallback text for clients that don't render cards
+        markdown: "If you see this your client cannot render our Stock Update example.",
+        attachments: [{
+          "contentType": this.contentType,
+          "content": this.card
+        }]
+      });
+    } catch (err) {
+      let msg = 'Failed to render Stock Update card example.';
+      logger.error(`${msg} Error:${err.message}`);
+      bot.say(`${msg} Please contact the Webex Developer Support: https://developer.webex.com/support`)
+        .catch((e) => logger.error(`Failed to post error message to space. Error:${e.message}`));
+    }
     bot.say({
       text: '...Uh-oh, better sell Microsoft!\n\n' +
-        'There is no user input for this card. Post any message if you want to see another card.',
+        'There is no user input for this card. Post any message to me if you want to see another card.',
       parentId: message.id
-    });
+    })
+      .catch((e) => logger.error(`Failed to post follow-up to Stock Update card. Error:${e.message}`));
   };
 
 };

@@ -262,36 +262,44 @@ class FlightDetails {
       "version": "1.0"
     };
     this.contentType = contentType;
-    this.srcUrl = (srcBaseUrl[srcBaseUrl.length-1] === '/') ?
+    this.srcUrl = (srcBaseUrl[srcBaseUrl.length - 1] === '/') ?
       srcBaseUrl + 'flight-details.js' :
       srcBaseUrl + '/flight-details.js';
   }
 
-  async renderCard(bot) {
-    await bot.say('The Flight Details sample demonstrates the following types of controls\n' +
-      ' * Image and Background Image\n' +
-      '* Text Blocks with many attributes including size, weight, color, wrap, spacing and horizontalAlignment\n' +
-      '* A Submit button\n' +
-      'Full Source Here:' + this.srcUrl);
-    bot.say({
-      // Fallback text for clients that don't render cards
-      markdown: "If you see this your client cannot render our Flight Details example.",
-      attachments: [{
-        "contentType": this.contentType,
-        "content": this.card
-      }]
-    });
+  async renderCard(bot, logger) {
+    try {
+      await bot.say('The Flight Details sample demonstrates the following types of controls\n' +
+        ' * Image and Background Image\n' +
+        '* Text Blocks with many attributes including size, weight, color, wrap, spacing and horizontalAlignment\n' +
+        '* A Submit button\n\n' +
+        'Full Source Here: ' + this.srcUrl);
+      await bot.say({
+        // Fallback text for clients that don't render cards
+        markdown: "If you see this your client cannot render our Flight Details example.",
+        attachments: [{
+          "contentType": this.contentType,
+          "content": this.card
+        }]
+      });
+    } catch (err) {
+      let msg = 'Failed to render Flight Details card example.';
+      logger.error(`${msg} Error:${err.message}`);
+      bot.say(`${msg} Please contact the Webex Developer Support: https://developer.webex.com/support`)
+        .catch((e) => logger.error(`Failed to post error message to space. Error:${e.message}`));
+    }
   };
-  
-  async  handleSubmit(attachmentAction, submitter, bot) {
+
+  async  handleSubmit(attachmentAction, submitter, bot, logger) {
     let inputs = attachmentAction.inputs;
     let msg = submitter.displayName + ' replied with the following:\n' +
       '* action: ' + inputs.action;
     bot.say({
       text: msg,
       parentId: attachmentAction.messageId
-    });
-  };  
+    })
+      .catch((e) => logger.error(`Failed to post Flight Details card response to space. Error:${e.message}`));
+  };
 
 };
 
