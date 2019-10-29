@@ -53,6 +53,11 @@ class SamplePicker {
               "value": "flightUpdate"
             },
             {
+              "title": "Food Order",
+              "value": "foodOrder"
+            },
+
+            {
               "title": "Stock Update",
               "value": "stockUpdate"
             }
@@ -63,7 +68,7 @@ class SamplePicker {
         {
           "type": "Action.Submit",
           "title": "Submit",
-          "data": { "cardType": "samplePicker"}
+          "data": { "cardType": "samplePicker" }
         }
       ]
     };
@@ -73,7 +78,7 @@ class SamplePicker {
       srcBaseUrl + '/sample-picker.js';
   }
 
-  async renderCard(bot) {
+  async renderCard(bot, logger) {
     bot.say({
       // Fallback text for clients that don't render cards
       markdown: "If you see this your client cannot render our Sample Picker Client.",
@@ -81,7 +86,13 @@ class SamplePicker {
         "contentType": this.contentType,
         "content": this.card
       }]
-    });
+    })
+      .catch((err) => {
+        let msg = 'Failed to render Sample Picker card.';
+        logger.error(`${msg} Error:${err.message}`);
+        bot.say(`${msg} Please contact the Webex Developer Support: https://developer.webex.com/support`)
+          .catch((e) => logger.error(`Failed to post error message to space. Error:${e.message}`));
+      });
   };
 
 };

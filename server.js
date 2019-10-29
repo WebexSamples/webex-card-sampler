@@ -68,6 +68,8 @@ FlightItinerary = require('./res/flight-itinerary.js');
 let flightItinerary = new FlightItinerary(cardsConfig.srcBaseUrl, cardsConfig.contentType);
 FlightUpdate = require('./res/flight-update.js');
 let flightUpdate = new FlightUpdate(cardsConfig.srcBaseUrl, cardsConfig.contentType);
+FoodOrder = require('./res/food-order.js');
+let foodOrder = new FoodOrder(cardsConfig.srcBaseUrl, cardsConfig.contentType);
 StockUpdate = require('./res/stock-update.js');
 let stockUpdate = new StockUpdate(cardsConfig.srcBaseUrl, cardsConfig.contentType);
 
@@ -86,7 +88,9 @@ flint.on('spawn', function (bot) {
   // Notify the admin if the bot has been added to a new space
   if ((flint.initialized) && (adminsBot)) {
     samplePicker.renderCard(bot, logger);
-    adminsBot.say(`${botName} was added to a space: ${bot.room.title}`);
+    adminsBot.say(`${botName} was added to a space: ${bot.room.title}`)
+      .catch((e) => logger.error(`Failed to new bot space update to Admin. Error:${e.message}`));
+
   }
 });
 
@@ -98,7 +102,8 @@ flint.hears('getAdminStats', function (bot) {
   if (adminEmail === bot.isDirectTo) {
     updateAdmin(`${botName} has been added to the following spaces:`, true);
   } else {
-    bot.say('Unauthorized Request');
+    bot.say('Unauthorized Request')
+      .catch((e) => logger.error(`Failed to post Unauthorized Request message to space. Error:${e.message}`));
   }
   responded = true;
 });
@@ -111,7 +116,8 @@ flint.hears(/help/i, function (bot) {
     'provide a description of the card elements being demonstrated.\n\nWe\'ll ' +
     'also provide a link to the source used for the card, along with any ' +
     'descriptions of how the original sample was modified to work more ' +
-    'effectively in a Webex Teams environment.');
+    'effectively in a Webex Teams environment.')
+    .catch((e) => logger.error(`Failed to post help message to space. Error:${e.message}`));
 });
 
 // send an example card in response to any input
@@ -135,7 +141,7 @@ flint.on('attachmentAction', function (bot, attachmentAction) {
 function renderSelectedCard(bot, cardSelection) {
   switch (cardSelection) {
     case ('activityUpdate'):
-      activityUpdate.renderCard(bot);
+      activityUpdate.renderCard(bot, logger);
       break;
 
     case ('agenda'):
@@ -143,11 +149,11 @@ function renderSelectedCard(bot, cardSelection) {
       break;
 
     case ('calendarReminder'):
-      calendarReminder.renderCard(bot);
+      calendarReminder.renderCard(bot, logger);
       break;
 
     case ('inputForm'):
-      inputForm.renderCard(bot);
+      inputForm.renderCard(bot, logger);
       break;
 
     case ('flightDetails'):
@@ -162,13 +168,18 @@ function renderSelectedCard(bot, cardSelection) {
       flightUpdate.renderCard(bot, logger);
       break;
 
+    case ('foodOrder'):
+      foodOrder.renderCard(bot, logger);
+      break;
+
     case ('stockUpdate'):
-      stockUpdate.renderCard(bot);
+      stockUpdate.renderCard(bot, logger);
       break;
 
     default:
       logger.error(`Sample Picker Card cardSelection:${attachmentAction.inputs.cardType}!`);
-      bot.say('Please make a choice from the drop down list');
+      bot.say('Please make a choice from the drop down list')
+        .catch((e) => logger.error(`Failed to post picker instructions message to space. Error:${e.message}`));
   }
 }
 
@@ -179,35 +190,41 @@ function processSampleCardResponse(bot, attachmentAction) {
         case ("samplePicker"):
           // Display the chosen card
 
-          activityUpdate.handleSubmit(attachmentAction, person, bot);
+          activityUpdate.handleSubmit(attachmentAction, person, bot, logger);
           break;
 
         case ("activityUpdate"):
-          activityUpdate.handleSubmit(attachmentAction, person, bot);
+          activityUpdate.handleSubmit(attachmentAction, person, bot, logger);
           break;
 
         case ('calendarReminder'):
-          calendarReminder.handleSubmit(attachmentAction, person, bot);
+          calendarReminder.handleSubmit(attachmentAction, person, bot, logger);
           break;
 
         case ("inputForm"):
-          inputForm.handleSubmit(attachmentAction, person, bot);
+          inputForm.handleSubmit(attachmentAction, person, bot, logger);
           break;
 
         case ("flightDetails"):
-          flightDetails.handleSubmit(attachmentAction, person, bot);
+          flightDetails.handleSubmit(attachmentAction, person, bot, logger);
+          break;
+
+        case ("foodOrder"):
+          foodOrder.handleSubmit(attachmentAction, person, bot, logger);
           break;
 
         default:
           logger.error(`Got unexpected cardType:${attachmentAction.inputs.cardType}!`);
           bot.say('Don\'t know how to handle the card input. ' +
-            'Please contact the Webex Developer Support: https://developer.webex.com/support');
+            'Please contact the Webex Developer Support: https://developer.webex.com/support')
+            .catch((e) => logger.error(`Failed to post unknown cardTyp error message to space. Error:${e.message}`));
       }
     })
     .catch((err) => {
       logger.error(`Couldn't get person details from attachmentAction.personId:${attachmentAction.personId}. Error:${err}`);
       bot.say('Don\'t know how to handle the card input. ' +
-        'Please contact the Webex Developer Support: https://developer.webex.com/support');
+        'Please contact the Webex Developer Support: https://developer.webex.com/support')
+        .catch((e) => logger.error(`Failed to post card user people lookup error message to space. Error:${e.message}`));
     });
 }
 
@@ -225,7 +242,8 @@ function updateAdmin(message, listAll = false) {
     }
     // Don't notify about users after a scheduled shutdown/restart
     if ((!lastShutdown) || (lastShutdown.isBefore(moment().subtract(5, 'minutes')))) {
-      adminsBot.say({ 'markdown': message });
+      adminsBot.say({ 'markdown': message })
+        .catch((e) => logger.error(`Failed to post shutdown message to admin. Error:${e.message}`));
     }
   } catch (e) {
     logger.warn('Unable to spark Admin the news ' + message);
