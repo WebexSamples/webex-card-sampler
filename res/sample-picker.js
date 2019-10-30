@@ -65,6 +65,10 @@ class SamplePicker {
               "value": "restaurant"
             },
             {
+              "title": "Simple Fallback",
+              "value": "simpleFallback"
+            },
+            {
               "title": "Stock Update",
               "value": "stockUpdate"
             }

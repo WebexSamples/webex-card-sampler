@@ -21,17 +21,22 @@ if ((process.env.WEBHOOK) && (process.env.TOKEN) &&
   flintConfig.webhookUrl = process.env.WEBHOOK;
   flintConfig.token = process.env.TOKEN;
   flintConfig.port = process.env.PORT;
+  // Adaptive Card with images can take a long time to render
+  // Extend the timeout when waiting for a webex API request to return
+  flintConfig.requestTimeout = 60000;
+
+  // Read the card schema and URL for the source example from environment
   cardsConfig.srcBaseUrl = process.env.CARD_SRC_BASE_URL;
   cardsConfig.contentType = process.env.CARD_CONENT_TYPE;
 } else {
   logger.error('Cannot start server.  Missing required environment varialbles WEBHOOK, TOKEN or CARD_CONTENT_TYPE');
-  return;
+  process.exit();
 }
 
 // The admin will get extra notifications about bot usage
 let adminEmail = '';
 let botName = '';
-let botEmail = ''
+let botEmail = '';
 if ((process.env.ADMIN_EMAIL) && (process.env.BOTNAME) && (process.env.BOT_EMAIL)) {
   adminEmail = process.env.ADMIN_EMAIL;
   botName = process.env.BOTNAME;
@@ -74,6 +79,8 @@ ImageGallery = require('./res/image-gallery.js');
 let imageGallery = new ImageGallery(cardsConfig.srcBaseUrl, cardsConfig.contentType);
 Restaurant = require('./res/restaurant.js');
 let restaurant = new Restaurant(cardsConfig.srcBaseUrl, cardsConfig.contentType);
+SimpleFallback = require('./res/simple-fallback.js');
+let simpleFallback = new SimpleFallback(cardsConfig.srcBaseUrl, cardsConfig.contentType);
 StockUpdate = require('./res/stock-update.js');
 let stockUpdate = new StockUpdate(cardsConfig.srcBaseUrl, cardsConfig.contentType);
 
@@ -125,7 +132,7 @@ flint.hears(/help/i, function (bot) {
 });
 
 // send an example card in response to any input
-flint.hears(/.*/, function (bot, trigger) {
+flint.hears(/.*/, function (bot) {
   if (!responded) {
     samplePicker.renderCard(bot, logger);
   }
@@ -182,6 +189,10 @@ function renderSelectedCard(bot, cardSelection) {
 
     case ("restaurant"):
       restaurant.renderCard(bot, logger);
+      break;
+
+    case ('simpleFallback'):
+      simpleFallback.renderCard(bot, logger);
       break;
 
     case ('stockUpdate'):
