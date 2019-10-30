@@ -259,7 +259,8 @@ class FlightUpdate {
       message = await bot.say('The Flight Update sample demonstrates the following types of controls\n' +
         ' * Image\n' +
         '* Text Blocks with many attributes including size, weight, color, wrap, spacing and horizontalAlignment\n\n' +
-        'Full Source Here: ' + this.srcUrl);
+        'Cards with images can take a few seconds to render. ' +
+        'In the meantime you can see the full source here: ' + this.srcUrl);
       message = await bot.say({
         // Fallback text for clients that don't render cards
         markdown: "If you see this your client cannot render our Flight Update example.",

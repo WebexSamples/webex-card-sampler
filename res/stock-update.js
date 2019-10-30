@@ -93,9 +93,10 @@ class StockUpdate {
   async renderCard(bot, logger) {
     let message = {};
     try {
-      await bot.say('The Stock Update sample demonstrates the following types of controls\n' +
+      message = await bot.say('The Stock Update sample demonstrates the following types of controls\n' +
         '* Text Fields with the size, color and isSubtle attributes\n* Fact Set\n\n\n' +
-        'Full Source Here: ' + this.srcUrl);
+        'Cards with images can take a few seconds to render. ' +
+        'In the meantime you can see the full source here: ' + this.srcUrl);
       message = await bot.say({
         // Fallback text for clients that don't render cards
         markdown: "If you see this your client cannot render our Stock Update example.",

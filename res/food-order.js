@@ -196,7 +196,8 @@ class FoodOrder {
         '* Input.ChoiceSet with the style attribute\n' +
         '* Input.Text witht eh isMultiline and placeholder attributes\n' +
         '* ShowCard and Submit actions\n\n' +
-        'Full Source Here: ' + this.srcUrl);
+        'Cards with images can take a few seconds to render. ' +
+        'In the meantime you can see the full source here: ' + this.srcUrl);
       await bot.say({
         // Fallback text for clients that don't render cards
         markdown: "If you see this your client cannot render our Food Order example.",

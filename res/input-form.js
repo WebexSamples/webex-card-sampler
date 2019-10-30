@@ -109,7 +109,8 @@ class InputForm {
     try {
       await bot.say('The Input Form sample demonstrates the following types of controls\n' +
         '* Text Input Fields and the style attribute\n* Embedded Images\n* A Submit button\n\n' +
-        'Full Source Here: ' + this.srcUrl);
+        'Cards with images can take a few seconds to render. ' +
+        'In the meantime you can see the full source here: ' + this.srcUrl);
       await bot.say({
         // Fallback text for clients that don't render cards
         markdown: "If you see this your client cannot render our Input Form example.",

@@ -439,7 +439,8 @@ class Agenda {
         '* Image with the size and horizontalAlignment attributes\n' +
         '* backgroundImage with the fillmode and horizontalAlignment attributes\n' +
         '* ImageSet with the horizontalAlignment attributes\n\n' +
-        'Full Source Here: ' + this.srcUrl);
+        'Cards with images can take a few seconds to render. ' +
+        'In the meantime you can see the full source here: ' + this.srcUrl);
       await bot.say({
         // Fallback text for clients that don't render cards
         markdown: "If you see this your client cannot render our Agenda example.",

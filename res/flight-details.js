@@ -273,7 +273,8 @@ class FlightDetails {
         ' * Image and Background Image\n' +
         '* Text Blocks with many attributes including size, weight, color, wrap, spacing and horizontalAlignment\n' +
         '* A Submit button\n\n' +
-        'Full Source Here: ' + this.srcUrl);
+        'Cards with images can take a few seconds to render. ' +
+        'In the meantime you can see the full source here: ' + this.srcUrl);
       await bot.say({
         // Fallback text for clients that don't render cards
         markdown: "If you see this your client cannot render our Flight Details example.",
