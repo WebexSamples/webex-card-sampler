@@ -56,7 +56,14 @@ class SamplePicker {
               "title": "Food Order",
               "value": "foodOrder"
             },
-
+            {
+              "title": "Image Gallery",
+              "value": "imageGallery"
+            },
+            {
+              "title": "Restaurant",
+              "value": "restaurant"
+            },
             {
               "title": "Stock Update",
               "value": "stockUpdate"

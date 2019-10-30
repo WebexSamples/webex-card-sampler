@@ -70,6 +70,10 @@ FlightUpdate = require('./res/flight-update.js');
 let flightUpdate = new FlightUpdate(cardsConfig.srcBaseUrl, cardsConfig.contentType);
 FoodOrder = require('./res/food-order.js');
 let foodOrder = new FoodOrder(cardsConfig.srcBaseUrl, cardsConfig.contentType);
+ImageGallery = require('./res/image-gallery.js');
+let imageGallery = new ImageGallery(cardsConfig.srcBaseUrl, cardsConfig.contentType);
+Restaurant = require('./res/restaurant.js');
+let restaurant = new Restaurant(cardsConfig.srcBaseUrl, cardsConfig.contentType);
 StockUpdate = require('./res/stock-update.js');
 let stockUpdate = new StockUpdate(cardsConfig.srcBaseUrl, cardsConfig.contentType);
 
@@ -168,8 +172,16 @@ function renderSelectedCard(bot, cardSelection) {
       flightUpdate.renderCard(bot, logger);
       break;
 
+    case ('imageGallery'):
+      imageGallery.renderCard(bot, logger);
+      break;
+
     case ('foodOrder'):
       foodOrder.renderCard(bot, logger);
+      break;
+
+    case ("restaurant"):
+      restaurant.renderCard(bot, logger);
       break;
 
     case ('stockUpdate'):
