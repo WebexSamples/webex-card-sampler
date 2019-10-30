@@ -93,8 +93,7 @@ class CalendarReminder {
         '* Text block with the size, weight, isSubtle, spacing and wrap attributes\n' +
         '* Input.ChoiceSet with the style attribute\n' +
         '* Action.Submit buttons\n\n' +
-        'Cards with images can take a few seconds to render. ' +
-        'In the meantime you can see the full source here: ' + this.srcUrl);
+        'You can see the full source here: ' + this.srcUrl);
       await bot.say({
         // Fallback text for clients that don't render cards
         markdown: "If you see this your client cannot render our Calendar Reminder example.",

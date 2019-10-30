@@ -82,7 +82,7 @@ class ImageGallery {
       message = await bot.say('The Image Gallery sample demonstrates the following types of controls\n' +
         '* Text Block with the size and weight attributes\n' +
         '* ImageSet emelemnt with the imageSize attribute\n\n' +
-        'Cards with images can take a few seconds to render.\n' +
+        'Cards with images can take a few seconds to render. \n' +
         'In the meantime you can see the full source here: ' + this.srcUrl);
       message = await bot.say({
         // Fallback text for clients that don't render cards
