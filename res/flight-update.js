@@ -1,8 +1,11 @@
 /**
- * Adaptive Card Input Form Sample from https://adaptivecards.io/samples/FlightUpdate.html
- * This sample demonstrates the following types of controls
- *   -- Image
- *   -- Text Blocks with many attributes including size, weight, color, wrap, spacing and horizontalAlignment
+ * Adaptive Card Flight Update Sample from https://adaptivecards.io/samples/FlightUpdate.html
+ * This sample demonstrates the following types of controls:
+ * 
+ * ColumnSets and Columns with the separator, spacing, width attributes
+ * Image with the size and attribute
+ * Speak attribute of the card type
+ * Text Blocks with many attributes including size, weight, isSubtle, color, spacing and horizontalAlignment
  *
  * The speak attribute from original sample was removed as this is not supported on Webex Teams
  * 
@@ -256,9 +259,12 @@ class FlightUpdate {
   async renderCard(bot, logger) {
     let message = {};
     try {
-      message = await bot.say('The Flight Update sample demonstrates the following types of controls\n' +
-        ' * Image\n' +
-        '* Text Blocks with many attributes including size, weight, color, wrap, spacing and horizontalAlignment\n\n' +
+      message = await bot.say('The Flight Update sample demonstrates the following types of controls:\n' +
+        '* ColumnSets and Columns with the separator, spacing, width attributes\n' +
+        '* Image with the size and attribute\n' +
+        '* Speak attribute of the card type\n' +
+        '* Text Blocks with many attributes including size, weight, isSubtle, color, spacing and horizontalAlignment\n\n' +
+        'The speak attribute from original sample was removed as this is not supported on Webex Teams\n\n' +
         'Cards with images can take a few seconds to render. ' +
         'In the meantime you can see the full source here: ' + this.srcUrl);
       message = await bot.say({

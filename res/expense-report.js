@@ -865,14 +865,15 @@ class ExpenseReport {
 
   async renderCard(bot, logger) {
     try {
-      await bot.say('The Expense Report sample demonstrates the following types of controls\n' +
-        ' * Containers, ColumnSets and Columns with the spacing, style, width, verticalContentAlignment, isVisible, and bleed attributes\n' +
+      await bot.say('The Expense Report sample demonstrates the following types of controls:\n' +
+        '* Containers, ColumnSets and Columns with the spacing, style, width, verticalContentAlignment, isVisible, and bleed attributes\n' +
         '* Text block with the size, color, weight, isSubtle, spacing and wrap attributes\n' +
         '* Image with the height, width and altText attributes\n' +
         '* FactSet with the spacing attribute\n' +
         '* ToggleVisibility, OpenURL and Submit Actions \n\n' +
-        'This sample contains several attributes that are not supported by Webex Teams, ' +
-        'You can see the original source and modifications here: ' + this.srcUrl);
+        'This sample contains the `Action.ToggleVisibility` element and the `veriticalContentAlignment` and ' +
+        '`fallback` attributes, which are not supported by Webex Teams.\n\n' +
+        'You can see the original source with modifications here: ' + this.srcUrl);
       await bot.say({
         // Fallback text for clients that don't render cards
         markdown: "If you see this your client cannot render our Expense Report example.",

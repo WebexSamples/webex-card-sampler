@@ -1,12 +1,14 @@
 /**
- * Adaptive Card Input Form Sample from https://adaptivecards.io/samples/FoodOrder.html
- * This sample demonstrates the following types of controls
- *   -- Text block with the weight, size, isSubtle, and wrap attributes
- *   -- Image with the imageSize attribute
- *   -- Input.ChoiceSet with the style attribute
- *   -- Input.Text witht eh isMultiline and placeholder attributes
- *   -- ShowCard and Submit actions
- * * 
+ * Adaptive Card Food Order Sample from https://adaptivecards.io/samples/FoodOrder.html
+ * This sample demonstrates the following types of controls:
+ * 
+ * Text block with the weight, size, isSubtle, and wrap attributes
+ * ImageSet with the imageSize attribute
+ * Image
+ * Input.ChoiceSet with the style attribute
+ * Input.Text with the isMultiline and placeholder attributes
+ * Action.ShowCard and Action.Sumbit
+ *
  * A cardType attribute was added to the data object in the Action.Submit element
  * so our app can tell which card generated the attachmentAction
  **/
@@ -190,12 +192,13 @@ class FoodOrder {
 
   async renderCard(bot, logger) {
     try {
-      await bot.say('The Food Order sample demonstrates the following types of controls\n' +
+      await bot.say('The Food Order sample demonstrates the following types of controls:\n' +
         '* Text block with the weight, size, isSubtle, and wrap attributes\n' +
-        '* Image with the imageSize attribute\n' +
+        '* ImageSet with the imageSize attribute\n' +
+        '* Image\n' +
         '* Input.ChoiceSet with the style attribute\n' +
-        '* Input.Text witht eh isMultiline and placeholder attributes\n' +
-        '* ShowCard and Submit actions\n\n' +
+        '* Input.Text with the isMultiline and placeholder attributes\n' +
+        '* Action.ShowCard and Action.Sumbit\n\n' +
         'Cards with images can take a few seconds to render. ' +
         'In the meantime you can see the full source here: ' + this.srcUrl);
       await bot.say({

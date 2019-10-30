@@ -1,10 +1,13 @@
 /**
- * Adaptive Card Input Form Sample from https://adaptivecards.io/samples/SimpleFallback.html
- * This sample demonstrates the following types of controls
- *   -- fallback property of an Adaptive Card element
+ * Adaptive Card Simple Fallback Sample from https://adaptivecards.io/samples/SimpleFallback.html
+ * This sample demonstrates the following types of controls:
+ * 
+ * TextBlock and some improper elements designed to force the fallback
+ * The fallback property of an Adaptive Card element
  *
- * Webex Teams does not support per-element fallback text.  If any asepect of the card schema is 
- * invalid, the fallback message or markup text is displayed instead of the card
+ * Webex Teams does not support fallback property in the card schema itself.  If any asepect of the 
+ * schema is invalid, the fallback text or markup sumbitted in the /messages request body
+ * is displayed instead of the card
  **/
 
 class SimpleFallback {
@@ -21,15 +24,17 @@ class SimpleFallback {
         {
           "type": "Steve Holt!",
           "egg": "her?",
-          "fallback": "drop"
+          //The per-elment fallback attribute is not supported by Webex Teams
+          //"fallback": "drop"
         },
         {
           "type": "Graph",
           "someProperty": "foo",
-          "fallback": {
-            "type": "TextBlock",
-            "text": "No graph support. Guess we'll just use this textblock instead."
-          }
+          //The per-elment fallback attribute is not supported by Webex Teams
+          // "fallback": {
+          //   "type": "TextBlock",
+          //   "text": "No graph support. Guess we'll just use this textblock instead."
+          // }
         }
       ]
     };
@@ -42,18 +47,19 @@ class SimpleFallback {
   async renderCard(bot, logger) {
     let message = {};
     try {
-      message = await bot.say('The Simple Fallback sample demonstrates the following types of controls\n' +
-        '* fallback property of an Adaptive Card element\n\n' +
-        'Webex Teams does not support per-element fallback attributes.  If any asepect of the card schema is ' +
-        'invalid, the fallback message specified in the text or markup fields of the message request ' +
+      message = await bot.say('The Simple Fallback sample demonstrates the following types of controls:\n' +
+        '* TextBlock and some improper elements designed to force the fallback\n' +
+        '* The fallback property of an Adaptive Card element\n\n' +
+        'Webex Teams does not support fallback property in the card schema itself.  If any asepect of the ' +
+        'schema is invalid, the fallback text or markup sumbitted in the /messages request body ' +
         'is displayed instead of the card\n\n' +
         'You can see the full sample source here: ' + this.srcUrl);
       message = await bot.say({
         // Fallback text for clients that don't render cards
         markdown: "This is the fallback text submitted via the `markdown` attribute in the `POST /messages` " +
           "API request body, along with the unspported card schema in the `attachments` field.\n\n" +
-          "You are seeing this since Webex determined " +
-          "that the card could not be rendered.  **This message IS the expected output for this card sample** \n\n" +
+          "You are seeing this since Webex determined that the card could not be rendered. " +
+          "**This message IS the expected output for this card sample** \n\n" +
           "Post any message to me to see another sample",
         attachments: [{
           "contentType": this.contentType,

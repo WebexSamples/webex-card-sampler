@@ -1,7 +1,7 @@
 /**
- * Adaptive Card Agenda Sample from https://adaptivecards.io/samples/CalendarReminder.html
+ * Adaptive Card Calendar Reminder Sample from https://adaptivecards.io/samples/CalendarReminder.html
  * This sample demonstrates the following types of controls
- *   -- Text block with the size, weight, isSubtle, spacing and wrap attributes
+ *   -- Text block with the size, weight, isSubtle, and spacing attributes
  *   -- Input.ChoiceSet with the style attribute
  *   -- Action.Submit buttons
  *
@@ -89,8 +89,8 @@ class CalendarReminder {
 
   async renderCard(bot, logger) {
     try {
-      await bot.say('The Calendar Reminder sample demonstrates the following types of controls\n' +
-        '* Text block with the size, weight, isSubtle, spacing and wrap attributes\n' +
+      await bot.say('The Calendar Reminder sample demonstrates the following types of controls:\n' +
+        '* Text block with the size, weight, isSubtle, and spacing attributes\n' +
         '* Input.ChoiceSet with the style attribute\n' +
         '* Action.Submit buttons\n\n' +
         'You can see the full source here: ' + this.srcUrl);

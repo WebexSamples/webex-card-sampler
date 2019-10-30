@@ -1,9 +1,12 @@
 /**
  * Adaptive Card Input Form Sample from https://adaptivecards.io/samples/InputForm.html
- * This sample demonstrates the following types of controls
- *   -- Text Input Fields and the style attribute
- *   -- Embedded Images
- *   -- A Submit button
+ * This sample demonstrates the following types of controls:
+ * 
+ * ColumnSets and Columns with the width attribute
+ * Input.Text with the placeholder and style attributes
+ * Text Blocks with size, weight, isSubtle, and wrap attributes
+ * Image with the size attribute
+ * Action.Submit
  *
  * The original sample did not have to be modified in any way to render properly on Webex Teams
  * 
@@ -107,8 +110,12 @@ class InputForm {
 
   async renderCard(bot, logger) {
     try {
-      await bot.say('The Input Form sample demonstrates the following types of controls\n' +
-        '* Text Input Fields and the style attribute\n* Embedded Images\n* A Submit button\n\n' +
+      await bot.say('The Input Form sample demonstrates the following types of controls:\n' +
+        '* ColumnSets and Columns with the width attribute\n' +
+        '* Input.Text with the placeholder and style attributes\n' +
+        '* Text Blocks with size, weight, isSubtle, and wrap attributes\n' +
+        '* Image with the size attribute\n' +
+        '* Action.Submit \n\n' +
         'Cards with images can take a few seconds to render. ' +
         'In the meantime you can see the full source here: ' + this.srcUrl);
       await bot.say({

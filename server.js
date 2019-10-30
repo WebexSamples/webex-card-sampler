@@ -122,15 +122,8 @@ flint.hears('getAdminStats', function (bot) {
 });
 
 flint.hears(/help/i, function (bot) {
-  bot.say('This bot provides Webex Teams users and developers with an ' +
-    'opportunity to try several types of Buttons and Cards described on the ' +
-    '[Adaptive Card Samples website](https://adaptivecards.io/samples/).\n\n' +
-    'For each card, we\'ll demonstrate how it renders in Webex Teams, and ' +
-    'provide a description of the card elements being demonstrated.\n\nWe\'ll ' +
-    'also provide a link to the source used for the card, along with any ' +
-    'descriptions of how the original sample was modified to work more ' +
-    'effectively in a Webex Teams environment.')
-    .catch((e) => logger.error(`Failed to post help message to space. Error:${e.message}`));
+  responded = true;
+  showHelp(bot);
 });
 
 // send an example card in response to any input
@@ -260,6 +253,23 @@ function processSampleCardResponse(bot, attachmentAction) {
         .catch((e) => logger.error(`Failed to post card user people lookup error message to space. Error:${e.message}`));
     });
 }
+
+async function showHelp(bot) {
+  try {
+    await bot.say('This bot provides Webex Teams users and developers with an ' +
+      'opportunity to try several types of Buttons and Cards described on the ' +
+      '[Adaptive Card Samples website](https://adaptivecards.io/samples/).\n\n' +
+      'For each card, we\'ll demonstrate how it renders in Webex Teams, and ' +
+      'provide a description of the card elements being demonstrated.\n\nWe\'ll ' +
+      'also provide a link to the source used for the card, along with any ' +
+      'descriptions of how the original sample was modified to work more ' +
+      'effectively in a Webex Teams environment.');
+    samplePicker.renderCard(bot, logger);
+  } catch (e) {
+    logger.error(`Failed to post help message to space. Error:${e.message}`);
+  }
+}
+
 
 function updateAdmin(message, listAll = false) {
   if (!adminsBot) { return; }

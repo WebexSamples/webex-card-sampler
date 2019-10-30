@@ -1,13 +1,15 @@
 /**
  * Adaptive Card Agenda Sample from https://adaptivecards.io/samples/Agenda.html
- * This sample demonstrates the following types of controls
- *   -- Text block with the isSubtle, spacing and wrap attributes
- *   -- Image with the size and horizontalAlignment attributes
- *   -- backgroundImage with the fillmode and horizontalAlignment attributes
- *   -- ImageSet with the horizontalAlignment attributes
+ * This sample demonstrates the following types of controls:
+ * 
+ * ColumnSet and Column elements with the horizontalAlignment, spacing, seperator and width attributes
+ * Text block with the isSubtle, spacing and wrap attributes
+ * Image with the size and horizontalAlignment attributes\
+ * backgroundImage with the fillmode and horizontalAlignment attributes
+ * ImageSet with the horizontalAlignment attributes
  *
- * We commented out the backgroundImage attribute of the ColumnSet as this is not yet
- * supported on Webex Teams
+ * The backgroundImage attribute of the ColumnSet was commented out as this is not
+ * yet supported on Webex Teams
  **/
 
 class Agenda {
@@ -180,6 +182,7 @@ class Agenda {
             },
             {
               "type": "Column",
+              // The backgroundImage attribute is not supported by Webex Teams
               // "backgroundImage": {
               //   "url": "http://messagecardplayground.azurewebsites.net/assets/SmallVerticalLineGray.png",
               //   "fillMode": "RepeatVertically",
@@ -291,11 +294,12 @@ class Agenda {
             },
             {
               "type": "Column",
-              "backgroundImage": {
-                "url": "http://messagecardplayground.azurewebsites.net/assets/SmallVerticalLineGray.png",
-                "fillMode": "RepeatVertically",
-                "horizontalAlignment": "Center"
-              },
+              // The backgroundImage attribute is not supported by Webex Teams
+              // "backgroundImage": {
+              //   "url": "http://messagecardplayground.azurewebsites.net/assets/SmallVerticalLineGray.png",
+              //   "fillMode": "RepeatVertically",
+              //   "horizontalAlignment": "Center"
+              // },
               "items": [
                 {
                   "type": "Image",
@@ -363,11 +367,12 @@ class Agenda {
             },
             {
               "type": "Column",
-              "backgroundImage": {
-                "url": "http://messagecardplayground.azurewebsites.net/assets/SmallVerticalLineGray.png",
-                "fillMode": "RepeatVertically",
-                "horizontalAlignment": "Center"
-              },
+              // The backgroundImage attribute is not supported by Webex Teams
+              // "backgroundImage": {
+              //   "url": "http://messagecardplayground.azurewebsites.net/assets/SmallVerticalLineGray.png",
+              //   "fillMode": "RepeatVertically",
+              //   "horizontalAlignment": "Center"
+              // },
               "items": [
                 {
                   "type": "Image",
@@ -434,11 +439,14 @@ class Agenda {
 
   async renderCard(bot, logger) {
     try {
-      await bot.say('The Agenda sample demonstrates the following types of controls\n' +
+      await bot.say('The Agenda sample demonstrates the following types of controls:\n' +
+        '* ColumnSet and Column elements with the horizontalAlignment, spacing, seperator and width attributes\n' +
         '* Text block with the isSubtle, spacing and wrap attributes\n' +
         '* Image with the size and horizontalAlignment attributes\n' +
         '* backgroundImage with the fillmode and horizontalAlignment attributes\n' +
         '* ImageSet with the horizontalAlignment attributes\n\n' +
+        'The backgroundImage attribute of the ColumnSet was commented out as this is not ' +
+        'yet supported on Webex Teams.\n\n' +
         'Cards with images can take a few seconds to render. ' +
         'In the meantime you can see the full source here: ' + this.srcUrl);
       await bot.say({

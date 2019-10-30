@@ -1,9 +1,11 @@
 /**
- * Adaptive Card Input Form Sample from https://adaptivecards.io/samples/Restaurant.html
- * This sample demonstrates the following types of controls
- *   -- Text Blocks with many attributes including size, weight, wrap, spacing and horizontalAlignment
- *   -- Image with teh size attribute
- *   -- OpenUrl action
+ * Adaptive Card Restaurant Sample from https://adaptivecards.io/samples/Restaurant.html
+ * This sample demonstrates the following types of controls:
+ * 
+ * ColumnSets and Columns with the width attribute
+ * Image with the size and attribute
+ * Text Blocks with many attributes including size, weight, isSubtle and spacing
+ * OpenUrl Action
  *
  * We did not need to modify this sample at all to make it work in Webex Teams
  **/
@@ -78,10 +80,11 @@ class Restaurant {
   async renderCard(bot, logger) {
     let message = {};
     try {
-      message = await bot.say('The Restaurant sample demonstrates the following types of controls\n' +
-        '* Text Blocks with many attributes including size, weight, wrap, spacing and horizontalAlignment\n' +
-        '* Image with the size attribute\n' +
-        '* OpenUrl action\n\n' +
+      message = await bot.say('The Restaurant sample demonstrates the following types of controls:\n' +
+        '* ColumnSets and Columns with the width attribute\n' +
+        '* Image with the size and attribute\n' +
+        '* Text Blocks with many attributes including size, weight, isSubtle and spacing\n' +
+        '* OpenUrl Action\n\n' +
         'Cards with images can take a few seconds to render. ' +
         'In the meantime you can see the full source here: ' + this.srcUrl);
       message = await bot.say({

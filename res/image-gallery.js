@@ -1,11 +1,11 @@
 /**
- * Adaptive Card Input Form Sample from https://adaptivecards.io/samples/ImageGallery.html
+ * Adaptive Card Image Gallery Sample from https://adaptivecards.io/samples/ImageGallery.html
  * This sample demonstrates the following types of controls
- *   -- Text Block with the size and weight attributes
- *   -- ImageSet emelemnt with the imageSize attribute
+ * 
+ * Text Block with the size and weight attributes
+ * ImageSet element with the imageSize attribute
+ * Image element
  *
- * We removed the "speak" attribute from the original sample as this property of the 
- * card object is not supported on Webex Teams
  **/
 
 class ImageGallery {
@@ -79,10 +79,11 @@ class ImageGallery {
   async renderCard(bot, logger) {
     let message = {};
     try {
-      message = await bot.say('The Image Gallery sample demonstrates the following types of controls\n' +
+      message = await bot.say('The Image Gallery sample demonstrates the following types of controls:\n' +
         '* Text Block with the size and weight attributes\n' +
-        '* ImageSet emelemnt with the imageSize attribute\n\n' +
-        'Cards with images can take a few seconds to render. \n' +
+        '* Image element\n' +
+        '* ImageSet element with the imageSize attribute\n\n' +
+        'Cards with images can take a few seconds to render. ' +
         'In the meantime you can see the full source here: ' + this.srcUrl);
       message = await bot.say({
         // Fallback text for clients that don't render cards

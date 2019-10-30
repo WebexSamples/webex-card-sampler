@@ -13,7 +13,7 @@ class SamplePicker {
           "type": "TextBlock",
           "size": "Medium",
           "weight": "Bolder",
-          "text": "Try a sample Adaptive Card",
+          "text": "Adaptive Card Reference Samples\non Webex Teams",
           "horizontalAlignment": "Center"
         },
         {

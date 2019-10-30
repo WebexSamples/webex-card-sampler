@@ -1,7 +1,11 @@
 /**
- * Adaptive Card Input Form Sample from https://adaptivecards.io/samples/StockUpdate.html
- * This sample demonstrates the following types of controls
- *   -- Fact Set
+ * Adaptive Card Stock Update Sample from https://adaptivecards.io/samples/StockUpdate.html
+ * This sample demonstrates the following types of controls:
+ * 
+ * The Container, ColumnSet and Column elements with the spacing, width attributes
+ * TextBlocks with the size, isSubtle, color, spacing
+ * The FactSet element
+ * The speak attribute of the card element
  *
  * We removed the "speak" attribute from the original sample as this property of the 
  * card object is not supported on Webex Teams
@@ -13,6 +17,8 @@ class StockUpdate {
       "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
       "type": "AdaptiveCard",
       "version": "1.0",
+      // The speak attribute is not supported by Webex Teams
+      //"speak": "Microsoft stock is trading at $62.30 a share, which is down .32%",
       "body": [
         {
           "type": "Container",
@@ -93,10 +99,14 @@ class StockUpdate {
   async renderCard(bot, logger) {
     let message = {};
     try {
-      message = await bot.say('The Stock Update sample demonstrates the following types of controls\n' +
-        '* Text Fields with the size, color and isSubtle attributes\n* Fact Set\n\n\n' +
-        'Cards with images can take a few seconds to render. ' +
-        'In the meantime you can see the full source here: ' + this.srcUrl);
+      message = await bot.say('The Stock Update sample demonstrates the following types of controls:\n' +
+        '* The Container, ColumnSet and Column elements with the spacing, width attributes\n' +
+        '* TextBlocks with the size, isSubtle, color, spacing\n' +
+        '* The FactSet element\n' +
+        '* The speak attribute of the card element\n\n' +
+        'We removed the "speak" attribute from the original sample as this property of the ' +
+        'card object is not supported on Webex Teams\n\n' +
+        'You can see the full source here: ' + this.srcUrl);
       message = await bot.say({
         // Fallback text for clients that don't render cards
         markdown: "If you see this your client cannot render our Stock Update example.",
