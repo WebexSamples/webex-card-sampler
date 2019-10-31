@@ -41,6 +41,10 @@ class SamplePicker {
               "value": "expenseReport"
             },
             {
+              "title": "Input",
+              "value": "input"
+            },
+            {
               "title": "Input Form",
               "value": "inputForm"
             },

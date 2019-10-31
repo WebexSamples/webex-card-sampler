@@ -67,6 +67,8 @@ CalendarReminder = require('./res/calendar-reminder.js');
 let calendarReminder = new CalendarReminder(cardsConfig.srcBaseUrl, cardsConfig.contentType);
 ExpenseReport = require('./res/expense-report.js');
 let expenseReport = new ExpenseReport(cardsConfig.srcBaseUrl, cardsConfig.contentType);
+Input = require('./res/input.js');
+let input = new Input(cardsConfig.srcBaseUrl, cardsConfig.contentType);
 InputForm = require('./res/input-form.js');
 let inputForm = new InputForm(cardsConfig.srcBaseUrl, cardsConfig.contentType);
 FlightDetails = require('./res/flight-details.js');
@@ -162,6 +164,10 @@ function renderSelectedCard(bot, cardSelection) {
       expenseReport.renderCard(bot, logger);
       break;
 
+    case ('input'):
+      input.renderCard(bot, logger);
+      break;
+
     case ('inputForm'):
       inputForm.renderCard(bot, logger);
       break;
@@ -225,6 +231,10 @@ function processSampleCardResponse(bot, attachmentAction) {
 
         case ("expenseReport"):
           expenseReport.handleSubmit(attachmentAction, person, bot, logger);
+          break;
+
+        case ("input"):
+          input.handleSubmit(attachmentAction, person, bot, logger);
           break;
 
         case ("inputForm"):
