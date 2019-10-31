@@ -77,6 +77,10 @@ class SamplePicker {
               "value": "simpleFallback"
             },
             {
+              "title": "Solitaire",
+              "value": "solitaire"
+            },
+            {
               "title": "Stock Update",
               "value": "stockUpdate"
             }

@@ -85,6 +85,8 @@ Restaurant = require('./res/restaurant.js');
 let restaurant = new Restaurant(cardsConfig.srcBaseUrl, cardsConfig.contentType);
 SimpleFallback = require('./res/simple-fallback.js');
 let simpleFallback = new SimpleFallback(cardsConfig.srcBaseUrl, cardsConfig.contentType);
+Solitaire = require('./res/solitaire.js');
+let solitaire = new Solitaire(cardsConfig.srcBaseUrl, cardsConfig.contentType);
 StockUpdate = require('./res/stock-update.js');
 let stockUpdate = new StockUpdate(cardsConfig.srcBaseUrl, cardsConfig.contentType);
 
@@ -198,6 +200,10 @@ function renderSelectedCard(bot, cardSelection) {
 
     case ('simpleFallback'):
       simpleFallback.renderCard(bot, logger);
+      break;
+
+    case ('solitaire'):
+      solitaire.renderCard(bot, logger);
       break;
 
     case ('stockUpdate'):
