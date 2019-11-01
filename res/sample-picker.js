@@ -81,8 +81,20 @@ class SamplePicker {
               "value": "solitaire"
             },
             {
+              "title": "Sporting Event",
+              "value": "sportingEvent"
+            },
+            {
               "title": "Stock Update",
               "value": "stockUpdate"
+            },
+            {
+              "title": "Weather Compact",
+              "value": "weatherCompact"
+            },
+            {
+              "title": "Weather Large",
+              "value": "weatherLarge"
             }
           ]
         }

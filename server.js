@@ -87,9 +87,15 @@ SimpleFallback = require('./res/simple-fallback.js');
 let simpleFallback = new SimpleFallback(cardsConfig.srcBaseUrl, cardsConfig.contentType);
 Solitaire = require('./res/solitaire.js');
 let solitaire = new Solitaire(cardsConfig.srcBaseUrl, cardsConfig.contentType);
+SportingEvent = require('./res/sporting-event.js');
+let sportingEvent = new SportingEvent(cardsConfig.srcBaseUrl, cardsConfig.contentType);
 StockUpdate = require('./res/stock-update.js');
 let stockUpdate = new StockUpdate(cardsConfig.srcBaseUrl, cardsConfig.contentType);
+WeatherCompact = require('./res/weather-compact.js');
+let weatherCompact = new WeatherCompact(cardsConfig.srcBaseUrl, cardsConfig.contentType);
 
+WeatherLarge = require('./res/weather-large.js');
+let weatherLarge = new WeatherLarge(cardsConfig.srcBaseUrl, cardsConfig.contentType);
 
 flint.on("initialized", function () {
   logger.info("Flint initialized successfully! [Press CTRL-C to quit]");
@@ -206,8 +212,20 @@ function renderSelectedCard(bot, cardSelection) {
       solitaire.renderCard(bot, logger);
       break;
 
+    case ('sportingEvent'):
+      sportingEvent.renderCard(bot, logger);
+      break;
+
     case ('stockUpdate'):
       stockUpdate.renderCard(bot, logger);
+      break;
+
+    case ('weatherCompact'):
+      weatherCompact.renderCard(bot, logger);
+      break;
+
+    case ('weatherLarge'):
+      weatherLarge.renderCard(bot, logger);
       break;
 
     default:
