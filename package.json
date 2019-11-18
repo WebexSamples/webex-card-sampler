@@ -19,8 +19,7 @@
     "body-parser": "^1.15.2",
     "dotenv": "^5.0.1",
     "express": "^4.17.1",
-    "webex-node-bot-framework": "^0.2.1",
-    "when": "^3.7.8",
+    "webex-node-bot-framework": "^0.2.2",
     "winston": "^2.4.1",
     "winston-papertrail": "^1.0.5"
   }
