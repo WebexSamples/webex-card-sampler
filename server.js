@@ -3,8 +3,8 @@ Cisco Webex Bot to demonstrate the Adaptive Card samples
 */
 /*jshint esversion: 6 */  // Help out our linter
 
-var Flint = require('node-flint');
-var webhook = require('node-flint/webhook');
+var Framework = require('webex-node-bot-framework');
+var webhook = require('webex-node-bot-framework/webhook');
 var express = require('express');
 var bodyParser = require('body-parser');
 var app = express();
@@ -13,17 +13,17 @@ logger = require('./logger');
 // When running locally read environment variables from a .env file
 require('dotenv').config();
 
-// Configure the flint bot for the environment we are running in
-var flintConfig = {};
+// Configure the Framework bot for the environment we are running in
+var frameworkConfig = {};
 var cardsConfig = {};
 if ((process.env.WEBHOOK) && (process.env.TOKEN) &&
   (process.env.PORT) && (process.env.CARD_CONENT_TYPE)) {
-  flintConfig.webhookUrl = process.env.WEBHOOK;
-  flintConfig.token = process.env.TOKEN;
-  flintConfig.port = process.env.PORT;
+  frameworkConfig.webhookUrl = process.env.WEBHOOK;
+  frameworkConfig.token = process.env.TOKEN;
+  frameworkConfig.port = process.env.PORT;
   // Adaptive Card with images can take a long time to render
   // Extend the timeout when waiting for a webex API request to return
-  flintConfig.requestTimeout = 60000;
+  frameworkConfig.requestTimeout = 60000;
 
   // Read the card schema and URL for the source example from environment
   cardsConfig.srcBaseUrl = process.env.CARD_SRC_BASE_URL;
@@ -50,11 +50,11 @@ var adminsBot = null;
 //app.use(bodyParser.json());
 app.use(bodyParser.json({ limit: '50mb' }));
 
-// init flint
-var flint = new Flint(flintConfig);
-flint.start();
-flint.messageFormat = 'markdown';
-logger.info("Starting flint, please wait...");
+// init framework
+var framework = new Framework(frameworkConfig);
+framework.start();
+framework.messageFormat = 'markdown';
+logger.info("Starting framework, please wait...");
 
 // Read in the sample cards we'll be using
 SamplePicker = require('./res/sample-picker.js');
@@ -97,30 +97,34 @@ let weatherCompact = new WeatherCompact(cardsConfig.srcBaseUrl, cardsConfig.cont
 WeatherLarge = require('./res/weather-large.js');
 let weatherLarge = new WeatherLarge(cardsConfig.srcBaseUrl, cardsConfig.contentType);
 
-flint.on("initialized", function () {
-  logger.info("Flint initialized successfully! [Press CTRL-C to quit]");
+framework.on("initialized", function () {
+  logger.info("Framework initialized successfully! [Press CTRL-C to quit]");
 });
 
-flint.on('spawn', function (bot) {
-  // An instance of the bot has been added to a room
-  logger.info(`bot spawned in room: ${bot.room.title}`);
+framework.on('spawn', function (bot) {
   // See if this instance is the 1-1 space with the admin
-  if (bot.isDirectTo.toLocaleLowerCase() === adminEmail.toLocaleLowerCase()) {
+  if ((!adminsBot) && (bot.isDirect) &&
+    (bot.isDirectTo.toLocaleLowerCase() === adminEmail.toLocaleLowerCase())) {
     adminsBot = bot;
   }
   // Notify the admin if the bot has been added to a new space
-  if ((flint.initialized) && (adminsBot)) {
-    samplePicker.renderCard(bot, logger);
-    adminsBot.say(`${botName} was added to a space: ${bot.room.title}`)
-      .catch((e) => logger.error(`Failed to new bot space update to Admin. Error:${e.message}`));
-
+  if (!framework.initialized) {
+    // An instance of the bot has been added to a room
+    logger.info(`Framework startup found bot in existing room: ${bot.room.title}`);
+  } else {
+    logger.info(`Our bot was added to a new room: ${bot.room.title}`);
+    if (adminsBot) {
+      adminsBot.say(`${botName} was added to a space: ${bot.room.title}`)
+        .catch((e) => logger.error(`Failed to new bot space update to Admin. Error:${e.message}`));
+    }
+    showHelp(bot);
   }
 });
 
 // Respond to message input
 var responded = false;
 
-flint.hears('getAdminStats', function (bot) {
+framework.hears('getAdminStats', function (bot) {
   logger.verbose('Processing getAdminStats Request for ' + bot.isDirectTo);
   if (adminEmail === bot.isDirectTo) {
     updateAdmin(`${botName} has been added to the following spaces:`, true);
@@ -131,13 +135,13 @@ flint.hears('getAdminStats', function (bot) {
   responded = true;
 });
 
-flint.hears(/help/i, function (bot) {
+framework.hears(/help/i, function (bot) {
   responded = true;
   showHelp(bot);
 });
 
 // send an example card in response to any input
-flint.hears(/.*/, function (bot) {
+framework.hears(/.*/, function (bot) {
   if (!responded) {
     samplePicker.renderCard(bot, logger);
   }
@@ -145,11 +149,15 @@ flint.hears(/.*/, function (bot) {
 });
 
 // Process a submitted card
-flint.on('attachmentAction', function (bot, attachmentAction) {
+framework.on('attachmentAction', function (bot, trigger) {
+  if (trigger.type != 'attachmentAction') {
+    throw new Error(`Invaid trigger type: ${trigger.type} in attachmentAction handler`);
+  }
+  let attachmentAction = trigger.attachmentAction;
   if (attachmentAction.inputs.cardType === 'samplePicker') {
     renderSelectedCard(bot, attachmentAction.inputs.cardSelection);
   } else {
-    processSampleCardResponse(bot, attachmentAction);
+    processSampleCardResponse(bot, attachmentAction, trigger.person);
   }
   logger.verbose(`Got an attachmentAction:\n${JSON.stringify(attachmentAction, null, 2)}`);
 });
@@ -235,57 +243,48 @@ function renderSelectedCard(bot, cardSelection) {
   }
 }
 
-function processSampleCardResponse(bot, attachmentAction) {
-  flint.spark.personGet(attachmentAction.personId)
-    .then((person) => {
-      switch (attachmentAction.inputs.cardType) {
-        case ("samplePicker"):
-          // Display the chosen card
+function processSampleCardResponse(bot, attachmentAction, person) {
+  switch (attachmentAction.inputs.cardType) {
+    case ("samplePicker"):
+      // Display the chosen card
 
-          activityUpdate.handleSubmit(attachmentAction, person, bot, logger);
-          break;
+      activityUpdate.handleSubmit(attachmentAction, person, bot, logger);
+      break;
 
-        case ("activityUpdate"):
-          activityUpdate.handleSubmit(attachmentAction, person, bot, logger);
-          break;
+    case ("activityUpdate"):
+      activityUpdate.handleSubmit(attachmentAction, person, bot, logger);
+      break;
 
-        case ('calendarReminder'):
-          calendarReminder.handleSubmit(attachmentAction, person, bot, logger);
-          break;
+    case ('calendarReminder'):
+      calendarReminder.handleSubmit(attachmentAction, person, bot, logger);
+      break;
 
-        case ("expenseReport"):
-          expenseReport.handleSubmit(attachmentAction, person, bot, logger);
-          break;
+    case ("expenseReport"):
+      expenseReport.handleSubmit(attachmentAction, person, bot, logger);
+      break;
 
-        case ("input"):
-          input.handleSubmit(attachmentAction, person, bot, logger);
-          break;
+    case ("input"):
+      input.handleSubmit(attachmentAction, person, bot, logger);
+      break;
 
-        case ("inputForm"):
-          inputForm.handleSubmit(attachmentAction, person, bot, logger);
-          break;
+    case ("inputForm"):
+      inputForm.handleSubmit(attachmentAction, person, bot, logger);
+      break;
 
-        case ("flightDetails"):
-          flightDetails.handleSubmit(attachmentAction, person, bot, logger);
-          break;
+    case ("flightDetails"):
+      flightDetails.handleSubmit(attachmentAction, person, bot, logger);
+      break;
 
-        case ("foodOrder"):
-          foodOrder.handleSubmit(attachmentAction, person, bot, logger);
-          break;
+    case ("foodOrder"):
+      foodOrder.handleSubmit(attachmentAction, person, bot, logger);
+      break;
 
-        default:
-          logger.error(`Got unexpected cardType:${attachmentAction.inputs.cardType}!`);
-          bot.say('Don\'t know how to handle the card input. ' +
-            'Please contact the Webex Developer Support: https://developer.webex.com/support')
-            .catch((e) => logger.error(`Failed to post unknown cardTyp error message to space. Error:${e.message}`));
-      }
-    })
-    .catch((err) => {
-      logger.error(`Couldn't get person details from attachmentAction.personId:${attachmentAction.personId}. Error:${err}`);
+    default:
+      logger.error(`Got unexpected cardType:${attachmentAction.inputs.cardType}!`);
       bot.say('Don\'t know how to handle the card input. ' +
         'Please contact the Webex Developer Support: https://developer.webex.com/support')
-        .catch((e) => logger.error(`Failed to post card user people lookup error message to space. Error:${e.message}`));
-    });
+        .catch((e) => logger.error(`Failed to post unknown cardTyp error message to space. Error:${e.message}`));
+  }
 }
 
 async function showHelp(bot) {
@@ -311,7 +310,7 @@ function updateAdmin(message, listAll = false) {
     if (listAll) {
       let count = 0;
       message += '\n';
-      flint.bots.forEach(function (bot) {
+      framework.bots.forEach(function (bot) {
         message += '* ' + bot.room.title + '\n';
         count += 1;
       });
@@ -330,7 +329,7 @@ function updateAdmin(message, listAll = false) {
 
 
 // define express path for incoming webhooks
-app.post('/', webhook(flint));
+app.post('/', webhook(framework));
 
 // Health Check
 app.get('/', function (req, res) {
@@ -338,15 +337,15 @@ app.get('/', function (req, res) {
 });
 
 // start express server
-var server = app.listen(flintConfig.port, function () {
-  flint.debug('Flint listening on port %s', flintConfig.port);
+var server = app.listen(frameworkConfig.port, function () {
+  framework.debug('Framework listening on port %s', frameworkConfig.port);
 });
 
 // gracefully shutdown (ctrl-c)
 process.on('SIGINT', function () {
-  flint.debug('stoppping...');
+  framework.debug('stoppping...');
   server.close();
-  flint.stop().then(function () {
+  framework.stop().then(function () {
     process.exit();
   });
 });

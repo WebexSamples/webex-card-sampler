@@ -438,6 +438,7 @@ class Agenda {
   }
 
   async renderCard(bot, logger) {
+    let message = {}; 
     try {
       await bot.say('The Agenda sample demonstrates the following types of controls:\n' +
         '* ColumnSet and Column elements with the horizontalAlignment, spacing, seperator and width attributes\n' +
@@ -449,17 +450,9 @@ class Agenda {
         'yet supported on Webex Teams.\n\n' +
         'Cards with images can take a few seconds to render. ' +
         'In the meantime you can see the full source here: ' + this.srcUrl);
-      await bot.say({
-        // Fallback text for clients that don't render cards
-        markdown: "If you see this your client cannot render our Agenda example.",
-        attachments: [{
-          "contentType": this.contentType,
-          "content": this.card
-        }]
-      });
-      await bot.say('...don\'t forget to bring a coat to Chicago!\n\n' +
-        'There is no user input for this card. Post any message to me if you want to see another card.')
-        .catch((e) => logger.error(`Failed to send post Agenda Card message to space. Error:${e.message}`));
+      message = await bot.sendCard(this.card, "If you see this your client cannot render our Agenda example.");
+      await bot.reply(message, '...don\'t forget to bring a coat to Chicago!\n\n' +
+        'There is no user input for this card. Post any message to me if you want to see another card.');
     } catch (err) {
       let msg = 'Failed to render Agenda card example.';
       logger.error(`${msg} Error:${err.message}`);

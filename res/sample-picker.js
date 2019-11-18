@@ -114,14 +114,7 @@ class SamplePicker {
   }
 
   async renderCard(bot, logger) {
-    bot.say({
-      // Fallback text for clients that don't render cards
-      markdown: "If you see this your client cannot render our Sample Picker Client.",
-      attachments: [{
-        "contentType": this.contentType,
-        "content": this.card
-      }]
-    })
+    bot.sendCard(this.card, "If you see this your client cannot render our Sample Picker Client.")
       .catch((err) => {
         let msg = 'Failed to render Sample Picker card.';
         logger.error(`${msg} Error:${err.message}`);

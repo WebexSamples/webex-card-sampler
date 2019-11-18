@@ -232,22 +232,12 @@ class FlightItinerary {
         '* ColumnSets and Columns with the separator and width attributes\n' +
         '* Image with the size and spacing attributes\n' +
         '* Text Blocks with many attributes including size, weight, isSubtle, color, wrap, spacing and horizontalAlignment\n\n' +
-        'The speak attribute from original sample was removed as this is not supported on Webex Teams\n\n'+
+        'The speak attribute from original sample was removed as this is not supported on Webex Teams\n\n' +
         'Cards with images can take a few seconds to render.\n' +
         'In the meantime you can see the full source here: ' + this.srcUrl);
-      message = await bot.say({
-        // Fallback text for clients that don't render cards
-        markdown: "If you see this your client cannot render our Flight Itinerary example.",
-        attachments: [{
-          "contentType": this.contentType,
-          "content": this.card
-        }]
-      });
-      await bot.say({
-        text: '...Not a fan of the two stops on the outbound!\n\n' +
-          'There is no user input for this card. Post any message to me if you want to see another card.',
-        parentId: message.id
-      });
+      message = await bot.sendCard(this.card, "If you see this your client cannot render our Flight Itinerary example.");
+      await bot.reply(message, '...Not a fan of the two stops on the outbound!\n\n' +
+        'There is no user input for this card. Post any message to me if you want to see another card.');
     } catch (err) {
       let msg = 'Failed to render Flight Itinerary card example.';
       logger.error(`${msg} Error:${err.message}`);

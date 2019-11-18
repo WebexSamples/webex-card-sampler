@@ -253,14 +253,7 @@ class Input {
         '* Input.Toggle with the title, valueOn and valueOff attributes\n' +
         '* Action.ShowCard and Action.Submit elements\n\n' +
         'You can see the full source here: ' + this.srcUrl);
-      await bot.say({
-        // Fallback text for clients that don't render cards
-        markdown: "If you see this your client cannot render our Input example.",
-        attachments: [{
-          "contentType": this.contentType,
-          "content": this.card
-        }]
-      });
+      await bot.sendCard(this.card, "If you see this your client cannot render our Input example.");
     } catch (err) {
       let msg = 'Failed to render Input card example.';
       logger.error(`${msg} Error:${err.message}`);
@@ -274,12 +267,9 @@ class Input {
     let msg = submitter.displayName + ' replied with the following:\n';
     delete inputs.cardType;  // We use this internally to get to the right handler
     for (var key in inputs) {
-      msg += inputs[key] ? `* ${key}: ${inputs[key]}\n` : ''; 
+      msg += inputs[key] ? `* ${key}: ${inputs[key]}\n` : '';
     }
-    bot.say({
-      text: msg,
-      parentId: attachmentAction.messageId
-    })
+    bot.reply(attachmentAction, msg)
       .catch((e) => logger.error(`Failed to post Input response to space. Error:${e.message}`));
   };
 };

@@ -110,25 +110,15 @@ class SportingEvent {
         'We removed the "speak" attribute from the original sample as this property of the \n' +
         'card object is not supported on Webex Teams\n' +
         'Cards with images can take a few seconds to render, in the meantime you can see the full source with the modifications here: ' + this.srcUrl);
-      message = await bot.say({
-        // Fallback text for clients that don't render cards
-        markdown: "If you see this your client cannot render our Sporting Event example.",
-        attachments: [{
-          "contentType": this.contentType,
-          "content": this.card
-        }]
-      });
+      message = await bot.sendCard(this.card, "If you see this your client cannot render our Sporting Event example.");
     } catch (err) {
       let msg = 'Failed to render Sporting Event card example.';
       logger.error(`${msg} Error:${err.message}`);
       bot.say(`${msg} Please contact the Webex Developer Support: https://developer.webex.com/support`)
         .catch((e) => logger.error(`Failed to post error message to space. Error:${e.message}`));
     }
-    bot.say({
-      text: '...and yet the Skins still didn\'t cover the spread...\n\n' +
-        'There is no user input for this card. Post any message to me if you want to see another card.',
-      parentId: message.id
-    })
+    bot.reply(message, '...and yet the Skins still didn\'t cover the spread...\n\n' +
+        'There is no user input for this card. Post any message to me if you want to see another card.')
       .catch((e) => logger.error(`Failed to post follow-up to Sporting Event card. Error:${e.message}`));
   };
 

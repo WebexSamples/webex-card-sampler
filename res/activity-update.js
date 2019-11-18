@@ -105,7 +105,8 @@ class ActivityUpdate {
             "actions": [
               {
                 "type": "Action.Submit",
-                "title": "OK"
+                "title": "OK",
+                "data": { "cardType": "activityUpdate" }
               }
             ]
           }
@@ -152,14 +153,7 @@ class ActivityUpdate {
         '* ShowCard and Submit actions\n\n' +
         'Cards with images can take a few seconds to render. ' +
         'In the meantime you can see the full source here: ' + this.srcUrl);
-      await bot.say({
-        // Fallback text for clients that don't render cards
-        markdown: "If you see this your client cannot render our Activity Update example.",
-        attachments: [{
-          "contentType": this.contentType,
-          "content": this.card
-        }]
-      });
+      await bot.sendCard(this.card, "If you see this your client cannot render our Activity Update example.");
     } catch (err) {
       let msg = 'Failed to render Activity Update card example.';
       logger.error(`${msg} Error:${err.message}`);
@@ -173,10 +167,7 @@ class ActivityUpdate {
     let msg = submitter.displayName + ' replied with the following:\n' +
       '* Due Date: ' + inputs.dueDate + '\n' +
       '* Comment: ' + inputs.comment;
-    bot.say({
-      text: msg,
-      parentId: attachmentAction.messageId
-    })
+    bot.reply(attachmentAction, msg)
       .catch((e) => logger.error(`Failed to post Activity Update response to space. Error:${e.message}`));
   };
 

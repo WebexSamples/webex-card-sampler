@@ -87,27 +87,17 @@ class Restaurant {
         '* OpenUrl Action\n\n' +
         'Cards with images can take a few seconds to render. ' +
         'In the meantime you can see the full source here: ' + this.srcUrl);
-      message = await bot.say({
-        // Fallback text for clients that don't render cards
-        markdown: "If you see this your client cannot render our Restaurant example.",
-        attachments: [{
-          "contentType": this.contentType,
-          "content": this.card
-        }]
-      });
+      message = await bot.sendCard(this.card, "If you see this your client cannot render our Restaurant example.");
     } catch (err) {
       let msg = 'Failed to render Restaurant card example.';
       logger.error(`${msg} Error:${err.message}`);
       bot.say(`${msg} Please contact the Webex Developer Support: https://developer.webex.com/support`)
         .catch((e) => logger.error(`Failed to post error message to space. Error:${e.message}`));
     }
-    bot.say({
-      text: 'When a user clicks on a Action.OpenUrl button in Webex Teams, the client opens that link directly,  ' +
-        'and there is no event to the application that posted the card.\n\n' +
-        '...Don\'t click on more Info unless you like Rick Astley!\n\n' +
-        'Post any message to me if you want to see another card',
-      parentId: message.id
-    })
+    bot.reply(message, 'When a user clicks on a Action.OpenUrl button in Webex Teams, the client opens that link directly,  ' +
+      'and there is no event to the application that posted the card.\n\n' +
+      '...Don\'t click on more Info unless you like Rick Astley!\n\n' +
+      'Post any message to me if you want to see another card')
       .catch((e) => logger.error(`Failed to post follow-up to Restaurant card. Error:${e.message}`));
   };
 

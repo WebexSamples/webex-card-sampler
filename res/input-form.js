@@ -118,14 +118,7 @@ class InputForm {
         '* Action.Submit \n\n' +
         'Cards with images can take a few seconds to render. ' +
         'In the meantime you can see the full source here: ' + this.srcUrl);
-      await bot.say({
-        // Fallback text for clients that don't render cards
-        markdown: "If you see this your client cannot render our Input Form example.",
-        attachments: [{
-          "contentType": this.contentType,
-          "content": this.card
-        }]
-      });
+      await bot.sendCard(this.card, "If you see this your client cannot render our Input Form example.");
     } catch (err) {
       let msg = 'Failed to render Input Form card example.';
       logger.error(`${msg} Error:${err.message}`);
@@ -140,10 +133,7 @@ class InputForm {
       '* Name: ' + inputs.myName + '\n' +
       '* Email: ' + inputs.myEmail + '\n' +
       '* Phone: ' + inputs.myTel;
-    bot.say({
-      text: msg,
-      parentId: attachmentAction.messageId
-    })
+    bot.reply(attachmentAction, msg)
       .catch((e) => logger.error(`Failed to post Input Form response to space. Error:${e.message}`));
   };
 

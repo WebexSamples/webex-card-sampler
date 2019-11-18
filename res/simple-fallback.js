@@ -53,18 +53,11 @@ class SimpleFallback {
         'schema is invalid, the fallback text or markup sumbitted in the /messages request body ' +
         'is displayed instead of the card\n\n' +
         'You can see the full sample source here: ' + this.srcUrl);
-      await bot.say({
-        // Fallback text for clients that don't render cards
-        markdown: "This is the fallback text submitted via the `markdown` attribute in the `POST /messages` " +
+      await bot.sendCard(this.card,"This is the fallback text submitted via the `markdown` attribute in the `POST /messages` " +
           "API request body, along with the unspported card schema in the `attachments` field.\n\n" +
           "You are seeing this since Webex determined that the card could not be rendered. " +
           "**This message IS the expected output for this card sample** \n\n" +
-          "Post any message to me to see another sample",
-        attachments: [{
-          "contentType": this.contentType,
-          "content": this.card
-        }]
-      });
+          "Post any message to me to see another sample");
     } catch (err) {
       let msg = 'Failed to render Simple Fallback card example.';
       logger.error(`${msg} Error:${err.message}`);

@@ -85,26 +85,16 @@ class ImageGallery {
         '* ImageSet element with the imageSize attribute\n\n' +
         'Cards with images can take a few seconds to render. ' +
         'In the meantime you can see the full source here: ' + this.srcUrl);
-      message = await bot.say({
-        // Fallback text for clients that don't render cards
-        markdown: "If you see this your client cannot render our Image Gallery example.",
-        attachments: [{
-          "contentType": this.contentType,
-          "content": this.card
-        }]
-      });
+      message = await bot.sendCard(this.card, "If you see this your client cannot render our Image Gallery example.");
     } catch (err) {
       let msg = 'Failed to render Image Gallery card example.';
       logger.error(`${msg} Error:${err.message}`);
       bot.say(`${msg} Please contact the Webex Developer Support: https://developer.webex.com/support`)
         .catch((e) => logger.error(`Failed to post error message to space. Error:${e.message}`));
     }
-    bot.say({
-      text: '...don\'t gaze at those lovely images too long! You could end up like Narcissus.\n\n' +
-        'There is no user input for this card. Post any message to me if you want to see another card.',
-      parentId: message.id
-    })
-      .catch((e) => logger.error(`Failed to post follow-up to Image Gallery card. Error:${e.message}`));
+    bot.reply(message, '...don\'t gaze at those lovely images too long! You could end up like Narcissus.\n\n' +
+      'There is no user input for this card. Post any message to me if you want to see another card.')
+      .catch ((e) => logger.error(`Failed to post follow-up to Image Gallery card. Error:${e.message}`));
   };
 
 };

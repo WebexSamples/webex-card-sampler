@@ -201,14 +201,7 @@ class FoodOrder {
         '* Action.ShowCard and Action.Sumbit\n\n' +
         'Cards with images can take a few seconds to render. ' +
         'In the meantime you can see the full source here: ' + this.srcUrl);
-      await bot.say({
-        // Fallback text for clients that don't render cards
-        markdown: "If you see this your client cannot render our Food Order example.",
-        attachments: [{
-          "contentType": this.contentType,
-          "content": this.card
-        }]
-      });
+      await bot.sendCard(this.card, "If you see this your client cannot render our Food Order example.");
     } catch (err) {
       let msg = 'Failed to render Food Order card example.';
       logger.error(`${msg} Error:${err.message}`);
@@ -247,10 +240,7 @@ class FoodOrder {
           .catch((e) => logger.error(`Failed to post error msg after a Food Choice card response. Error:${e.message}`));
         return;
     }
-    bot.say({
-      text: msg,
-      parentId: attachmentAction.messageId
-    })
+    bot.reply(attachmentAction, msg)
       .catch((e) => logger.error(`Failed to post Food Choice response to space. Error:${e.message}`));
   };
 

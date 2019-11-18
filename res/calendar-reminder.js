@@ -94,14 +94,7 @@ class CalendarReminder {
         '* Input.ChoiceSet with the style attribute\n' +
         '* Action.Submit buttons\n\n' +
         'You can see the full source here: ' + this.srcUrl);
-      await bot.say({
-        // Fallback text for clients that don't render cards
-        markdown: "If you see this your client cannot render our Calendar Reminder example.",
-        attachments: [{
-          "contentType": this.contentType,
-          "content": this.card
-        }]
-      });
+      await bot.sendCard(this.card, "If you see this your client cannot render our Calendar Reminder example.");
     } catch (err) {
       let msg = 'Failed to render Calendar Reminder card example.';
       logger.error(`${msg} Error:${err.message}`);
@@ -114,10 +107,7 @@ class CalendarReminder {
     let inputs = attachmentAction.inputs;
     let msg = submitter.displayName + ' replied with the following:\n' +
       '* action: ' + inputs.action;
-    bot.say({
-      text: msg,
-      parentId: attachmentAction.messageId
-    })
+    bot.reply(attachmentAction, msg)
       .catch((e) => logger.error(`Failed to post calendar reminder response to space. Error:${e.message}`));
   };
 

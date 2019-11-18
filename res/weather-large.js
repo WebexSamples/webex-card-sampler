@@ -227,7 +227,7 @@ class WeatherLarge {
   }
 
   async renderCard(bot, logger) {
-    let message = {};
+    let message = {}; 
     try {
       message = await bot.say('The Weather Large sample demonstrates the following types of controls:\n' +
         '* The ColumnSet and Column elements with the width attribute\n' +
@@ -238,25 +238,15 @@ class WeatherLarge {
         'these properties of the card object are not supported on Webex Teams\n\n' +
         'Cards with images can take a few seconds to render, in the meantime you can see the ' +
         'full source with the modifications here: ' + this.srcUrl);
-      message = await bot.say({
-        // Fallback text for clients that don't render cards
-        markdown: "If you see this your client cannot render our Weather Large example.",
-        attachments: [{
-          "contentType": this.contentType,
-          "content": this.card
-        }]
-      });
+      message = await bot.sendCard(this.card, "If you see this your client cannot render our Weather Large example.")
     } catch (err) {
       let msg = 'Failed to render Weather Large card example.';
       logger.error(`${msg} Error:${err.message}`);
       bot.say(`${msg} Please contact the Webex Developer Support: https://developer.webex.com/support`)
         .catch((e) => logger.error(`Failed to post error message to space. Error:${e.message}`));
     }
-    bot.say({
-      text: '...doesn\'t it always seem to rain on the weekends?\n\n' +
-        'There is no user input for this card. Post any message to me if you want to see another card.',
-      parentId: message.id
-    })
+    bot.reply(message, '...doesn\'t it always seem to rain on the weekends?\n\n' +
+        'There is no user input for this card. Post any message to me if you want to see another card.')
       .catch((e) => logger.error(`Failed to post follow-up to Weather Large card. Error:${e.message}`));
   };
 

@@ -874,14 +874,7 @@ class ExpenseReport {
         'This sample contains the `Action.ToggleVisibility` element and the `veriticalContentAlignment` and ' +
         '`fallback` attributes, which are not supported by Webex Teams.\n\n' +
         'You can see the original source with modifications here: ' + this.srcUrl);
-      await bot.say({
-        // Fallback text for clients that don't render cards
-        markdown: "If you see this your client cannot render our Expense Report example.",
-        attachments: [{
-          "contentType": this.contentType,
-          "content": this.card
-        }]
-      });
+      await bot.sendCard(this.card, "If you see this your client cannot render our Expense Report example.");
     } catch (err) {
       let msg = 'Failed to render Expense Report card example.';
       logger.error(`${msg} Error:${err.message}`);
@@ -896,10 +889,7 @@ class ExpenseReport {
       '* id: ' + inputs.id + '\n' +
       '* action: ' + inputs.action + '\n';
     msg += (inputs.RejectCommentID) ? '* RejectCommentID: ' + inputs.RejectCommentID : '';
-    bot.say({
-      text: msg,
-      parentId: attachmentAction.messageId
-    })
+    bot.reply(attachmentAction, msg)
       .catch((e) => logger.error(`Failed to post Expense Report card response to space. Error:${e.message}`));
   };
 };

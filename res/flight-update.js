@@ -267,19 +267,9 @@ class FlightUpdate {
         'The speak attribute from original sample was removed as this is not supported on Webex Teams\n\n' +
         'Cards with images can take a few seconds to render. ' +
         'In the meantime you can see the full source here: ' + this.srcUrl);
-      message = await bot.say({
-        // Fallback text for clients that don't render cards
-        markdown: "If you see this your client cannot render our Flight Update example.",
-        attachments: [{
-          "contentType": this.contentType,
-          "content": this.card
-        }]
-      });
-      await bot.say({
-        text: '...Yay, extra time in Amsterdam!\n\n' +
-          'There is no user input for this card. Post any message to me if you want to see another card.',
-        parentId: message.id
-      });
+      message = await bot.sendCard(this.card, "If you see this your client cannot render our Flight Update example.");
+      bot.reply(message, '...Yay, extra time in Amsterdam!\n\n' +
+        'There is no user input for this card. Post any message to me if you want to see another card.')
     } catch (err) {
       let msg = 'Failed to render Flight Update card example.';
       logger.error(`${msg} Error:${err.message}`);

@@ -290,14 +290,7 @@ class FlightDetails {
         '* The verticalContentAlignment attributes of the Columns were commented out as they are not supported by Webex Teams\n\n' +
         'Cards with images can take a few seconds to render.\n\n' +
         'In the meantime you can see the full source, with modifications, here: ' + this.srcUrl);
-      await bot.say({
-        // Fallback text for clients that don't render cards
-        markdown: "If you see this your client cannot render our Flight Details example.",
-        attachments: [{
-          "contentType": this.contentType,
-          "content": this.card
-        }]
-      });
+      await bot.sendCard(this.card, "If you see this your client cannot render our Flight Details example.");
     } catch (err) {
       let msg = 'Failed to render Flight Details card example.';
       logger.error(`${msg} Error:${err.message}`);
@@ -310,10 +303,7 @@ class FlightDetails {
     let inputs = attachmentAction.inputs;
     let msg = submitter.displayName + ' replied with the following:\n' +
       '* action: ' + inputs.action;
-    bot.say({
-      text: msg,
-      parentId: attachmentAction.messageId
-    })
+    bot.reply(attachmentAction, msg)
       .catch((e) => logger.error(`Failed to post Flight Details card response to space. Error:${e.message}`));
   };
 
