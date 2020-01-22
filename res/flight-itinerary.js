@@ -5,10 +5,11 @@
  * ColumnSets and Columns with the separator and width attributes
  * Image with the size and spacing attributes
  * Speak attribute of the card type
- * Text Blocks with many attributes including size, weight, isSubtle, color, wrap, spacing and horizontalAlignment
+ * Text Blocks with many attributes including size, weight, color, wrap, spacing and horizontalAlignment
  *
  * The speak attribute from original sample was removed as this is not supported on Webex Teams
- * 
+ * isSubtle attribute is not supported for Text Blocks
+ *
  * A data object was added to the Action.Submit type so our app can tell which card generated 
  * the attachmentAction, and also to detect which button the user chose
  **/
@@ -24,8 +25,7 @@ class FlightItinerary {
         {
           "type": "TextBlock",
           "text": "Passengers",
-          "weight": "bolder",
-          "isSubtle": false
+          "weight": "bolder"
         },
         {
           "type": "TextBlock",
@@ -64,8 +64,7 @@ class FlightItinerary {
               "items": [
                 {
                   "type": "TextBlock",
-                  "text": "San Francisco",
-                  "isSubtle": true
+                  "text": "San Francisco"
                 },
                 {
                   "type": "TextBlock",
@@ -99,8 +98,7 @@ class FlightItinerary {
                 {
                   "type": "TextBlock",
                   "horizontalAlignment": "right",
-                  "text": "Amsterdam",
-                  "isSubtle": true
+                  "text": "Amsterdam"
                 },
                 {
                   "type": "TextBlock",
@@ -136,8 +134,7 @@ class FlightItinerary {
               "items": [
                 {
                   "type": "TextBlock",
-                  "text": "Amsterdam",
-                  "isSubtle": true
+                  "text": "Amsterdam"
                 },
                 {
                   "type": "TextBlock",
@@ -171,8 +168,7 @@ class FlightItinerary {
                 {
                   "type": "TextBlock",
                   "horizontalAlignment": "right",
-                  "text": "San Francisco",
-                  "isSubtle": true
+                  "text": "San Francisco"
                 },
                 {
                   "type": "TextBlock",
@@ -197,8 +193,7 @@ class FlightItinerary {
                 {
                   "type": "TextBlock",
                   "text": "Total",
-                  "size": "medium",
-                  "isSubtle": true
+                  "size": "medium"
                 }
               ]
             },
