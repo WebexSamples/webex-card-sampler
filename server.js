@@ -1,13 +1,21 @@
 /*
-Cisco Webex Bot to demonstrate the Adaptive Card samples
+Cisco Webex Bot to demonstrate the Webex Teams Card samples
+
+This bot is built on the webex-node-bot-framework
+https://github.com/WebexSamples/webex-node-bot-framework
+
+This framework provides many conveniences for building
+a Webex Teams bot in node.js and all functions with names
+like bot.* and framework.* are processed by the framework.
+See the framework's readme for more details on how it works
 */
 /*jshint esversion: 6 */  // Help out our linter
 
 var Framework = require('webex-node-bot-framework');
 var webhook = require('webex-node-bot-framework/webhook');
-var express = require('express');
 var bodyParser = require('body-parser');
 var request = require("request");
+var express = require('express');
 var app = express();
 logger = require('./logger');
 
@@ -34,21 +42,28 @@ if ((process.env.WEBHOOK) && (process.env.TOKEN) &&
   process.exit();
 }
 
-// The admin will get extra notifications about bot usage
+
+// The admin user or 'admin space' gets extra notifications about bot 
+// usage and feedback. If both are set we prefer the space
 let adminEmail = '';
+let adminSpaceId = '';
+let adminsBot = null;
 let botName = '';
-let botEmail = '';
-if ((process.env.ADMIN_EMAIL) && (process.env.BOTNAME) && (process.env.BOT_EMAIL)) {
+let botEmail = 'the bot';
+if (process.env.ADMIN_SPACE_ID) {
+  adminSpaceId = process.env.ADMIN_SPACE_ID;
+} else if (process.env.ADMIN_EMAIL) {
   adminEmail = process.env.ADMIN_EMAIL;
-  botName = process.env.BOTNAME;
-  botEmail = process.env.BOT_EMAIL;
 } else {
-  logger.error('No ADMIN_EMAIL environment variable.  Will not notify author about bot activity');
+  logger.warn('No ADMIN_SPACE_ID or ADMIN_EMAIL environment variable. \n' +
+    'Will not notify anyone about bot activity');
 }
-var adminsBot = null;
+// We can use the bot's email and name from environment variables or
+// discover them after our first spawn
+if (process.env.BOTNAME) {botName = process.env.BOTNAME;}
+if (process.env.BOT_EMAIL) {botEmail = process.env.BOT_EMAIL;}
 
-
-//app.use(bodyParser.json());
+// Card data can be big!
 app.use(bodyParser.json({limit: '50mb'}));
 
 // init framework
@@ -101,23 +116,57 @@ let weatherLarge = new WeatherLarge(cardsConfig.srcBaseUrl, cardsConfig.contentT
 
 framework.on("initialized", function () {
   logger.info("Framework initialized successfully! [Press CTRL-C to quit]");
+  if ((adminSpaceId) && (!adminsBot)) {
+    // Our admin space was not one of the ones found during initialization
+    logger.verbose('Attempting to force spawn of the bot for the Admin space');
+    framework.webex.memberships.list({
+      roomId: adminSpaceId,
+      personId: framework.person.id
+    })
+      .then((memberships) => {
+        if ((memberships.items) && (memberships.items.length)) {
+          framework.spawn(memberships.items[0]);
+        }
+      })
+      .catch((e) => logger.error(`Failed trying to force spawn of admin bot: ${e.message}`));
+  }
 });
 
-framework.on('spawn', function (bot) {
+// Called when the framework discovers a space our bot is in
+// At startup, (before the framework is fully initialized), this
+// is called when the framework discovers an existing spaces.
+// After initialization, if our bot is added to a new space the 
+// framework processes the membership:created event, creates a
+// new bot object and generates this event with the addedById param
+// The framework can also "lazily" discover older spaces that it missed
+// during startup when any kind of activity occurs there.  In these
+// cases addedById will always be null
+// TL;DR we use the addedById param to see if this is a new space for our bot
+framework.on('spawn', function (bot, id, addedById) {
+  // Do some housekeeping if the bot for our admin space hasn't spawned yet
+  if (!adminsBot) {
+    tryToInitAdminBot(bot, framework);
+  }
+  
   // See if this instance is the 1-1 space with the admin
-  if ((!adminsBot) && (bot.isDirect) &&
+  if ((!adminsBot) && (adminEmail) && (bot.isDirect) &&
     (bot.isDirectTo.toLocaleLowerCase() === adminEmail.toLocaleLowerCase())) {
     adminsBot = bot;
   }
-  // Notify the admin if the bot has been added to a new space
-  if (!framework.initialized) {
-    // An instance of the bot has been added to a room
-    logger.info(`Framework startup found bot in existing room: ${bot.room.title}`);
+
+  if (!addedById) {
+    // Framework discovered an existing space with our bot, log it
+    if (!framework.initialized) {
+      logger.info(`During startup framework spawned bot in existing room: ${bot.room.title}`);
+    } else {
+      logger.info(`Bot object spawn() in existing room: "${bot.room.title}" ` +
+        `where activity has occured since our server started`);
+    }
   } else {
     logger.info(`Our bot was added to a new room: ${bot.room.title}`);
     if (adminsBot) {
       adminsBot.say(`${botName} was added to a space: ${bot.room.title}`)
-        .catch((e) => logger.error(`Failed to new bot space update to Admin. Error:${e.message}`));
+        .catch((e) => logger.error(`Failed to update to Admin about a new space our bot is in. Error:${e.message}`));
     }
     showHelp(bot);
   }
@@ -126,6 +175,7 @@ framework.on('spawn', function (bot) {
 // Respond to message input
 var responded = false;
 
+// A secret for our admin only
 framework.hears('getAdminStats', function (bot) {
   logger.verbose('Processing getAdminStats Request for ' + bot.isDirectTo);
   if (adminEmail === bot.isDirectTo) {
@@ -137,6 +187,7 @@ framework.hears('getAdminStats', function (bot) {
   responded = true;
 });
 
+// All bots should respond to help!
 framework.hears(/help/i, function (bot) {
   responded = true;
   showHelp(bot);
@@ -164,7 +215,7 @@ framework.on('files', function (bot, trigger) {
     .catch((e) => logger.error(`Failed to respond to posted files: ${e.message}`));
 });
 
-// Process a submitted card
+// Process an Action.Submit button press
 framework.on('attachmentAction', function (bot, trigger) {
   if (trigger.type != 'attachmentAction') {
     throw new Error(`Invaid trigger type: ${trigger.type} in attachmentAction handler`);
@@ -182,6 +233,7 @@ framework.on('attachmentAction', function (bot, trigger) {
   logger.verbose(`Got an attachmentAction:\n${JSON.stringify(attachmentAction, null, 2)}`);
 });
 
+// Render the selected sample
 function renderSelectedCard(bot, cardSelection) {
   switch (cardSelection) {
     case ('activityUpdate'):
@@ -263,6 +315,7 @@ function renderSelectedCard(bot, cardSelection) {
   }
 }
 
+// Process the button press for a specific card
 function processSampleCardResponse(bot, attachmentAction, person) {
   switch (attachmentAction.inputs.cardType) {
     case ("samplePicker"):
@@ -357,8 +410,6 @@ function renderCustomJson(bot, attachmentAction) {
 
 function renderJsonFileRequest(bot, trigger) {
   for (url of trigger.message.files) {
-  //let url = trigger.message.files[0];
-
     request({
       url: url,
       headers: {
@@ -412,6 +463,24 @@ function updateAdmin(message, listAll = false) {
     logger.warn('Reason: ' + e.message);
   }
 }
+
+function tryToInitAdminBot(bot, framework) {
+  // Set our bot's email -- this is used by our health check endpoint
+  if (botEmail === 'the bot') {  // should only happen once
+    botEmail = bot.person.emails[0];
+    botName = bot.person.displayName;
+  }
+  // See if this is the bot that belongs to our admin space
+  if ((!adminsBot) && (bot.isDirect) && (adminEmail) &&
+    (bot.isDirectTo.toLocaleLowerCase() === adminEmail.toLocaleLowerCase())) {
+    adminsBot = bot;
+    framework.adminsBot = adminsBot;
+  } else if ((!adminsBot) && (adminSpaceId) && (bot.room.id === adminSpaceId)) {
+    adminsBot = bot;
+    framework.adminsBot = adminsBot;
+  }
+}
+
 
 
 // define express path for incoming webhooks
