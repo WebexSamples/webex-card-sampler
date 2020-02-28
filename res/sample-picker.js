@@ -102,8 +102,13 @@ class SamplePicker {
       "actions": [
         {
           "type": "Action.Submit",
-          "title": "Submit",
-          "data": { "cardType": "samplePicker" }
+          "title": "Show Sample",
+          "data": {"cardType": "samplePicker"}
+        },
+        {
+          "type": "Action.Submit",
+          "title": "Send My Own Design Instead",
+          "data": {"cardType": "samplePicker", "customRequested": true}
         }
       ]
     };

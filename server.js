@@ -7,6 +7,7 @@ var Framework = require('webex-node-bot-framework');
 var webhook = require('webex-node-bot-framework/webhook');
 var express = require('express');
 var bodyParser = require('body-parser');
+var request = require("request");
 var app = express();
 logger = require('./logger');
 
@@ -48,7 +49,7 @@ var adminsBot = null;
 
 
 //app.use(bodyParser.json());
-app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.json({limit: '50mb'}));
 
 // init framework
 var framework = new Framework(frameworkConfig);
@@ -59,6 +60,8 @@ logger.info("Starting framework, please wait...");
 // Read in the sample cards we'll be using
 SamplePicker = require('./res/sample-picker.js');
 let samplePicker = new SamplePicker(cardsConfig.srcBaseUrl, cardsConfig.contentType);
+CustomJsonInput = require('./res/custom-json-input.js');
+let customJsonInput = new CustomJsonInput(cardsConfig.srcBaseUrl, cardsConfig.contentType);
 ActivityUpdate = require('./res/activity-update.js');
 let activityUpdate = new ActivityUpdate(cardsConfig.srcBaseUrl, cardsConfig.contentType);
 Agenda = require('./res/agenda.js');
@@ -140,12 +143,20 @@ framework.hears(/help/i, function (bot) {
   showHelp(bot);
 });
 
-// send an example card in response to any input
+// send an the sample card in response to any input
 framework.hears(/.*/, function (bot) {
   if (!responded) {
     samplePicker.renderCard(bot, logger);
   }
   responded = false;
+});
+
+// Handle input for a file attached with no other message
+// Secret undocumented functionality to send a card!
+framework.on('files', function (bot, trigger) {
+  if (!trigger.text) {
+    renderJsonFileRequest(bot, trigger);
+  }
 });
 
 // Process a submitted card
@@ -155,7 +166,11 @@ framework.on('attachmentAction', function (bot, trigger) {
   }
   let attachmentAction = trigger.attachmentAction;
   if (attachmentAction.inputs.cardType === 'samplePicker') {
-    renderSelectedCard(bot, attachmentAction.inputs.cardSelection);
+    if (attachmentAction.inputs.customRequested) {
+      customJsonInput.renderCard(bot, logger);
+    } else {
+      renderSelectedCard(bot, attachmentAction.inputs.cardSelection);
+    }
   } else {
     processSampleCardResponse(bot, attachmentAction, trigger.person);
   }
@@ -247,8 +262,15 @@ function processSampleCardResponse(bot, attachmentAction, person) {
   switch (attachmentAction.inputs.cardType) {
     case ("samplePicker"):
       // Display the chosen card
-
       activityUpdate.handleSubmit(attachmentAction, person, bot, logger);
+      break;
+
+    case ("customJsonInput"):
+      if (attachmentAction.inputs && attachmentAction.inputs.nextAction === 'samplePicker') {
+        samplePicker.renderCard(bot, logger);
+      } else {
+        renderCustomJson(bot, attachmentAction);
+      }
       break;
 
     case ("activityUpdate"):
@@ -280,10 +302,15 @@ function processSampleCardResponse(bot, attachmentAction, person) {
       break;
 
     default:
-      logger.error(`Got unexpected cardType:${attachmentAction.inputs.cardType}!`);
-      bot.say('Don\'t know how to handle the card input. ' +
-        'Please contact the Webex Developer Support: https://developer.webex.com/support')
-        .catch((e) => logger.error(`Failed to post unknown cardTyp error message to space. Error:${e.message}`));
+      let msg = `This bot doesn't currently do any logic for the button that you pressed, but here ` +
+        ` is the body of the attachmentAction so you can see what your app would need to process:\n\n` +
+        '```json\n' + `${JSON.stringify(attachmentAction, null, 2)}`;
+      bot.reply(attachmentAction, msg)
+        .catch((e) => {
+          let errorMsg = `Failed handling a button press: ${e.message}`;
+          this.logger.error(errorMsg);
+          bot.say(errorMsg);
+        });
   }
 }
 
@@ -296,16 +323,68 @@ async function showHelp(bot) {
       'provide a description of the card elements being demonstrated.\n\nWe\'ll ' +
       'also provide a link to the source used for the card, along with any ' +
       'descriptions of how the original sample was modified to work more ' +
-      'effectively in a Webex Teams environment.');
+      'effectively in a Webex Teams environment.\n\n' +
+      'Users can also use me to try sending their own JSON design. ' +
+      'To try this, click on the "Send My Own Design Instead" button, ' +
+      'or if your card json is in a file already, post the file with no message text.');
     samplePicker.renderCard(bot, logger);
   } catch (e) {
     logger.error(`Failed to post help message to space. Error:${e.message}`);
   }
 }
 
+function renderCustomJson(bot, attachmentAction) {
+  // Send the user entered JSON as a card
+  if (attachmentAction.inputs && attachmentAction.inputs.cardJson) {
+    try {
+      let cardJson = JSON.parse(attachmentAction.inputs.cardJson);
+      bot.sendCard(cardJson, 'The client could not render the entered card JSON')
+        .catch((e) => reportCustomRenderError(bot, e));
+    } catch (e) {
+      bot.reply(attachmentAction, 'Your design does not appear to be ' +
+        'valid JSON.  One way to get a valid design is to use the ' +
+        '[Buttons and Cards Designer](https://developer.webex.com/buttons-and-cards-designer)\n\n' +
+        'Validate your design and try again, or send me any ' +
+        'message to see the list of samples again.');
+    }
+  }
+}
+
+function renderJsonFileRequest(bot, trigger) {
+  let url = trigger.message.files[0];
+
+  request({
+    url: url,
+    headers: {
+      "Authorization": `Bearer ${frameworkConfig.token}`
+    },
+    json: true
+  }, function (error, response, body) {
+    if (!error && response.statusCode === 200) {
+      bot.sendCard(body, 'The client could not render the entered card JSON')
+        .catch((e) => reportCustomRenderError(bot, e));
+    } else {
+      bot.say('markdown', `Could not read JSON from ${url}.\n\n${error.message}`);
+    }
+  });
+}
+
+function reportCustomRenderError(bot, e) {
+  let eMsg = 'Webex rejected the card design, ';
+  if (e.statusCode) {
+    eMsg += `with a ${e.statusCode} response, `;
+  }
+  if (e.body) {
+    eMsg += 'and a response body:\n\n```\n\n' + JSON.stringify(e.body, null, 2);
+  } else {
+    eMsg += 'returning the error:\n\n```\n\n' + e.message;
+  }
+  bot.reply(attachmentAction, eMsg);
+};
+
 
 function updateAdmin(message, listAll = false) {
-  if (!adminsBot) { return; }
+  if (!adminsBot) {return;}
   try {
     if (listAll) {
       let count = 0;
@@ -318,7 +397,7 @@ function updateAdmin(message, listAll = false) {
     }
     // Don't notify about users after a scheduled shutdown/restart
     if ((!lastShutdown) || (lastShutdown.isBefore(moment().subtract(5, 'minutes')))) {
-      adminsBot.say({ 'markdown': message })
+      adminsBot.say({'markdown': message})
         .catch((e) => logger.error(`Failed to post shutdown message to admin. Error:${e.message}`));
     }
   } catch (e) {
