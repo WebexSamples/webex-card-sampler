@@ -339,7 +339,7 @@ function renderCustomJson(bot, attachmentAction) {
     try {
       let cardJson = JSON.parse(attachmentAction.inputs.cardJson);
       bot.sendCard(cardJson, 'The client could not render the entered card JSON')
-        .catch((e) => reportCustomRenderError(bot, e));
+        .catch((e) => reportCustomRenderError(bot, attachmentAction, e));
     } catch (e) {
       bot.reply(attachmentAction, 'Your design does not appear to be ' +
         'valid JSON.  One way to get a valid design is to use the ' +
@@ -362,14 +362,14 @@ function renderJsonFileRequest(bot, trigger) {
   }, function (error, response, body) {
     if (!error && response.statusCode === 200) {
       bot.sendCard(body, 'The client could not render the entered card JSON')
-        .catch((e) => reportCustomRenderError(bot, e));
+        .catch((e) => reportCustomRenderError(bot, trigger.message, e));
     } else {
       bot.say('markdown', `Could not read JSON from ${url}.\n\n${error.message}`);
     }
   });
 }
 
-function reportCustomRenderError(bot, e) {
+function reportCustomRenderError(bot, replyTo, e) {
   let eMsg = 'Webex rejected the card design, ';
   if (e.statusCode) {
     eMsg += `with a ${e.statusCode} response, `;
@@ -379,7 +379,7 @@ function reportCustomRenderError(bot, e) {
   } else {
     eMsg += 'returning the error:\n\n```\n\n' + e.message;
   }
-  bot.reply(attachmentAction, eMsg);
+  bot.reply(replyTo, eMsg);
 };
 
 
