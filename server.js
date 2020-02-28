@@ -96,7 +96,6 @@ StockUpdate = require('./res/stock-update.js');
 let stockUpdate = new StockUpdate(cardsConfig.srcBaseUrl, cardsConfig.contentType);
 WeatherCompact = require('./res/weather-compact.js');
 let weatherCompact = new WeatherCompact(cardsConfig.srcBaseUrl, cardsConfig.contentType);
-
 WeatherLarge = require('./res/weather-large.js');
 let weatherLarge = new WeatherLarge(cardsConfig.srcBaseUrl, cardsConfig.contentType);
 
@@ -143,20 +142,26 @@ framework.hears(/help/i, function (bot) {
   showHelp(bot);
 });
 
-// send an the sample card in response to any input
-framework.hears(/.*/, function (bot) {
-  if (!responded) {
+// send an the sample card in response to any input without files
+framework.hears(/.*/, function (bot, trigger) {
+  if ((!responded) && (!trigger.message.files)) {
     samplePicker.renderCard(bot, logger);
   }
   responded = false;
 });
 
-// Handle input for a file attached with no other message
-// Secret undocumented functionality to send a card!
+// If files were sent, try to render them as cards
 framework.on('files', function (bot, trigger) {
-  if (!trigger.text) {
-    renderJsonFileRequest(bot, trigger);
+  let response = 'Will attempt to render your message file attachments as cards';
+  if (trigger.text) {
+    response += ", while ignoring any message text...";
+  } else {
+    response += '...';
   }
+  response += 'Don\'t forget! You can send me any text message to get back to the sample picker.';
+  bot.reply(trigger.message, response)
+    .then(() => renderJsonFileRequest(bot, trigger))
+    .catch((e) => logger.error(`Failed to respond to posted files: ${e.message}`));
 });
 
 // Process a submitted card
@@ -351,22 +356,24 @@ function renderCustomJson(bot, attachmentAction) {
 }
 
 function renderJsonFileRequest(bot, trigger) {
-  let url = trigger.message.files[0];
+  for (url of trigger.message.files) {
+  //let url = trigger.message.files[0];
 
-  request({
-    url: url,
-    headers: {
-      "Authorization": `Bearer ${frameworkConfig.token}`
-    },
-    json: true
-  }, function (error, response, body) {
-    if (!error && response.statusCode === 200) {
-      bot.sendCard(body, 'The client could not render the entered card JSON')
-        .catch((e) => reportCustomRenderError(bot, trigger.message, e));
-    } else {
-      bot.say('markdown', `Could not read JSON from ${url}.\n\n${error.message}`);
-    }
-  });
+    request({
+      url: url,
+      headers: {
+        "Authorization": `Bearer ${frameworkConfig.token}`
+      },
+      json: true
+    }, function (error, response, body) {
+      if (!error && response.statusCode === 200) {
+        bot.sendCard(body, 'The client could not render the entered card JSON')
+          .catch((e) => reportCustomRenderError(bot, trigger.message, e));
+      } else {
+        bot.say('markdown', `Could not read JSON from ${url}.\n\n${error.message}`);
+      }
+    });
+  }
 }
 
 function reportCustomRenderError(bot, replyTo, e) {
