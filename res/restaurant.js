@@ -7,7 +7,7 @@
  * Text Blocks with many attributes including size, weight, isSubtle and spacing
  * OpenUrl Action
  *
- * We did not need to modify this sample at all to make it work in Webex Teams
+ * The speak attribute from original sample was removed as this is not supported on Webex Teams
  **/
 
 class Restaurant {
@@ -18,6 +18,7 @@ class Restaurant {
       "version": "1.0",
       "body": [
         {
+          //"speak": "Tom's Pie is a Pizza restaurant which is rated 9.3 by customers.",
           "type": "ColumnSet",
           "columns": [
             {
@@ -85,6 +86,7 @@ class Restaurant {
         '* Image with the size and attribute\n' +
         '* Text Blocks with many attributes including size, weight, isSubtle and spacing\n' +
         '* OpenUrl Action\n\n' +
+        'The speak attribute from original sample was removed as this is not supported on Webex Teams\n\n' +
         'Cards with images can take a few seconds to render. ' +
         'In the meantime you can see the full source here: ' + this.srcUrl);
       message = await bot.sendCard(this.card, "If you see this your client cannot render our Restaurant example.");

@@ -93,6 +93,7 @@ class CalendarReminder {
         '* Text block with the size, weight, isSubtle, and spacing attributes\n' +
         '* Input.ChoiceSet with the style attribute\n' +
         '* Action.Submit buttons\n\n' +
+        'The speak attribute from original sample was removed as this is not supported on Webex Teams\n\n' +
         'You can see the full source here: ' + this.srcUrl);
       await bot.sendCard(this.card, "If you see this your client cannot render our Calendar Reminder example.");
     } catch (err) {
