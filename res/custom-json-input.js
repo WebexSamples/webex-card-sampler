@@ -23,7 +23,7 @@ class CustomJsonInput {
         },
         {
           "type": "TextBlock",
-          "text": "One way to get design JSON to paste here is to use the \"Copy Card JSON\" button from the [Buttons and Cards Designer](https://developer.webex.com/buttons-and-cards-designer) "
+          "text": "One way to get design JSON to paste here is to use the \"Copy Card JSON\" button from the [Buttons and Cards Designer](https://developer.webex.com/buttons-and-cards-designer). "
         },
         {
           "type": "Container",
@@ -33,12 +33,15 @@ class CustomJsonInput {
               "placeholder": "Paste card JSON here",
               "id": "cardJson",
               "isMultiline": true,
-              "height": "stretch",
-              "maxLength": 8000
+              "height": "stretch"
             }
           ],
           "minHeight": "266px"
-        }
+        },
+        {
+          "type": "TextBlock",
+          "text": "You can also send me a message with files to render.  I'll attempt to render any file as if it is the design for a card."
+        },
       ],
       "actions": [
         {
@@ -66,6 +69,13 @@ class CustomJsonInput {
   }
 
   async renderCard(bot, logger) {
+    if (bot.isGroup) {
+      this.card.body.push(        {
+        "type": "TextBlock",
+        "text": "Don't forget to at-mention me in the message with your files!"
+      });
+    }
+
     bot.sendCard(this.card, "If you see this your client cannot render our Custom JSON Input card.")
       .catch((err) => {
         let msg = 'Failed to render Custom JSON Input card.';
