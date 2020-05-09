@@ -18,7 +18,7 @@ class CustomJsonInput {
         },
         {
           "type": "TextBlock",
-          "text": "In addition to showing your our pre-built samples, I can submit your custom design for you.  This helps to see how it will render or to see what type of payload your app will need to process if a user hits an Action.Submit button.",
+          "text": "In addition to showing you some pre-built samples, I can submit your custom design for you.  This helps to see how it will render on different clients, or to see what type of payload your app will need to process if a user hits an Action.Submit button.",
           "wrap": true
         },
         {
