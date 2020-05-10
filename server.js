@@ -83,12 +83,6 @@ Agenda = require('./res/agenda.js');
 let agenda = new Agenda(cardsConfig.srcBaseUrl, cardsConfig.contentType);
 CalendarReminder = require('./res/calendar-reminder.js');
 let calendarReminder = new CalendarReminder(cardsConfig.srcBaseUrl, cardsConfig.contentType);
-ExpenseReport = require('./res/expense-report.js');
-let expenseReport = new ExpenseReport(cardsConfig.srcBaseUrl, cardsConfig.contentType);
-Input = require('./res/input.js');
-let input = new Input(cardsConfig.srcBaseUrl, cardsConfig.contentType);
-InputForm = require('./res/input-form.js');
-let inputForm = new InputForm(cardsConfig.srcBaseUrl, cardsConfig.contentType);
 FlightDetails = require('./res/flight-details.js');
 let flightDetails = new FlightDetails(cardsConfig.srcBaseUrl, cardsConfig.contentType);
 FlightItinerary = require('./res/flight-itinerary.js');
@@ -99,10 +93,14 @@ FoodOrder = require('./res/food-order.js');
 let foodOrder = new FoodOrder(cardsConfig.srcBaseUrl, cardsConfig.contentType);
 ImageGallery = require('./res/image-gallery.js');
 let imageGallery = new ImageGallery(cardsConfig.srcBaseUrl, cardsConfig.contentType);
+Input = require('./res/input.js');
+let input = new Input(cardsConfig.srcBaseUrl, cardsConfig.contentType);
+InputForm = require('./res/input-form.js');
+let inputForm = new InputForm(cardsConfig.srcBaseUrl, cardsConfig.contentType);
+ProductAnnouncement = require('./res/product-announcement.js');
+let productAnnouncement = new ProductAnnouncement(cardsConfig.srcBaseUrl, cardsConfig.contentType);
 Restaurant = require('./res/restaurant.js');
 let restaurant = new Restaurant(cardsConfig.srcBaseUrl, cardsConfig.contentType);
-SimpleFallback = require('./res/simple-fallback.js');
-let simpleFallback = new SimpleFallback(cardsConfig.srcBaseUrl, cardsConfig.contentType);
 Solitaire = require('./res/solitaire.js');
 let solitaire = new Solitaire(cardsConfig.srcBaseUrl, cardsConfig.contentType);
 SportingEvent = require('./res/sporting-event.js');
@@ -279,13 +277,13 @@ function renderSelectedCard(bot, cardSelection) {
     case ('foodOrder'):
       foodOrder.renderCard(bot, logger);
       break;
-
+    
+    case('productAnnouncement'):
+      productAnnouncement.renderCard(bot, logger);
+      break;
+    
     case ("restaurant"):
       restaurant.renderCard(bot, logger);
-      break;
-
-    case ('simpleFallback'):
-      simpleFallback.renderCard(bot, logger);
       break;
 
     case ('solitaire'):
@@ -329,34 +327,6 @@ function processSampleCardResponse(bot, attachmentAction, person) {
       } else {
         renderCustomJson(bot, attachmentAction);
       }
-      break;
-
-    case ("activityUpdate"):
-      activityUpdate.handleSubmit(attachmentAction, person, bot, logger);
-      break;
-
-    case ('calendarReminder'):
-      calendarReminder.handleSubmit(attachmentAction, person, bot, logger);
-      break;
-
-    case ("expenseReport"):
-      expenseReport.handleSubmit(attachmentAction, person, bot, logger);
-      break;
-
-    case ("input"):
-      input.handleSubmit(attachmentAction, person, bot, logger);
-      break;
-
-    case ("inputForm"):
-      inputForm.handleSubmit(attachmentAction, person, bot, logger);
-      break;
-
-    case ("flightDetails"):
-      flightDetails.handleSubmit(attachmentAction, person, bot, logger);
-      break;
-
-    case ("foodOrder"):
-      foodOrder.handleSubmit(attachmentAction, person, bot, logger);
       break;
 
     default:

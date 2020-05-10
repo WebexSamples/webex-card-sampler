@@ -1,0 +1,63 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "Check out these cool pictures",
+            "size": "Large"
+        },
+        {
+            "type": "ImageSet",
+            "imageSize": "medium",
+            "images": [
+                {
+                    "type": "Image",
+                    "url": "https://i.postimg.cc/pLMNWvVY/AN94721.jpg",
+                    "size": "Medium"
+                },
+                {
+                    "type": "Image",
+                    "url": "https://i.postimg.cc/vBMCWtx1/AL57461.jpg",
+                    "size": "Medium"
+                },
+                {
+                    "type": "Image",
+                    "url": "https://i.postimg.cc/L8JVbgFx/AN96206.jpg",
+                    "size": "Medium"
+                },
+                {
+                    "type": "Image",
+                    "url": "https://i.postimg.cc/fTfxq7P7/AP00056.jpg",
+                    "size": "Medium"
+                },
+                {
+                    "type": "Image",
+                    "url": "https://i.postimg.cc/wM3S4TqL/AP04511.jpg",
+                    "size": "Medium"
+                },
+                {
+                    "type": "Image",
+                    "url": "https://i.postimg.cc/26sGQzK0/AN28630.jpg",
+                    "size": "Medium"
+                },
+                {
+                    "type": "Image",
+                    "url": "https://i.postimg.cc/bYQC8tMr/AP08827.jpg",
+                    "size": "Medium"
+                },
+                {
+                    "type": "Image",
+                    "url": "https://i.postimg.cc/ryQ4SyRg/AP14316.jpg",
+                    "size": "Medium"
+                },
+                {
+                    "type": "Image",
+                    "url": "https://i.postimg.cc/k47cgjL5/AQ77321.jpg",
+                    "size": "Medium"
+                }
+            ]
+        }
+    ]
+}

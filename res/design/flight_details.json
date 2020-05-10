@@ -1,0 +1,245 @@
+{
+    "type": "AdaptiveCard",
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.2",
+    "body": [
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "items": [
+                        {
+                            "type": "Container",
+                            "backgroundImage": "http://messagecardplayground.azurewebsites.net/assets/TxP_Background.png",
+                            "items": [
+                                {
+                                    "type": "Image",
+                                    "horizontalAlignment": "Center",
+                                    "url": "https://messagecardplayground.azurewebsites.net/assets/TxP_Flight.png"
+                                }
+                            ],
+                            "bleed": true
+                        },
+                        {
+                            "type": "Container",
+                            "spacing": "None",
+                            "style": "emphasis",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "size": "ExtraLarge",
+                                    "weight": "Lighter",
+                                    "color": "Accent",
+                                    "text": "Flight to Kansas",
+                                    "wrap": true
+                                },
+                                {
+                                    "type": "TextBlock",
+                                    "spacing": "Small",
+                                    "text": "American Airlines Flight 24",
+                                    "wrap": true
+                                },
+                                {
+                                    "type": "TextBlock",
+                                    "spacing": "None",
+                                    "text": "Confirmation code: 57DY2",
+                                    "wrap": true
+                                },
+                                {
+                                    "type": "TextBlock",
+                                    "spacing": "None",
+                                    "text": "5 hours, 2 minutes",
+                                    "wrap": true
+                                }
+                            ],
+                            "bleed": true,
+                            "height": "stretch"
+                        }
+                    ],
+                    "width": 45,
+                    "height": "stretch"
+                },
+                {
+                    "type": "Column",
+                    "items": [
+                        {
+                            "type": "Container",
+                            "height": "stretch",
+                            "items": [
+                                {
+                                    "type": "ColumnSet",
+                                    "columns": [
+                                        {
+                                            "type": "Column",
+                                            "items": [
+                                                {
+                                                    "type": "TextBlock",
+                                                    "size": "ExtraLarge",
+                                                    "weight": "Lighter",
+                                                    "text": "SJC"
+                                                }
+                                            ],
+                                            "width": "auto"
+                                        },
+                                        {
+                                            "type": "Column",
+                                            "verticalContentAlignment": "Center",
+                                            "items": [
+                                                { 
+                                                    "type": "Image",
+                                                    "url": "https://messagecardplayground.azurewebsites.net/assets/graydot2x2.png",
+                                                    "width": "10000px",
+                                                    "height": "2px"
+                                                }
+                                            ],
+                                            "width": "stretch"
+                                        },
+                                        {
+                                            "type": "Column",
+                                            "spacing": "Small",
+                                            "verticalContentAlignment": "Center",
+                                            "items": [
+                                                {
+                                                    "type": "Image",
+                                                    "url": "https://messagecardplayground.azurewebsites.net/assets/smallairplane.png",
+                                                    "height": "16px"
+                                                }
+                                            ],
+                                            "width": "auto"
+                                        },
+                                        {
+                                            "type": "Column",
+                                            "items": [
+                                                {
+                                                    "type": "TextBlock",
+                                                    "horizontalAlignment": "Right",
+                                                    "size": "ExtraLarge",
+                                                    "weight": "Lighter",
+                                                    "text": "MCI"
+                                                }
+                                            ],
+                                            "width": "auto"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "ColumnSet",
+                                    "columns": [
+                                        {
+                                            "type": "Column",
+                                            "items": [
+                                                {
+                                                    "type": "TextBlock",
+                                                    "size": "Medium",
+                                                    "text": "11:30 AM"
+                                                }
+                                            ],
+                                            "width": 1
+                                        },
+                                        {
+                                            "type": "Column",
+                                            "items": [
+                                                {
+                                                    "type": "TextBlock",
+                                                    "horizontalAlignment": "Right",
+                                                    "size": "Medium",
+                                                    "text": "4:35 PM"
+                                                }
+                                            ],
+                                            "width": 1
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "ColumnSet",
+                                    "spacing": "None",
+                                    "columns": [
+                                        {
+                                            "type": "Column",
+                                            "items": [
+                                                {
+                                                    "type": "TextBlock",
+                                                    "text": "December 14, 2021",
+                                                    "isSubtle": true,
+                                                    "wrap": true
+                                                }
+                                            ],
+                                            "width": 1
+                                        },
+                                        {
+                                            "type": "Column",
+                                            "items": [
+                                                {
+                                                    "type": "TextBlock",
+                                                    "horizontalAlignment": "Right",
+                                                    "text": "December 14, 2021",
+                                                    "isSubtle": true,
+                                                    "wrap": true
+                                                }
+                                            ],
+                                            "width": 1
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "ColumnSet",
+                                    "spacing": "None",
+                                    "columns": [
+                                        {
+                                            "type": "Column",
+                                            "items": [
+                                                {
+                                                    "type": "TextBlock",
+                                                    "text": "San Jose",
+                                                    "isSubtle": true
+                                                }
+                                            ],
+                                            "width": 1
+                                        },
+                                        {
+                                            "type": "Column",
+                                            "items": [
+                                                {
+                                                    "type": "TextBlock",
+                                                    "horizontalAlignment": "Right",
+                                                    "text": "Kansas",
+                                                    "isSubtle": true
+                                                }
+                                            ],
+                                            "width": 1
+                                        }
+                                    ],
+                                    "height": "stretch"
+                                },
+                                {
+                                    "type": "ActionSet",
+                                    "separator": true,
+                                    "actions": [
+                                        {
+                                            "type": "Action.Submit",
+                                            "title": "Check In",
+                                            "style": "Positive",
+                                            "data": {
+                                              "action": "checkIn"
+                                            }
+                                        },
+                                        {
+                                            "type": "Action.Submit",
+                                            "title": "View in Calendar",
+                                            "data": {
+                                              "action": "viewInCalendar"
+                                          }                                                                          
+                                        }
+                                    ],
+                                    "spacing": "Medium"
+                                }
+                            ]
+                        }
+                    ],
+                    "width": 55
+                }
+            ]
+        }
+    ]
+} 

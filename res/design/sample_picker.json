@@ -1,0 +1,104 @@
+{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.0",
+  "body": [
+    {
+      "type": "TextBlock",
+      "size": "Medium",
+      "weight": "Bolder",
+      "text": "Buttons and Cards Samples\non Webex Teams",
+      "horizontalAlignment": "Center"
+    },
+    {
+      "type": "TextBlock",
+      "text": "Please pick the sample card you'd like to try:"
+    },
+    {
+      "type": "Input.ChoiceSet",
+      "id": "cardSelection",
+      "choices": [
+        {
+          "title": "Activity Update",
+          "value": "activityUpdate"
+        },
+        {
+          "title": "Agenda",
+          "value": "agenda"
+        },
+        {
+          "title": "Calendar Reminder",
+          "value": "calendarReminder"
+        },
+        {
+          "title": "Flight Details",
+          "value": "flightDetails"
+        },
+        {
+          "title": "Flight Itinerary",
+          "value": "flightItinerary"
+        },
+        {
+          "title": "Flight Update",
+          "value": "flightUpdate"
+        },
+        {
+          "title": "Food Order",
+          "value": "foodOrder"
+        },
+        {
+          "title": "Image Gallery",
+          "value": "imageGallery"
+        },
+        {
+          "title": "Input",
+          "value": "input"
+        },
+        {
+          "title": "Input Form",
+          "value": "inputForm"
+        },
+        {
+          "title": "Product Announcement",
+          "value": "productAnnouncement"
+        },
+        {
+          "title": "Restaurant",
+          "value": "restaurant"
+        },
+        {
+          "title": "Solitaire Cyberops",
+          "value": "solitaire"
+        },
+        {
+          "title": "Sporting Event",
+          "value": "sportingEvent"
+        },
+        {
+          "title": "Stock Update",
+          "value": "stockUpdate"
+        },
+        {
+          "title": "Weather Compact",
+          "value": "weatherCompact"
+        },
+        {
+          "title": "Weather Large",
+          "value": "weatherLarge"
+        }
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.Submit",
+      "title": "Show Sample",
+      "data": {"cardType": "samplePicker"}
+    },
+    {
+      "type": "Action.Submit",
+      "title": "Send My Own Design Instead",
+      "data": {"cardType": "samplePicker", "customRequested": true}
+    }
+  ]
+}

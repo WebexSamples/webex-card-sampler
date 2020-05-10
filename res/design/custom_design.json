@@ -1,0 +1,58 @@
+{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.0",
+  "body": [
+    {
+      "type": "TextBlock",
+      "size": "Medium",
+      "weight": "Bolder",
+      "text": "Custom JSON Design Input",
+      "horizontalAlignment": "Center"
+    },
+    {
+      "type": "TextBlock",
+      "text": "In addition to showing you some pre-built samples, I can submit your custom design for you.  This helps to see how it will render on different clients, or to see what type of payload your app will need to process if a user hits an Action.Submit button.",
+      "wrap": true
+    },
+    {
+      "type": "TextBlock",
+      "text": "One way to get design JSON to paste here is to use the \"Copy Card JSON\" button from the [Buttons and Cards Designer](https://developer.webex.com/buttons-and-cards-designer). "
+    },
+    {
+      "type": "Container",
+      "items": [
+        {
+          "type": "Input.Text",
+          "placeholder": "Paste card JSON here",
+          "id": "cardJson",
+          "isMultiline": true,
+          "height": "stretch"
+        }
+      ],
+      "minHeight": "266px"
+    },
+    {
+      "type": "TextBlock",
+      "text": "You can also send me a message with files to render.  I'll attempt to render any file as if it is the design for a card."
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.Submit",
+      "title": "Display My Card",
+      "data": {
+        "cardType": "customJsonInput",
+        "nextAction": "submitJson"
+      }
+    },
+    {
+      "type": "Action.Submit",
+      "title": "Go Back To The Built In Samples",
+      "data": {
+        "cardType": "customJsonInput",
+        "nextAction": "samplePicker"
+      }
+    }
+  ]
+}

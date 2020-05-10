@@ -1,0 +1,175 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "Your registration is almost complete",
+            "size": "Medium",
+            "weight": "Bolder"
+        },
+        {
+            "type": "TextBlock",
+            "text": "What would you like to order?",
+            "wrap": true
+        },
+        {
+            "type": "ImageSet",
+            "imageSize": "medium",
+            "images": [
+                {
+                    "type": "Image",
+                    "url": "https://i.postimg.cc/d3sK0Xf5/salmon-curry.jpg",
+                    "size": "Medium"
+                },
+                {
+                    "type": "Image",
+                    "url": "https://i.postimg.cc/rmqs2hq9/burger.jpg",
+                    "size": "Medium",
+                    "horizontalAlignment": "Left"
+                },
+                {
+                    "type": "Image",
+                    "url": "https://i.postimg.cc/DZCfGLXQ/pancakes.jpg",
+                    "size": "Medium"
+                }
+            ]
+        }
+    ],
+    "actions": [
+        {
+            "type": "Action.ShowCard",
+            "title": "Thai ",
+            "card": {
+                "type": "AdaptiveCard",
+                "body": [
+                    {
+                        "type": "TextBlock",
+                        "text": "How spicy do you like your curry?",
+                        "size": "Medium",
+                        "wrap": true
+                    },
+                    {
+                        "type": "Input.ChoiceSet",
+                        "id": "SpiceLevel",
+                        "style": "expanded",
+                        "choices": [
+                            {
+                                "title": "Mild",
+                                "value": "mild"
+                            },
+                            {
+                                "title": "Medium",
+                                "value": "medium"
+                            },
+                            {
+                                "title": "Spicy",
+                                "value": "spicy"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "Input.Text",
+                        "id": "ThaiPrepRequests",
+                        "isMultiline": true,
+                        "placeholder": "Are there any other preparation requests?"
+                    }
+                ],
+                "actions": [
+                    {
+                        "type": "Action.Submit",
+                        "title": "OK",
+                        "data": {
+                            "FoodChoice": "Thai"
+                        }
+                    }
+                ],
+                "$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
+            }
+        },
+        {
+            "type": "Action.ShowCard",
+            "title": "Burgers",
+            "card": {
+                "type": "AdaptiveCard",
+                "body": [
+                    {
+                        "type": "TextBlock",
+                        "text": "Do you want cheese with that?",
+                        "size": "Medium",
+                        "wrap": true
+                    },
+                    {
+                        "type": "Input.ChoiceSet",
+                        "id": "YesCheese",
+                        "style": "expanded",
+                        "isMultiSelect": true,
+                        "choices": [
+                            {
+                                "title": "Yes, please",
+                                "value": "cheese"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "Input.Text",
+                        "id": "burgerPrepRequests",
+                        "isMultiline": true,
+                        "placeholder": "Are there any other preparation requests?"
+                    }
+                ],
+                "actions": [
+                    {
+                        "type": "Action.Submit",
+                        "title": "OK",
+                        "data": {
+                            "FoodChoice": "Burgers"
+                        }
+                    }
+                ],
+                "$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
+            }
+        },
+        {
+            "type": "Action.ShowCard",
+            "title": "Pancakes",
+            "card": {
+                "type": "AdaptiveCard",
+                "body": [
+                    {
+                        "type": "TextBlock",
+                        "text": "Would you like it gluten-free?",
+                        "size": "Medium",
+                        "wrap": true
+                    },
+                    {
+                        "type": "Input.Toggle",
+                        "id": "Gluten-free",
+                        "title": "Yes ",
+                        "valueOn": "gluten-free",
+                        "valueOff": "gluten",
+                        "wrap": false,
+                        "value": "gluten"
+                    },
+                    {
+                        "type": "Input.Text",
+                        "id": "pancakePrepRequests",
+                        "isMultiline": true,
+                        "placeholder": "Are there any other preparation requests?"
+                    }
+                ],
+                "actions": [
+                    {
+                        "type": "Action.Submit",
+                        "title": "OK",
+                        "data": {
+                            "FoodChoice": "Pankcakes"
+                        }
+                    }
+                ],
+                "$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
+            }
+        }
+    ]
+}

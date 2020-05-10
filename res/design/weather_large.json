@@ -1,0 +1,195 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "backgroundImage": {
+        "url": "https://i.postimg.cc/vBxnRp06/sky2.jpg",
+        "verticalAlignment": "Center"
+    },
+    "body": [
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "width": 35,
+                    "items": [
+                        {
+                            "type": "Image",
+                            "url": "https://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Square.png",
+                            "size": "Stretch"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "width": 65,
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Monday, May 18",
+                            "weight": "Bolder",
+                            "size": "Large",
+                            "color": "Light"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": "81 / 58",
+                            "size": "Medium",
+                            "spacing": "None"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "isSubtle": true,
+                            "text": "0% chance of rain",
+                            "spacing": "None"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "isSubtle": true,
+                            "text": "Winds 5 mph NE",
+                            "spacing": "None"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "width": 20,
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "horizontalAlignment": "Center",
+                            "text": "Tue"
+                        },
+                        {
+                            "type": "Image",
+                            "size": "auto",
+                            "url": "https://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Square.png"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "horizontalAlignment": "Center",
+                            "text": "78"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "horizontalAlignment": "Center",
+                            "isSubtle": true,
+                            "text": "62",
+                            "spacing": "None"
+                        }
+                    ],
+                    "selectAction": {
+                        "type": "Action.OpenUrl",
+                        "title": "View Tuesday",
+                        "url": "https://www.youtube.com/watch?v=KQetemT1sWc"
+                    }
+                },
+                {
+                    "type": "Column",
+                    "width": 20,
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "horizontalAlignment": "Center",
+                            "text": "Wed"
+                        },
+                        {
+                            "type": "Image",
+                            "size": "auto",
+                            "url": "https://messagecardplayground.azurewebsites.net/assets/Drizzle-Square.png"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "horizontalAlignment": "Center",
+                            "text": "68"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "horizontalAlignment": "Center",
+                            "isSubtle": true,
+                            "text": "57",
+                            "spacing": "None"
+                        }
+                    ],
+                    "selectAction": {
+                        "type": "Action.OpenUrl",
+                        "title": "View Wednesday",
+                        "url": "https://www.nhc.noaa.gov/"
+                    }
+                },
+                {
+                    "type": "Column",
+                    "width": 20,
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "horizontalAlignment": "Center",
+                            "text": "Thur"
+                        },
+                        {
+                            "type": "Image",
+                            "size": "auto",
+                            "url": "https://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Square.png"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "horizontalAlignment": "Center",
+                            "text": "74"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "horizontalAlignment": "Center",
+                            "isSubtle": true,
+                            "text": "60",
+                            "spacing": "None"
+                        }
+                    ],
+                    "selectAction": {
+                        "type": "Action.OpenUrl",
+                        "title": "View Thursday",
+                        "url": "https://www.tripadvisor.com/Tourism-g499086-Sunny_Beach_Burgas_Province-Vacations.html"
+                    }
+                },
+                {
+                    "type": "Column",
+                    "width": 20,
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "horizontalAlignment": "Center",
+                            "text": "Fri"
+                        },
+                        {
+                            "type": "Image",
+                            "size": "auto",
+                            "url": "https://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Square.png"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "horizontalAlignment": "Center",
+                            "text": "72"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "horizontalAlignment": "Center",
+                            "isSubtle": true,
+                            "text": "61",
+                            "spacing": "None"
+                        }
+                    ],
+                    "selectAction": {
+                        "type": "Action.OpenUrl",
+                        "title": "View Friday",
+                        "url": "https://www.youtube.com/watch?v=TYIl6n_SRCI"
+                    }
+                }
+            ]
+        }
+    ]
+}
