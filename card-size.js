@@ -63,20 +63,8 @@ class CardSize {
           size.imageErrors.push({url: x.url, error: e.message});
         })); 
       }
-      // console.error(x);
-      // console.error(typeof x);
-      // if (typeof x === 'string') {
-      //   console.log(this.node);
-      // if ((this.node.toLowerCase() === "url") && 
-      // ((this.parent.toLowerCase() === 'image') || (this.parent.toLowerCase() === 'backgroundimage'))) {
-      // //Fetch Image size with request
-      //   requestOpts.url = x;d;
-      //   imagesizePromises.push(request(requestOpts));
-      // }
-      //}
     }, size, imageSizePromises);
-    // .then(() => when.all(imageSizePromises))
-    //   .then(() => when(size));
+
     return when.all(imageSizePromises).then(() => {
       return when(size);
     });
