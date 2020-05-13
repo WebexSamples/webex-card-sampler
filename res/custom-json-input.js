@@ -29,3 +29,14 @@ class CustomJsonInput {
 };
 
 module.exports = CustomJsonInput;
+
+// To test
+/*
+let cardSize = new CardSize();
+let card = require('./res/design/agenda.json');
+cardSize.calculateRoughCardSize(card).then((sizeInfo) => {
+  console.log(sizeInfo);
+}).catch((e) => {
+  console.error(`lookup failed: ${e.message}`);
+}); 
+*/

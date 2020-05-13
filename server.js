@@ -22,6 +22,10 @@ logger = require('./logger');
 // When running locally read environment variables from a .env file
 require('dotenv').config();
 
+// Object for determining full message size of an adaptive card
+const CardSize = require('./card-size');
+const cardSize = new CardSize();
+
 // Configure the Framework bot for the environment we are running in
 var frameworkConfig = {};
 var cardsConfig = {};
@@ -50,6 +54,7 @@ let adminSpaceId = '';
 let adminsBot = null;
 let botName = '';
 let botEmail = 'the bot';
+let warnCardSize = 60000;
 if (process.env.ADMIN_SPACE_ID) {
   adminSpaceId = process.env.ADMIN_SPACE_ID;
 } else if (process.env.ADMIN_EMAIL) {
@@ -62,6 +67,9 @@ if (process.env.ADMIN_SPACE_ID) {
 // discover them after our first spawn
 if (process.env.BOTNAME) {botName = process.env.BOTNAME;}
 if (process.env.BOT_EMAIL) {botEmail = process.env.BOT_EMAIL;}
+
+// We can warn about cards that are too big.  If set read the warning size from env
+if (process.env.WARNING_CARD_SIZE) {warnCardSize = process.env.WARNING_CARD_SIZE;}
 
 // Card data can be big!
 app.use(bodyParser.json({limit: '50mb'}));
@@ -367,7 +375,7 @@ function renderCustomJson(bot, attachmentAction) {
     try {
       let cardJson = JSON.parse(attachmentAction.inputs.cardJson);
       bot.sendCard(cardJson, 'The client could not render the entered card JSON')
-        .catch((e) => reportCustomRenderError(bot, attachmentAction, e));
+        .catch((e) => reportCustomRenderError(bot, attachmentAction, cardJson, e));
     } catch (e) {
       bot.reply(attachmentAction, 'Your design does not appear to be ' +
         'valid JSON.  One way to get a valid design is to use the ' +
@@ -389,7 +397,7 @@ function renderJsonFileRequest(bot, trigger) {
     }, function (error, response, body) {
       if (!error && response.statusCode === 200) {
         bot.sendCard(body, 'The client could not render the entered card JSON')
-          .catch((e) => reportCustomRenderError(bot, trigger.message, e));
+          .catch((e) => reportCustomRenderError(bot, trigger.message, body, e));
       } else {
         bot.say('markdown', `Could not read JSON from ${url}.\n\n${error.message}`);
       }
@@ -397,18 +405,70 @@ function renderJsonFileRequest(bot, trigger) {
   }
 }
 
-function reportCustomRenderError(bot, replyTo, e) {
+function reportCustomRenderError(bot, replyTo, cardJson, e) {
   let eMsg = 'Webex rejected the card design, ';
-  if (e.statusCode) {
+  if (e.statusCode !== undefined) {
     eMsg += `with a ${e.statusCode} response, `;
   }
-  if (e.body) {
+  if (e.body !== undefined) {
     eMsg += 'and a response body:\n\n```\n\n' + JSON.stringify(e.body, null, 2);
-  } else {
+  } else if ('statusMessage' in e) {
+    if ('name' in e) {
+      eMsg += ', ' + e.name + ': ' + e.statusMessage + ', ';
+    } else {
+      eMsg += ', ' + e.statusMessage,  + ', ';
+    }
     eMsg += 'returning the error:\n\n```\n\n' + e.message;
   }
   bot.reply(replyTo, eMsg);
+  postCardSizeorErrorDetails(bot, replyTo, e, cardJson);
 };
+
+function postCardSizeorErrorDetails(bot, replyTo, e, card) {
+  let msg = '';
+  let gotGenericError = false;
+  if ((e.body !== undefined) && (typeof e.body === 'object') &&
+    (e.body.message === "Unable to share content to room")) {
+    gotGenericError = true;
+  }
+  return cardSize.calculateRoughCardSize(card)
+    .then((sizeInfo) => {
+      // Warn about big cards
+      if (gotGenericError || (sizeInfo.total > warnCardSize)) {
+        msg += `The overall card content may be ` +
+          `too big for Webex.  Your card consists of the following:\n` +
+          `* JSON Size: **${sizeInfo.jsonSize} bytes**\n` +
+          `* Number of Images: ${sizeInfo.images.length}\n` +
+          `* Total Size: **${sizeInfo.total} bytes**\n\n`;
+        if (sizeInfo.images.length) {
+          msg += `Image details:\n`;
+          for (let i=0; i< sizeInfo.images.length; i++) {
+            imgInfo = sizeInfo.images[i];
+            msg += `${i+1}. ${imgInfo.url}: **${imgInfo.size} bytes**\n`;
+          }  
+        }
+        msg += `\nYou may want to reduce the number of images or the size of ` +
+          `the images you are using and try again.  As a rule of thumb, Webex `+
+          `card sizes should not exceed ${(warnCardSize/1000).toFixed(1)}K ` +
+          `bytes in total, but smaller sizes may also fail especially if they include ` +
+          `many images, each of which adds its own overhad that contributes to the ` +
+          `internal message storage requirements.`;
+      }
+      if (sizeInfo.imageErrors.length) {
+        msg += `\n\nYour card design includes some images which could not be fetched:\n`;
+        for (let i=0; i< sizeInfo.imageErrors.length; i++) {
+          imgInfo = sizeInfo.imageErrors[i];
+          msg += `${i+1}. ${imgInfo.url}\n`;
+        }
+        msg += `\nYour card may not properly render unless all image URLs are valid.`;
+      }
+      if (msg) {
+        return bot.reply(replyTo, {markdown: msg});
+      }
+    }).catch((e) => {
+      logger.error(`postCardSizeDetails(): failed sending size info: ${e.message}`);
+    });
+}
 
 
 function updateAdmin(message, listAll = false) {
