@@ -14,7 +14,7 @@ class FoodOrder {
   constructor(srcBaseUrl, contentType) {
     this.card = require('./design/food_order.json');
     this.contentType = contentType;
-    this.srcUrl = `${srcBaseUrl}/activity-update`;
+    this.srcUrl = `${srcBaseUrl}/food_order`;
   }
 
   async renderCard(bot, logger) {
