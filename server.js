@@ -241,6 +241,7 @@ framework.on('attachmentAction', function (bot, trigger) {
 
 // Render the selected sample
 function renderSelectedCard(bot, cardSelection) {
+  logger.info(`Got a request to render the ${cardSelection} card from space: ${bot.room.title}`);
   switch (cardSelection) {
     case ('activityUpdate'):
       activityUpdate.renderCard(bot, logger);
@@ -323,6 +324,7 @@ function renderSelectedCard(bot, cardSelection) {
 
 // Process the button press for a specific card
 function processSampleCardResponse(bot, attachmentAction, person) {
+  logger.info(`Got a button push on card ${attachmentAction.inputs.cardType} from space: ${bot.room.title}`);
   switch (attachmentAction.inputs.cardType) {
     case ("samplePicker"):
       // Display the chosen card
