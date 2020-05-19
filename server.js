@@ -183,7 +183,7 @@ var responded = false;
 
 // A secret for our admin only
 framework.hears('getAdminStats', function (bot) {
-  logger.verbose('Processing getAdminStats Request for ' + bot.isDirectTo);
+  logger.info('Processing getAdminStats Request for ' + bot.isDirectTo);
   if (adminEmail === bot.isDirectTo) {
     updateAdmin(`${botName} has been added to the following spaces:`, true);
   } else {
@@ -202,6 +202,7 @@ framework.hears(/help/i, function (bot) {
 // send an the sample card in response to any input without files
 framework.hears(/.*/, function (bot, trigger) {
   if ((!responded) && (!trigger.message.files)) {
+    logger.info(`Processing a message from space "${bot.room.title}" that contained only files: ${trigger.message.files}`);
     samplePicker.renderCard(bot, logger);
   }
   responded = false;
@@ -216,6 +217,7 @@ framework.on('files', function (bot, trigger) {
     response += '...';
   }
   response += 'Don\'t forget! You can send me any text message to get back to the sample picker.';
+  logger.info(`Processing a message "${trigger.message.text}" from space "${bot.room.title}" with files: ${trigger.message.files}`);
   bot.reply(trigger.message, response)
     .then(() => renderJsonFileRequest(bot, trigger))
     .catch((e) => logger.error(`Failed to respond to posted files: ${e.message}`));
@@ -423,6 +425,7 @@ function reportCustomRenderError(bot, replyTo, cardJson, e) {
     eMsg += 'returning the error:\n\n```\n\n' + e.message;
   }
   bot.reply(replyTo, eMsg);
+  logger.info(`Custom JSON from space "${bot.room.title}" resulted in error message: ${eMsg}`);
   postCardSizeorErrorDetails(bot, replyTo, e, cardJson);
 };
 
@@ -465,6 +468,7 @@ function postCardSizeorErrorDetails(bot, replyTo, e, card) {
         msg += `\nYour card may not properly render unless all image URLs are valid.`;
       }
       if (msg) {
+        logger.info(`Custom JSON from space "${bot.room.title}" resulted in detailed error: ${msg}`);
         return bot.reply(replyTo, {markdown: msg});
       }
     }).catch((e) => {
