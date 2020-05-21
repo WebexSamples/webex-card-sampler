@@ -7,7 +7,7 @@
  * Image
  * Input.ChoiceSet with the style attribute
  * Input.Text with the isMultiline and placeholder attributes
- * Action.ShowCard and Action.Sumbit
+ * Action.ShowCard and Action.Submit
  **/
 
 class FoodOrder {
@@ -25,7 +25,7 @@ class FoodOrder {
         '* Image\n' +
         '* Input.ChoiceSet with the style attribute\n' +
         '* Input.Text with the isMultiline and placeholder attributes\n' +
-        '* Action.ShowCard and Action.Sumbit\n\n' +
+        '* Action.ShowCard and Action.Submit\n\n' +
         'Cards with images can take a few seconds to render. ' +
         'In the meantime you can see the full source here: ' + this.srcUrl);
       await bot.sendCard(this.card, "If you see this your client cannot render our Food Order example.");

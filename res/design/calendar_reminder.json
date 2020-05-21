@@ -55,14 +55,16 @@
             "type": "Action.Submit",
             "title": "Snooze",
             "data": {
-                "action": "snooze"
+              "cardType": "calendarReminder",
+              "action": "snooze"
             }
         },
         {
             "type": "Action.Submit",
             "title": "I'll Be Late",
             "data": {
-                "action": "late"
+              "cardType": "calendarReminder",
+              "action": "late"
             }
         }
     ]

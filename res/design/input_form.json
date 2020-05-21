@@ -79,7 +79,11 @@
     "actions": [
         {
             "type": "Action.Submit",
-            "title": "Submit"
+            "title": "Submit",
+            "data": {
+              "cardType": "inputForm"
+            }
+
         }
     ]
 }

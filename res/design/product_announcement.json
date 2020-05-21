@@ -150,6 +150,7 @@
                     "type": "Action.Submit",
                     "title": "Subscribe to Release Notes",
                     "data": {
+                        "cardType": "productAnnouncement",
                         "subscribe": true
                     }
                 }

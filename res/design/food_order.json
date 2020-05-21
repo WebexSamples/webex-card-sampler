@@ -81,6 +81,7 @@
                         "type": "Action.Submit",
                         "title": "OK",
                         "data": {
+                            "cardType": "foodOrder",
                             "FoodChoice": "Thai"
                         }
                     }
@@ -124,7 +125,8 @@
                         "type": "Action.Submit",
                         "title": "OK",
                         "data": {
-                            "FoodChoice": "Burgers"
+                          "cardType": "foodOrder",
+                          "FoodChoice": "Burgers"
                         }
                     }
                 ],
@@ -164,7 +166,8 @@
                         "type": "Action.Submit",
                         "title": "OK",
                         "data": {
-                            "FoodChoice": "Pankcakes"
+                          "cardType": "foodOrder",
+                          "FoodChoice": "Pankcakes"
                         }
                     }
                 ],

@@ -87,7 +87,10 @@
                 "actions": [
                     {
                         "type": "Action.Submit",
-                        "title": "OK"
+                        "title": "OK",
+                        "data": {
+                          "cardType": "activityUpdate"
+                        }                        
                     }
                 ],
                 "$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
@@ -109,7 +112,10 @@
                 "actions": [
                     {
                         "type": "Action.Submit",
-                        "title": "OK"
+                        "title": "OK",
+                        "data": {
+                          "cardType": "activityUpdate"
+                        }
                     }
                 ],
                 "$schema": "http://adaptivecards.io/schemas/adaptive-card.json"

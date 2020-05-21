@@ -202,7 +202,7 @@ framework.hears(/help/i, function (bot) {
 // send an the sample card in response to any input without files
 framework.hears(/.*/, function (bot, trigger) {
   if ((!responded) && (!trigger.message.files)) {
-    logger.info(`Processing a message from space "${bot.room.title}" that contained only files: ${trigger.message.files}`);
+    logger.info(`Processing a message "${trigger.message.text}" from space "${bot.room.title}".`);
     samplePicker.renderCard(bot, logger);
   }
   responded = false;
@@ -474,17 +474,21 @@ function postCardSizeorErrorDetails(bot, replyTo, e, card) {
       }
     }).catch((e) => {
       if (e.name === 'TypeError') {
+        let msg = '';
         if ((card) && (card.roomId)) {
-          bot.reply(replyTo, 'Your data contains a `roomId`, so it looks like you may have submitted a full /messages API request payaload. ' +
+          msg = 'Your data contains a `roomId`, so it looks like you may have submitted a full /messages API request load. ' +
             'Just send the card JSON.  For example, just the object in the attachments array from the body of a `POST /messages` ' +
-            'request, or what you might copy from the [Buttons and Cards Designer](https://developer.webex.com/buttons-and-cards-designer)');
+            'request, or what you might copy from the [Buttons and Cards Designer](https://developer.webex.com/buttons-and-cards-designer)';
         } else {
-          bot.reply(replyTo, `It looks like the data you submitted is not a valid Adaptive Card JSON.`  +
+          msg = `It looks like the data you submitted is not a valid Adaptive Card JSON.`  +
           'Try building your card in the [Buttons and Cards Designer](https://developer.webex.com/buttons-and-cards-designer) ' +
-          'and copying the JSON from there.');
+          'and copying the JSON from there.';
         }
+        bot.reply(replyTo, msg);
+        logger.info(`Custom JSON from space "${bot.room.title}" resulted in detailed error: ${msg}`);
+      } else { 
+        logger.error(`postCardSizeErrorDetails(): failed sending size info: ${e.message}`);
       }
-      logger.error(`postCardSizeErrorDetails(): failed sending size info: ${e.message}`);
     });
 }
 

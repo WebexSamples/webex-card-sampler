@@ -221,6 +221,7 @@
                                             "title": "Check In",
                                             "style": "Positive",
                                             "data": {
+                                              "cardType": "flightDetails",
                                               "action": "checkIn"
                                             }
                                         },
@@ -228,6 +229,7 @@
                                             "type": "Action.Submit",
                                             "title": "View in Calendar",
                                             "data": {
+                                              "cardType": "flightDetails",
                                               "action": "viewInCalendar"
                                           }                                                                          
                                         }
