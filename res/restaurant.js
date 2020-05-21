@@ -1,5 +1,5 @@
 /**
- * Adaptive Card Restaurant Sample from https://adaptivecards.io/samples/Restaurant.html
+ * The Restaurant Review sample from https://developer-portal-intb.ciscospark.com/buttons-and-cards-designer/restaurant
  * This sample demonstrates the following types of controls:
  * 
  * ColumnSets and Columns with the width attribute
@@ -12,70 +12,9 @@
 
 class Restaurant {
   constructor(srcBaseUrl, contentType) {
-    this.card = {
-      "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-      "type": "AdaptiveCard",
-      "version": "1.0",
-      "body": [
-        {
-          //"speak": "Tom's Pie is a Pizza restaurant which is rated 9.3 by customers.",
-          "type": "ColumnSet",
-          "columns": [
-            {
-              "type": "Column",
-              "width": 2,
-              "items": [
-                {
-                  "type": "TextBlock",
-                  "text": "PIZZA"
-                },
-                {
-                  "type": "TextBlock",
-                  "text": "Tom's Pie",
-                  "weight": "bolder",
-                  "size": "extraLarge",
-                  "spacing": "none"
-                },
-                {
-                  "type": "TextBlock",
-                  "text": "4.2 ★★★☆ (93) · $$",
-                  "isSubtle": true,
-                  "spacing": "none"
-                },
-                {
-                  "type": "TextBlock",
-                  "text": "**Matt H. said** \"I'm compelled to give this place 5 stars due to the number of times I've chosen to eat here this past year!\"",
-                  "size": "small",
-                  "wrap": true
-                }
-              ]
-            },
-            {
-              "type": "Column",
-              "width": 1,
-              "items": [
-                {
-                  "type": "Image",
-                  "url": "https://picsum.photos/300?image=882",
-                  "size": "auto"
-                }
-              ]
-            }
-          ]
-        }
-      ],
-      "actions": [
-        {
-          "type": "Action.OpenUrl",
-          "title": "More Info",
-          "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-        }
-      ]
-    };
+    this.card = require('./design/restaurant.json');
     this.contentType = contentType;
-    this.srcUrl = (srcBaseUrl[srcBaseUrl.length - 1] === '/') ?
-      srcBaseUrl + 'restaurant.js' :
-      srcBaseUrl + '/restaurant.js';
+    this.srcUrl = `${srcBaseUrl}/restaurant`;
   }
 
   async renderCard(bot, logger) {
@@ -86,7 +25,6 @@ class Restaurant {
         '* Image with the size and attribute\n' +
         '* Text Blocks with many attributes including size, weight, isSubtle and spacing\n' +
         '* OpenUrl Action\n\n' +
-        'The speak attribute from original sample was removed as this is not supported on Webex Teams\n\n' +
         'Cards with images can take a few seconds to render. ' +
         'In the meantime you can see the full source here: ' + this.srcUrl);
       message = await bot.sendCard(this.card, "If you see this your client cannot render our Restaurant example.");
@@ -98,7 +36,7 @@ class Restaurant {
     }
     bot.reply(message, 'When a user clicks on a Action.OpenUrl button in Webex Teams, the client opens that link directly,  ' +
       'and there is no event to the application that posted the card.\n\n' +
-      '...Don\'t click on more Info unless you like Rick Astley!\n\n' +
+      '...Don\'t click on more Info unless you want to see more pictures of yummy food!\n\n' +
       'Post any message to me if you want to see another card')
       .catch((e) => logger.error(`Failed to post follow-up to Restaurant card. Error:${e.message}`));
   };

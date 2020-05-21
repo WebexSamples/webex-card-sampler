@@ -1,5 +1,5 @@
 /**
- * Adaptive Card Image Gallery Sample from https://adaptivecards.io/samples/ImageGallery.html
+ * The Image Gallery sample from https://developer-portal-intb.ciscospark.com/buttons-and-cards-designer/image_gallery
  * This sample demonstrates the following types of controls
  * 
  * Text Block with the size and weight attributes
@@ -10,70 +10,9 @@
 
 class ImageGallery {
   constructor(srcBaseUrl, contentType) {
-    this.card = {
-      "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-      "type": "AdaptiveCard",
-      "version": "1.0",
-      "body": [
-        {
-          "type": "TextBlock",
-          "text": "Here are some cool photos",
-          "size": "large"
-        },
-        {
-          "type": "TextBlock",
-          "text": "Sorry some of them are repeats",
-          "size": "medium",
-          "weight": "lighter"
-        },
-        {
-          "type": "ImageSet",
-          "imageSize": "medium",
-          "images": [
-            {
-              "type": "Image",
-              "url": "https://picsum.photos/200/200?image=100"
-            },
-            {
-              "type": "Image",
-              "url": "https://picsum.photos/300/200?image=200"
-            },
-            {
-              "type": "Image",
-              "url": "https://picsum.photos/300/200?image=301"
-            },
-            {
-              "type": "Image",
-              "url": "https://picsum.photos/200/200?image=400"
-            },
-            {
-              "type": "Image",
-              "url": "https://picsum.photos/300/200?image=500"
-            },
-            {
-              "type": "Image",
-              "url": "https://picsum.photos/200/200?image=600"
-            },
-            {
-              "type": "Image",
-              "url": "https://picsum.photos/300/200?image=700"
-            },
-            {
-              "type": "Image",
-              "url": "https://picsum.photos/300/200?image=800"
-            },
-            {
-              "type": "Image",
-              "url": "https://picsum.photos/300/200?image=900"
-            }
-          ]
-        }
-      ]
-    };
+    this.card = require('./design/image_gallery.json');
     this.contentType = contentType;
-    this.srcUrl = (srcBaseUrl[srcBaseUrl.length - 1] === '/') ?
-      srcBaseUrl + 'image-gallery.js' :
-      srcBaseUrl + '/image-gallery.js';
+    this.srcUrl = `${srcBaseUrl}/image_gallery`;
   }
 
   async renderCard(bot, logger) {

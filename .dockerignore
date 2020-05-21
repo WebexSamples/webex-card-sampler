@@ -19,20 +19,5 @@ jspm_packages
 # Optional REPL history
 .node_repl_history
 
-# Config
-.env
-.env-emulator
-.env-real
-.env-production
-.env-devel
-config.json
-mongo.json
-config-prodbot.json
-mongo-prodbot.json
- 
 # Debug configs
 .vscode/launch.json
-.env-aws-docker
-.env-local-debugger
-inspect-idea.js
-publish-to-aws.sh

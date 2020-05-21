@@ -22,6 +22,10 @@ logger = require('./logger');
 // When running locally read environment variables from a .env file
 require('dotenv').config();
 
+// Object for determining full message size of an adaptive card
+const CardSize = require('./card-size');
+const cardSize = new CardSize();
+
 // Configure the Framework bot for the environment we are running in
 var frameworkConfig = {};
 var cardsConfig = {};
@@ -50,6 +54,7 @@ let adminSpaceId = '';
 let adminsBot = null;
 let botName = '';
 let botEmail = 'the bot';
+let warnCardSize = 60000;
 if (process.env.ADMIN_SPACE_ID) {
   adminSpaceId = process.env.ADMIN_SPACE_ID;
 } else if (process.env.ADMIN_EMAIL) {
@@ -62,6 +67,9 @@ if (process.env.ADMIN_SPACE_ID) {
 // discover them after our first spawn
 if (process.env.BOTNAME) {botName = process.env.BOTNAME;}
 if (process.env.BOT_EMAIL) {botEmail = process.env.BOT_EMAIL;}
+
+// We can warn about cards that are too big.  If set read the warning size from env
+if (process.env.WARNING_CARD_SIZE) {warnCardSize = process.env.WARNING_CARD_SIZE;}
 
 // Card data can be big!
 app.use(bodyParser.json({limit: '50mb'}));
@@ -83,12 +91,6 @@ Agenda = require('./res/agenda.js');
 let agenda = new Agenda(cardsConfig.srcBaseUrl, cardsConfig.contentType);
 CalendarReminder = require('./res/calendar-reminder.js');
 let calendarReminder = new CalendarReminder(cardsConfig.srcBaseUrl, cardsConfig.contentType);
-ExpenseReport = require('./res/expense-report.js');
-let expenseReport = new ExpenseReport(cardsConfig.srcBaseUrl, cardsConfig.contentType);
-Input = require('./res/input.js');
-let input = new Input(cardsConfig.srcBaseUrl, cardsConfig.contentType);
-InputForm = require('./res/input-form.js');
-let inputForm = new InputForm(cardsConfig.srcBaseUrl, cardsConfig.contentType);
 FlightDetails = require('./res/flight-details.js');
 let flightDetails = new FlightDetails(cardsConfig.srcBaseUrl, cardsConfig.contentType);
 FlightItinerary = require('./res/flight-itinerary.js');
@@ -99,10 +101,14 @@ FoodOrder = require('./res/food-order.js');
 let foodOrder = new FoodOrder(cardsConfig.srcBaseUrl, cardsConfig.contentType);
 ImageGallery = require('./res/image-gallery.js');
 let imageGallery = new ImageGallery(cardsConfig.srcBaseUrl, cardsConfig.contentType);
+Input = require('./res/input.js');
+let input = new Input(cardsConfig.srcBaseUrl, cardsConfig.contentType);
+InputForm = require('./res/input-form.js');
+let inputForm = new InputForm(cardsConfig.srcBaseUrl, cardsConfig.contentType);
+ProductAnnouncement = require('./res/product-announcement.js');
+let productAnnouncement = new ProductAnnouncement(cardsConfig.srcBaseUrl, cardsConfig.contentType);
 Restaurant = require('./res/restaurant.js');
 let restaurant = new Restaurant(cardsConfig.srcBaseUrl, cardsConfig.contentType);
-SimpleFallback = require('./res/simple-fallback.js');
-let simpleFallback = new SimpleFallback(cardsConfig.srcBaseUrl, cardsConfig.contentType);
 Solitaire = require('./res/solitaire.js');
 let solitaire = new Solitaire(cardsConfig.srcBaseUrl, cardsConfig.contentType);
 SportingEvent = require('./res/sporting-event.js');
@@ -177,7 +183,7 @@ var responded = false;
 
 // A secret for our admin only
 framework.hears('getAdminStats', function (bot) {
-  logger.verbose('Processing getAdminStats Request for ' + bot.isDirectTo);
+  logger.info('Processing getAdminStats Request for ' + bot.isDirectTo);
   if (adminEmail === bot.isDirectTo) {
     updateAdmin(`${botName} has been added to the following spaces:`, true);
   } else {
@@ -196,6 +202,7 @@ framework.hears(/help/i, function (bot) {
 // send an the sample card in response to any input without files
 framework.hears(/.*/, function (bot, trigger) {
   if ((!responded) && (!trigger.message.files)) {
+    logger.info(`Processing a message "${trigger.message.text}" from space "${bot.room.title}".`);
     samplePicker.renderCard(bot, logger);
   }
   responded = false;
@@ -210,6 +217,7 @@ framework.on('files', function (bot, trigger) {
     response += '...';
   }
   response += 'Don\'t forget! You can send me any text message to get back to the sample picker.';
+  logger.info(`Processing a message "${trigger.message.text}" from space "${bot.room.title}" with files: ${trigger.message.files}`);
   bot.reply(trigger.message, response)
     .then(() => renderJsonFileRequest(bot, trigger))
     .catch((e) => logger.error(`Failed to respond to posted files: ${e.message}`));
@@ -235,6 +243,7 @@ framework.on('attachmentAction', function (bot, trigger) {
 
 // Render the selected sample
 function renderSelectedCard(bot, cardSelection) {
+  logger.info(`Got a request to render the ${cardSelection} card from space: ${bot.room.title}`);
   switch (cardSelection) {
     case ('activityUpdate'):
       activityUpdate.renderCard(bot, logger);
@@ -279,13 +288,13 @@ function renderSelectedCard(bot, cardSelection) {
     case ('foodOrder'):
       foodOrder.renderCard(bot, logger);
       break;
-
+    
+    case('productAnnouncement'):
+      productAnnouncement.renderCard(bot, logger);
+      break;
+    
     case ("restaurant"):
       restaurant.renderCard(bot, logger);
-      break;
-
-    case ('simpleFallback'):
-      simpleFallback.renderCard(bot, logger);
       break;
 
     case ('solitaire'):
@@ -317,6 +326,7 @@ function renderSelectedCard(bot, cardSelection) {
 
 // Process the button press for a specific card
 function processSampleCardResponse(bot, attachmentAction, person) {
+  logger.info(`Got a button push on card ${attachmentAction.inputs.cardType} from space: ${bot.room.title}`);
   switch (attachmentAction.inputs.cardType) {
     case ("samplePicker"):
       // Display the chosen card
@@ -329,34 +339,6 @@ function processSampleCardResponse(bot, attachmentAction, person) {
       } else {
         renderCustomJson(bot, attachmentAction);
       }
-      break;
-
-    case ("activityUpdate"):
-      activityUpdate.handleSubmit(attachmentAction, person, bot, logger);
-      break;
-
-    case ('calendarReminder'):
-      calendarReminder.handleSubmit(attachmentAction, person, bot, logger);
-      break;
-
-    case ("expenseReport"):
-      expenseReport.handleSubmit(attachmentAction, person, bot, logger);
-      break;
-
-    case ("input"):
-      input.handleSubmit(attachmentAction, person, bot, logger);
-      break;
-
-    case ("inputForm"):
-      inputForm.handleSubmit(attachmentAction, person, bot, logger);
-      break;
-
-    case ("flightDetails"):
-      flightDetails.handleSubmit(attachmentAction, person, bot, logger);
-      break;
-
-    case ("foodOrder"):
-      foodOrder.handleSubmit(attachmentAction, person, bot, logger);
       break;
 
     default:
@@ -397,7 +379,7 @@ function renderCustomJson(bot, attachmentAction) {
     try {
       let cardJson = JSON.parse(attachmentAction.inputs.cardJson);
       bot.sendCard(cardJson, 'The client could not render the entered card JSON')
-        .catch((e) => reportCustomRenderError(bot, attachmentAction, e));
+        .catch((e) => reportCustomRenderError(bot, attachmentAction, cardJson, e));
     } catch (e) {
       bot.reply(attachmentAction, 'Your design does not appear to be ' +
         'valid JSON.  One way to get a valid design is to use the ' +
@@ -419,7 +401,7 @@ function renderJsonFileRequest(bot, trigger) {
     }, function (error, response, body) {
       if (!error && response.statusCode === 200) {
         bot.sendCard(body, 'The client could not render the entered card JSON')
-          .catch((e) => reportCustomRenderError(bot, trigger.message, e));
+          .catch((e) => reportCustomRenderError(bot, trigger.message, body, e));
       } else {
         bot.say('markdown', `Could not read JSON from ${url}.\n\n${error.message}`);
       }
@@ -427,18 +409,88 @@ function renderJsonFileRequest(bot, trigger) {
   }
 }
 
-function reportCustomRenderError(bot, replyTo, e) {
+function reportCustomRenderError(bot, replyTo, cardJson, e) {
   let eMsg = 'Webex rejected the card design, ';
-  if (e.statusCode) {
+  if (e.statusCode !== undefined) {
     eMsg += `with a ${e.statusCode} response, `;
   }
-  if (e.body) {
+  if (e.body !== undefined) {
     eMsg += 'and a response body:\n\n```\n\n' + JSON.stringify(e.body, null, 2);
-  } else {
+  } else if ('statusMessage' in e) {
+    if ('name' in e) {
+      eMsg += ', ' + e.name + ': ' + e.statusMessage + ', ';
+    } else {
+      eMsg += ', ' + e.statusMessage,  + ', ';
+    }
     eMsg += 'returning the error:\n\n```\n\n' + e.message;
   }
   bot.reply(replyTo, eMsg);
+  logger.info(`Custom JSON from space "${bot.room.title}" resulted in error message: ${eMsg}`);
+  logger.info(JSON.stringify(cardJson, 2, 2));
+  postCardSizeorErrorDetails(bot, replyTo, e, cardJson);
 };
+
+function postCardSizeorErrorDetails(bot, replyTo, e, card) {
+  let msg = '';
+  let gotGenericError = false;
+  if ((e.body !== undefined) && (typeof e.body === 'object') &&
+    (e.body.message === "Unable to share content to room")) {
+    gotGenericError = true;
+  }
+  return cardSize.calculateRoughCardSize(card)
+    .then((sizeInfo) => {
+      // Warn about big cards
+      if (gotGenericError || (sizeInfo.total > warnCardSize)) {
+        msg += `The overall card content may be ` +
+          `too big for Webex.  Your card consists of the following:\n` +
+          `* JSON Size: **${sizeInfo.jsonSize} bytes**\n` +
+          `* Number of Images: ${sizeInfo.images.length}\n` +
+          `* Total Size: **${sizeInfo.total} bytes**\n\n`;
+        if (sizeInfo.images.length) {
+          msg += `Image details:\n`;
+          for (let i=0; i< sizeInfo.images.length; i++) {
+            imgInfo = sizeInfo.images[i];
+            msg += `${i+1}. ${imgInfo.url}: **${imgInfo.size} bytes**\n`;
+          }  
+        }
+        msg += `\nYou may want to reduce the number of images or the size of ` +
+          `the images you are using and try again.  As a rule of thumb, Webex `+
+          `card sizes should not exceed ${(warnCardSize/1000).toFixed(1)}K ` +
+          `bytes in total, but smaller sizes may also fail especially if they include ` +
+          `many images, each of which adds its own overhad that contributes to the ` +
+          `internal message storage requirements.`;
+      }
+      if (sizeInfo.imageErrors.length) {
+        msg += `\n\nYour card design includes some images which could not be fetched:\n`;
+        for (let i=0; i< sizeInfo.imageErrors.length; i++) {
+          imgInfo = sizeInfo.imageErrors[i];
+          msg += `${i+1}. ${imgInfo.url}\n`;
+        }
+        msg += `\nYour card may not properly render unless all image URLs are valid.`;
+      }
+      if (msg) {
+        logger.info(`Custom JSON from space "${bot.room.title}" resulted in detailed error: ${msg}`);
+        return bot.reply(replyTo, {markdown: msg});
+      }
+    }).catch((e) => {
+      if (e.name === 'TypeError') {
+        let msg = '';
+        if ((card) && (card.roomId)) {
+          msg = 'Your data contains a `roomId`, so it looks like you may have submitted a full /messages API request load. ' +
+            'Just send the card JSON.  For example, just the object in the attachments array from the body of a `POST /messages` ' +
+            'request, or what you might copy from the [Buttons and Cards Designer](https://developer.webex.com/buttons-and-cards-designer)';
+        } else {
+          msg = `It looks like the data you submitted is not a valid Adaptive Card JSON.`  +
+          'Try building your card in the [Buttons and Cards Designer](https://developer.webex.com/buttons-and-cards-designer) ' +
+          'and copying the JSON from there.';
+        }
+        bot.reply(replyTo, msg);
+        logger.info(`Custom JSON from space "${bot.room.title}" resulted in detailed error: ${msg}`);
+      } else { 
+        logger.error(`postCardSizeErrorDetails(): failed sending size info: ${e.message}`);
+      }
+    });
+}
 
 
 function updateAdmin(message, listAll = false) {
@@ -488,7 +540,11 @@ app.post('/', webhook(framework));
 
 // Health Check
 app.get('/', function (req, res) {
-  res.send(`I'm alive.  To use this app add ${botEmail} to a Webex Teams space.`);
+  if (process.env.DOCKER_BUILD) {
+    res.send(`I'm alive, running in container built ${process.env.DOCKER_BUILD}.  To use this app add ${botEmail} to a Webex Teams space.`);
+  } else {
+    res.send(`I'm alive.  To use this app add ${botEmail} to a Webex Teams space.`);
+  }
 });
 
 // start express server

@@ -1,0 +1,75 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "Cisco Systems, Inc. (NASDAQ: CSCO)",
+                    "size": "Medium",
+                    "isSubtle": true
+                },
+                {
+                    "type": "TextBlock",
+                    "text": "July 19, 1:00 PM PST",
+                    "isSubtle": true
+                }
+            ]
+        },
+        {
+            "type": "Container",
+            "spacing": "None",
+            "items": [
+                {
+                    "type": "ColumnSet",
+                    "columns": [
+                        {
+                            "type": "Column",
+                            "width": "stretch",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "55.42",
+                                    "size": "ExtraLarge"
+                                },
+                                {
+                                    "type": "TextBlock",
+                                    "text": "▼ 0.20 (0.32%)",
+                                    "size": "Small",
+                                    "color": "Attention",
+                                    "spacing": "None"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Column",
+                            "width": "auto",
+                            "items": [
+                                {
+                                    "type": "FactSet",
+                                    "facts": [
+                                        {
+                                            "title": "Open",
+                                            "value": "53.24"
+                                        },
+                                        {
+                                            "title": "High",
+                                            "value": "56.02"
+                                        },
+                                        {
+                                            "title": "Low",
+                                            "value": "53.20"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

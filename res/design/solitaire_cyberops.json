@@ -1,0 +1,45 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "width": 1,
+                    "items": [
+                        {
+                            "type": "Image",
+                            "url": "https://i.postimg.cc/2jMv5kqt/AS89975.jpg",
+                            "size": "Stretch"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "width": 1,
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Cisco Certified CyberOps Associate",
+                            "color": "Dark",
+                            "weight": "Bolder",
+                            "wrap": true,
+                            "size": "default",
+                            "horizontalAlignment": "Center"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": "Earn the CyberOps Associate certification for a career in cybersecurity and cybersecurity operations.",
+                            "color": "Dark",
+                            "height": "stretch",
+                            "wrap": true
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

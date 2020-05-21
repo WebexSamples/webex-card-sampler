@@ -1,5 +1,5 @@
 /**
- * Adaptive Card Weather Compact Sample from https://adaptivecards.io/samples/WeatherCompact.html
+ * The Weather Compact sample from https://developer-portal-intb.ciscospark.com/buttons-and-cards-designer/weather_compact
  * This sample demonstrates the following types of controls:
  * 
  * The ColumnSet and Column elements with the width attribute
@@ -12,86 +12,9 @@
 
 class WeatherCompact {
   constructor(srcBaseUrl, contentType) {
-    this.card = {
-      "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-      "type": "AdaptiveCard",
-      "version": "1.0",
-      //"speak": "The forecast for Seattle January 20 is mostly clear with a High of 51 degrees and Low of 40 degrees",
-      "body": [
-        {
-          "type": "TextBlock",
-          "text": "Seattle, WA",
-          "size": "large",
-          "isSubtle": true
-        },
-        {
-          "type": "TextBlock",
-          "text": "September 18, 7:30 AM",
-          "spacing": "none"
-        },
-        {
-          "type": "ColumnSet",
-          "columns": [
-            {
-              "type": "Column",
-              "width": "auto",
-              "items": [
-                {
-                  "type": "Image",
-                  "url": "https://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Square.png",
-                  "size": "small"
-                }
-              ]
-            },
-            {
-              "type": "Column",
-              "width": "auto",
-              "items": [
-                {
-                  "type": "TextBlock",
-                  "text": "42",
-                  "size": "extraLarge",
-                  "spacing": "none"
-                }
-              ]
-            },
-            {
-              "type": "Column",
-              "width": "stretch",
-              "items": [
-                {
-                  "type": "TextBlock",
-                  "text": "°F",
-                  "weight": "bolder",
-                  "spacing": "small"
-                }
-              ]
-            },
-            {
-              "type": "Column",
-              "width": "stretch",
-              "items": [
-                {
-                  "type": "TextBlock",
-                  "text": "Hi 51",
-                  "horizontalAlignment": "left"
-                },
-                {
-                  "type": "TextBlock",
-                  "text": "Lo 40",
-                  "horizontalAlignment": "left",
-                  "spacing": "none"
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    };
+    this.card = require('./design/weather_compact.json');
     this.contentType = contentType;
-    this.srcUrl = (srcBaseUrl[srcBaseUrl.length - 1] === '/') ?
-      srcBaseUrl + 'weather-compact.js' :
-      srcBaseUrl + '/weather-compact.js';
+    this.srcUrl = `${srcBaseUrl}/weather_compact`;
   }
 
   async renderCard(bot, logger) {
@@ -111,7 +34,7 @@ class WeatherCompact {
       bot.say(`${msg} Please contact the Webex Developer Support: https://developer.webex.com/support`)
         .catch((e) => logger.error(`Failed to post error message to space. Error:${e.message}`));
     }
-    bot.reply(message, '...you might want a jacket in the morning.\n\n' +
+    bot.reply(message, '...don\'t forget your sunglasses!\n\n' +
         'There is no user input for this card. Post any message to me if you want to see another card.')
       .catch((e) => logger.error(`Failed to post follow-up to Weather Compact card. Error:${e.message}`));
   };

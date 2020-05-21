@@ -1,0 +1,76 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "San Jose, CA",
+            "size": "Large",
+            "isSubtle": true
+        },
+        {
+            "type": "TextBlock",
+            "text": "May 18, 7:30 AM",
+            "spacing": "None"
+        },
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "width": "auto",
+                    "items": [
+                        {
+                            "type": "Image",
+                            "url": "https://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Square.png",
+                            "size": "Small"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "width": "auto",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "75",
+                            "size": "ExtraLarge",
+                            "spacing": "None"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "width": "auto",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "°F",
+                            "weight": "Bolder",
+                            "spacing": "Small"
+                        }
+                    ],
+                    "spacing": "None"
+                },
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Hi 81",
+                            "horizontalAlignment": "Left"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": "Lo 58",
+                            "horizontalAlignment": "Left",
+                            "spacing": "None"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
