@@ -32,10 +32,10 @@ class CardSize {
    */
   async calculateRoughCardSize(card) {
     if ((card === null) || (typeof card !== 'object') || 
-      (card.type.toLowerCase() != "adaptivecard") ||
-      (card.body === null) || (typeof card.body != 'object') ||
+      (!card.type) || (card.type.toLowerCase() != "adaptivecard") ||
+      (!card.body) || (typeof card.body != 'object') ||
       (!card.body.length)) {
-      return when.reject(new Error(`CardSize.calculate(): invalid card type`));
+      return when.reject(new TypeError(`CardSize.calculate(): invalid card type`));
     }
 
     let size = {

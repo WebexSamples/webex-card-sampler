@@ -426,6 +426,7 @@ function reportCustomRenderError(bot, replyTo, cardJson, e) {
   }
   bot.reply(replyTo, eMsg);
   logger.info(`Custom JSON from space "${bot.room.title}" resulted in error message: ${eMsg}`);
+  logger.info(JSON.stringify(cardJson, 2, 2));
   postCardSizeorErrorDetails(bot, replyTo, e, cardJson);
 };
 
@@ -472,7 +473,18 @@ function postCardSizeorErrorDetails(bot, replyTo, e, card) {
         return bot.reply(replyTo, {markdown: msg});
       }
     }).catch((e) => {
-      logger.error(`postCardSizeDetails(): failed sending size info: ${e.message}`);
+      if (e.name === 'TypeError') {
+        if ((card) && (card.roomId)) {
+          bot.reply(replyTo, 'Your data contains a `roomId`, so it looks like you may have submitted a full /messages API request payaload. ' +
+            'Just send the card JSON.  For example, just the object in the attachments array from the body of a `POST /messages` ' +
+            'request, or what you might copy from the [Buttons and Cards Designer](https://developer.webex.com/buttons-and-cards-designer)');
+        } else {
+          bot.reply(replyTo, `It looks like the data you submitted is not a valid Adaptive Card JSON.`  +
+          'Try building your card in the [Buttons and Cards Designer](https://developer.webex.com/buttons-and-cards-designer) ' +
+          'and copying the JSON from there.');
+        }
+      }
+      logger.error(`postCardSizeErrorDetails(): failed sending size info: ${e.message}`);
     });
 }
 
@@ -524,7 +536,11 @@ app.post('/', webhook(framework));
 
 // Health Check
 app.get('/', function (req, res) {
-  res.send(`I'm alive.  To use this app add ${botEmail} to a Webex Teams space.`);
+  if (process.env.DOCKER_BUILD) {
+    res.send(`I'm alive, running in container built ${process.env.DOCKER_BUILD}.  To use this app add ${botEmail} to a Webex Teams space.`);
+  } else {
+    res.send(`I'm alive.  To use this app add ${botEmail} to a Webex Teams space.`);
+  }
 });
 
 // start express server
