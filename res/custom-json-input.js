@@ -10,14 +10,16 @@ class CustomJsonInput {
   }
 
   async renderCard(bot, logger) {
+    // Update a local instance copy if this is a group space...
+    let card = JSON.parse(JSON.stringify(this.card));
     if (bot.isGroup) {
-      this.card.body.push(        {
+      card.body.push(        {
         "type": "TextBlock",
         "text": "Don't forget to at-mention me in the message with your files!"
       });
     }
 
-    bot.sendCard(this.card, "If you see this your client cannot render our Custom JSON Input card.")
+    bot.sendCard(card, "If you see this your client cannot render our Custom JSON Input card.")
       .catch((err) => {
         let msg = 'Failed to render Custom JSON Input card.';
         logger.error(`${msg} Error:${err.message}`);
