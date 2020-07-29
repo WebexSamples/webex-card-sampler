@@ -17,6 +17,7 @@
     {
       "type": "Input.ChoiceSet",
       "id": "cardSelection",
+      "value": "activityUpdate",
       "choices": [
         {
           "title": "Activity Update",
