@@ -1,5 +1,5 @@
 /**
- * The Stock Update sample from https://developer-portal-intb.ciscospark.com/buttons-and-cards-designer/stock_update
+ * The Stock Update sample from https://developer.ciscospark.com/buttons-and-cards-designer/stock_update
  * This sample demonstrates the following types of controls:
  * 
  * The Container, ColumnSet and Column elements with the spacing, width attributes

@@ -1,5 +1,5 @@
 /**
- * The Food Order sample from https://developer-portal-intb.ciscospark.com/buttons-and-cards-designer/food_order
+ * The Food Order sample from https://developer.ciscospark.com/buttons-and-cards-designer/food_order
  * This sample demonstrates the following types of controls:
  * 
  * Text block with the weight, size, isSubtle, and wrap attributes

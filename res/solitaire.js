@@ -1,5 +1,5 @@
 /**
- * The Solitaire Cyberops sample from https://developer-portal-intb.ciscospark.com/buttons-and-cards-designer/solitaire_cyberops
+ * The Solitaire Cyberops sample from https://developer.ciscospark.com/buttons-and-cards-designer/solitaire_cyberops
  * This sample demonstrates the following types of controls:
  * 
  * The ColumnSet and Column elements with the width attribute

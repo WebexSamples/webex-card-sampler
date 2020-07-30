@@ -1,5 +1,5 @@
 /**
- * The Activity Update sample from https://developer-portal-intb.ciscospark.com/buttons-and-cards-designer/activity_update
+ * The Activity Update sample from https://developer.ciscospark.com/buttons-and-cards-designer/activity_update
  * This sample demonstrates the following types of controls:
  * 
  * ColumnSet and Column elements with the width, size, and style attributes

@@ -1,5 +1,5 @@
 /**
- * The Input Sample from https://developer-portal-intb.ciscospark.com/buttons-and-cards-designer/input
+ * The Input Sample from https://developer.ciscospark.com/buttons-and-cards-designer/input
  * This sample demonstrates the following types of controls:
  * 
  * Text Blocks with size, weight, and horizontalAlignment attributes

@@ -1,5 +1,5 @@
 /**
- * The Image Gallery sample from https://developer-portal-intb.ciscospark.com/buttons-and-cards-designer/image_gallery
+ * The Image Gallery sample from https://developer.ciscospark.com/buttons-and-cards-designer/image_gallery
  * This sample demonstrates the following types of controls
  * 
  * Text Block with the size and weight attributes

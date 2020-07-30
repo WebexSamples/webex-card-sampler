@@ -1,5 +1,5 @@
 /**
- * The Flight Details sample from https://developer-portal-intb.ciscospark.com/buttons-and-cards-designer/flight_details
+ * The Flight Details sample from https://developer.ciscospark.com/buttons-and-cards-designer/flight_details
  * This sample demonstrates the following types of controls:
  * 
  * ColumnSets and Columns with the spacing, style, width, height verticalContentAlignment, isVisible, and bleed attributes\n' +

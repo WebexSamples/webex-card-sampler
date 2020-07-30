@@ -1,5 +1,5 @@
 /**
- * The Sporting Event sample from https://developer-portal-intb.ciscospark.com/buttons-and-cards-designer/sporting_event
+ * The Sporting Event sample from https://developer.ciscospark.com/buttons-and-cards-designer/sporting_event
  * This sample demonstrates the following types of controls:
  * 
  * The Container, ColumnSet and Column elements with the width, separator and spacing attributes

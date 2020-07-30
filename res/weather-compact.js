@@ -1,5 +1,5 @@
 /**
- * The Weather Compact sample from https://developer-portal-intb.ciscospark.com/buttons-and-cards-designer/weather_compact
+ * The Weather Compact sample from https://developer.ciscospark.com/buttons-and-cards-designer/weather_compact
  * This sample demonstrates the following types of controls:
  * 
  * The ColumnSet and Column elements with the width attribute

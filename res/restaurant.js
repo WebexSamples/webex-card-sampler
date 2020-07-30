@@ -1,5 +1,5 @@
 /**
- * The Restaurant Review sample from https://developer-portal-intb.ciscospark.com/buttons-and-cards-designer/restaurant
+ * The Restaurant Review sample from https://developer.ciscospark.com/buttons-and-cards-designer/restaurant
  * This sample demonstrates the following types of controls:
  * 
  * ColumnSets and Columns with the width attribute

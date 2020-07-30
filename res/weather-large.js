@@ -1,5 +1,5 @@
 /**
- * The Weather Large sample from https://developer-portal-intb.ciscospark.com/buttons-and-cards-designer/weather_large
+ * The Weather Large sample from https://developer.ciscospark.com/buttons-and-cards-designer/weather_large
  * This sample demonstrates the following types of controls:
  * 
  * The backgroundImage attribute of a card

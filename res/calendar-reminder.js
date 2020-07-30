@@ -1,5 +1,5 @@
 /**
- * The Calendar Reminder sample from https://developer-portal-intb.ciscospark.com/buttons-and-cards-designer/calendar_reminder
+ * The Calendar Reminder sample from https://developer.ciscospark.com/buttons-and-cards-designer/calendar_reminder
  * This sample demonstrates the following types of controls
  *   -- Text block with the size, weight, isSubtle, and spacing attributes
  *   -- Input.ChoiceSet with the style attribute

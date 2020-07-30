@@ -1,5 +1,5 @@
 /**
- * The Agenda sample from https://developer-portal-intb.ciscospark.com/buttons-and-cards-designer/agenda
+ * The Agenda sample from https://developer.ciscospark.com/buttons-and-cards-designer/agenda
  * This sample demonstrates the following types of controls:
  * 
  * ColumnSet and Column elements with the horizontalAlignment, spacing, seperator and width attributes

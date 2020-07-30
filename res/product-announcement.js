@@ -1,5 +1,5 @@
 /**
- * The Product Announcement sample from https://developer-portal-intb.ciscospark.com/buttons-and-cards-designer/product_announcement
+ * The Product Announcement sample from https://developer.ciscospark.com/buttons-and-cards-designer/product_announcement
  * This sample demonstrates the following types of controls:
  * 
  * ColumnSet and Columns with the width, spacing and horizontalAlignment attributes

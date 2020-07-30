@@ -1,5 +1,5 @@
 /**
- * The Flight Update sample from https://developer-portal-intb.ciscospark.com/buttons-and-cards-designer/flight_update
+ * The Flight Update sample from https://developer.ciscospark.com/buttons-and-cards-designer/flight_update
  * This sample demonstrates the following types of controls:
  * 
  * ColumnSets and Columns with the separator, spacing, width attributes

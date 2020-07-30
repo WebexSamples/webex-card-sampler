@@ -1,5 +1,5 @@
 /**
- * The Flight Itinerary sample from https://developer-portal-intb.ciscospark.com/buttons-and-cards-designer/flight_itinerary
+ * The Flight Itinerary sample from https://developer.ciscospark.com/buttons-and-cards-designer/flight_itinerary
  * This sample demonstrates the following types of controls:
  * 
  * ColumnSets and Columns with the separator and width attributes
