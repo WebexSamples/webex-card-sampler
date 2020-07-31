@@ -5,9 +5,6 @@
  * The ColumnSet and Column elements with the width attribute
  * TextBlocks with the size, isSubtle, horizontalAlignment, and spacing attributes
  * Image with the size attribute, horizontalAlignment
- *
- * We removed the "speak" attribute from the original sample as this property of the 
- * card object is not supported on Webex Teams
  **/
 
 class WeatherCompact {
@@ -23,9 +20,7 @@ class WeatherCompact {
       message = await bot.say('The Weather Compact sample demonstrates the following types of controls:\n' +
         '* The Container, ColumnSet and Column elements with the width, separator and spacing attributes\n' +
         '* TextBlocks with the size, horizontalAlignment, wrap, spacing, and weight attributes\n' +
-        '* Image with the size attribute, horizontalAlignment\n' +
-        'We removed the "speak" attribute from the original sample as this property of the \n' +
-        'card object is not supported on Webex Teams\n' +
+        '* Image with the size attribute, horizontalAlignment\n\n' +
         'Cards with images can take a few seconds to render, in the meantime you can see the full source with the modifications here: ' + this.srcUrl);
       message = await bot.sendCard(this.card, "If you see this your client cannot render our Weather Compact example.");
     } catch (err) {

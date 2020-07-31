@@ -6,10 +6,8 @@
  * Image with the size and attribute
  * Text Blocks with many attributes including size, weight, isSubtle and spacing
  * OpenUrl Action
- *
- * The speak attribute from original sample was removed as this is not supported on Webex Teams
  **/
-
+ 
 class Restaurant {
   constructor(srcBaseUrl, contentType) {
     this.card = require('./design/restaurant.json');
