@@ -11,16 +11,21 @@ See the framework's readme for more details on how it works
 */
 /*jshint esversion: 6 */  // Help out our linter
 
+// When running locally read environment variables from a .env file
+require('dotenv').config();
+
+// Print out some details about the environment we are running in
+const package_version = require('./package.json').version;
+console.log(`Running app version: ${package_version}`);
+console.log(`Running node version: ${process.version}`);
+
 var Framework = require('webex-node-bot-framework');
-var webhook = require('webex-node-bot-framework/webhook');
 var bodyParser = require('body-parser');
 var request = require("request");
 var express = require('express');
 var app = express();
 logger = require('./logger');
 
-// When running locally read environment variables from a .env file
-require('dotenv').config();
 
 // Object for determining full message size of an adaptive card
 const CardSize = require('./card-size');
@@ -29,20 +34,19 @@ const cardSize = new CardSize();
 // Configure the Framework bot for the environment we are running in
 var frameworkConfig = {};
 var cardsConfig = {};
-if ((process.env.WEBHOOK) && (process.env.TOKEN) &&
+if ((process.env.TOKEN) &&
   (process.env.PORT) && (process.env.CARD_CONENT_TYPE)) {
-  frameworkConfig.webhookUrl = process.env.WEBHOOK;
   frameworkConfig.token = process.env.TOKEN;
   frameworkConfig.port = process.env.PORT;
   // Adaptive Card with images can take a long time to render
   // Extend the timeout when waiting for a webex API request to return
-  frameworkConfig.requestTimeout = 60000;
+  frameworkConfig.requestTimeout = 75000;
 
   // Read the card schema and URL for the source example from environment
   cardsConfig.srcBaseUrl = process.env.CARD_SRC_BASE_URL;
   cardsConfig.contentType = process.env.CARD_CONENT_TYPE;
 } else {
-  logger.error('Cannot start server.  Missing required environment varialbles WEBHOOK, TOKEN or CARD_CONTENT_TYPE');
+  logger.error('Cannot start server.  Missing required environment varialbles TOKEN or CARD_CONTENT_TYPE');
   process.exit();
 }
 
@@ -534,9 +538,6 @@ function tryToInitAdminBot(bot, framework) {
 }
 
 
-
-// define express path for incoming webhooks
-app.post('/', webhook(framework));
 
 // Health Check
 app.get('/', function (req, res) {
