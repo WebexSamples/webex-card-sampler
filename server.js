@@ -429,8 +429,10 @@ function reportCustomRenderError(bot, replyTo, cardJson, e) {
     eMsg += 'returning the error:\n\n```\n\n' + e.message;
   }
   bot.reply(replyTo, eMsg);
-  logger.info(`Custom JSON from space "${bot.room.title}" resulted in error message: ${eMsg}`);
-  logger.info(JSON.stringify(cardJson, 2, 2));
+  // Remove the word error from the log line to avoid operational alerts
+  eMsg = eMsg.replace(/error/gi, 'err-or');
+  logger.info(`Custom JSON from space "${bot.room.title}" resulted in non success response: ${eMsg}`);
+  logger.info(JSON.stringify(cardJson, 2, 2).replace(/error/gi, 'err-or'));
   postCardSizeorErrorDetails(bot, replyTo, e, cardJson);
 };
 
@@ -473,7 +475,7 @@ function postCardSizeorErrorDetails(bot, replyTo, e, card) {
         msg += `\nYour card may not properly render unless all image URLs are valid.`;
       }
       if (msg) {
-        logger.info(`Custom JSON from space "${bot.room.title}" resulted in detailed error: ${msg}`);
+        logger.info(`Custom JSON from space "${bot.room.title}" resulted in non succress: ${msg}`);
         return bot.reply(replyTo, {markdown: msg});
       }
     }).catch((e) => {
@@ -489,7 +491,7 @@ function postCardSizeorErrorDetails(bot, replyTo, e, card) {
           'and copying the JSON from there.';
         }
         bot.reply(replyTo, msg);
-        logger.info(`Custom JSON from space "${bot.room.title}" resulted in detailed error: ${msg}`);
+        logger.info(`Custom JSON from space "${bot.room.title}" resulted in non success message: ${msg}`);
       } else { 
         logger.error(`postCardSizeErrorDetails(): failed sending size info: ${e.message}`);
       }

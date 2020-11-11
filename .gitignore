@@ -36,3 +36,4 @@ mongo-prodbot.json
 .env-local-debugger
 inspect-idea.js
 publish-to-aws.sh
+aws-docker-login.sh

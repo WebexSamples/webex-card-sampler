@@ -1,6 +1,6 @@
 {
   "name": "cardsampler",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Bot to demonstrate the adaptive card samples in Webex Teams",
   "main": "server.js",
   "scripts": {
