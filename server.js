@@ -34,8 +34,7 @@ const cardSize = new CardSize();
 // Configure the Framework bot for the environment we are running in
 var frameworkConfig = {};
 var cardsConfig = {};
-if ((process.env.TOKEN) &&
-  (process.env.PORT) && (process.env.CARD_CONENT_TYPE)) {
+if ((process.env.TOKEN) && (process.env.PORT)) {
   frameworkConfig.token = process.env.TOKEN;
   frameworkConfig.port = process.env.PORT;
   // Adaptive Card with images can take a long time to render
@@ -43,10 +42,12 @@ if ((process.env.TOKEN) &&
   frameworkConfig.requestTimeout = 75000;
 
   // Read the card schema and URL for the source example from environment
-  cardsConfig.srcBaseUrl = process.env.CARD_SRC_BASE_URL;
-  cardsConfig.contentType = process.env.CARD_CONENT_TYPE;
+  cardsConfig.srcBaseUrl = (process.env.CARD_SRC_BASE_URL) ? 
+    process.env.CARD_SRC_BASE_URL : 'https://developer.ciscospark.com/buttons-and-cards-designer';
+  cardsConfig.contentType = (process.env.CARD_CONENT_TYPE) ?
+  process.env.CARD_CONENT_TYPE : 'application/vnd.microsoft.card.adaptive';
 } else {
-  logger.error('Cannot start server.  Missing required environment varialbles TOKEN or CARD_CONTENT_TYPE');
+  logger.error('Cannot start server.  Missing required environment variables TOKEN or PORT');
   process.exit();
 }
 
