@@ -20,7 +20,7 @@ class Input {
     this.srcUrl = `${srcBaseUrl}/input`;
   }
 
-  async renderCard(bot, logger) {
+  async renderCard(bot, logger, cardSelection) {
     try {
       await bot.say('The Input sample demonstrates the following types of controls:\n' +
         '* Text Blocks with size, weight, and horizontalAlignment attributes\n' +
@@ -33,6 +33,8 @@ class Input {
         '* Action.ShowCard and Action.Submit elements\n\n' +
         'You can see the full source here: ' + this.srcUrl);
       await bot.sendCard(this.card, "If you see this your client cannot render our Input example.");
+      logger.info(`Sent the ${cardSelection} card to space: ${bot.room.title}`);
+
     } catch (err) {
       let msg = 'Failed to render Input card example.';
       logger.error(`${msg} Error:${err.message}`);

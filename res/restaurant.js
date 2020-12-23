@@ -15,7 +15,7 @@ class Restaurant {
     this.srcUrl = `${srcBaseUrl}/restaurant`;
   }
 
-  async renderCard(bot, logger) {
+  async renderCard(bot, logger, cardSelection) {
     let message = {};
     try {
       message = await bot.say('The Restaurant sample demonstrates the following types of controls:\n' +
@@ -26,6 +26,8 @@ class Restaurant {
         'Cards with images can take a few seconds to render. ' +
         'In the meantime you can see the full source here: ' + this.srcUrl);
       message = await bot.sendCard(this.card, "If you see this your client cannot render our Restaurant example.");
+      logger.info(`Sent the ${cardSelection} card to space: ${bot.room.title}`);
+
     } catch (err) {
       let msg = 'Failed to render Restaurant card example.';
       logger.error(`${msg} Error:${err.message}`);
@@ -37,6 +39,7 @@ class Restaurant {
       '...Don\'t click on more Info unless you want to see more pictures of yummy food!\n\n' +
       'Post any message to me if you want to see another card')
       .catch((e) => logger.error(`Failed to post follow-up to Restaurant card. Error:${e.message}`));
+      logger.info(`Sent reply to the ${cardSelection} card to space: ${bot.room.title}`);
   };
 
 };

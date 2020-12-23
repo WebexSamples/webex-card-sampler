@@ -15,7 +15,7 @@ class ImageGallery {
     this.srcUrl = `${srcBaseUrl}/image_gallery`;
   }
 
-  async renderCard(bot, logger) {
+  async renderCard(bot, logger, cardSelection) {
     let message = {};
     try {
       message = await bot.say('The Image Gallery sample demonstrates the following types of controls:\n' +
@@ -25,6 +25,8 @@ class ImageGallery {
         'Cards with images can take a few seconds to render. ' +
         'In the meantime you can see the full source here: ' + this.srcUrl);
       message = await bot.sendCard(this.card, "If you see this your client cannot render our Image Gallery example.");
+      logger.info(`Sent the ${cardSelection} card to space: ${bot.room.title}`);
+
     } catch (err) {
       let msg = 'Failed to render Image Gallery card example.';
       logger.error(`${msg} Error:${err.message}`);
@@ -34,6 +36,7 @@ class ImageGallery {
     bot.reply(message, '...don\'t gaze at those lovely images too long! You could end up like Narcissus.\n\n' +
       'There is no user input for this card. Post any message to me if you want to see another card.')
       .catch ((e) => logger.error(`Failed to post follow-up to Image Gallery card. Error:${e.message}`));
+      logger.info(`Sent reply to the ${cardSelection} card to space: ${bot.room.title}`);
   };
 
 };

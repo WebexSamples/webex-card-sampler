@@ -17,7 +17,7 @@ class InputForm {
     this.srcUrl = `${srcBaseUrl}/input_form`;
   }
 
-  async renderCard(bot, logger) {
+  async renderCard(bot, logger, cardSelection) {
     try {
       await bot.say('The Input Form sample demonstrates the following types of controls:\n' +
         '* ColumnSets and Columns with the width attribute\n' +
@@ -28,6 +28,8 @@ class InputForm {
         'Cards with images can take a few seconds to render. ' +
         'In the meantime you can see the full source here: ' + this.srcUrl);
       await bot.sendCard(this.card, "If you see this your client cannot render our Input Form example.");
+      logger.info(`Sent the ${cardSelection} card to space: ${bot.room.title}`);
+
     } catch (err) {
       let msg = 'Failed to render Input Form card example.';
       logger.error(`${msg} Error:${err.message}`);

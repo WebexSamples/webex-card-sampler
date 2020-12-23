@@ -17,7 +17,7 @@ class Agenda {
     this.srcUrl = `${srcBaseUrl}/agenda`;
   }
 
-  async renderCard(bot, logger) {
+  async renderCard(bot, logger, cardSelection) {
     let message = {}; 
     try {
       await bot.say('The Agenda sample demonstrates the following types of controls:\n' +
@@ -29,8 +29,12 @@ class Agenda {
         'Cards with images can take a few seconds to render. ' +
         'In the meantime you can see the full source here: ' + this.srcUrl);
       message = await bot.sendCard(this.card, "If you see this your client cannot render our Agenda example.");
+      logger.info(`Sent the ${cardSelection} card to space: ${bot.room.title}`);
+      
       await bot.reply(message, '...looks like just enough time to grab lunch in New York!\n\n' +
         'There is no user input for this card. Post any message to me if you want to see another card.');
+      logger.info(`Sent reply to the ${cardSelection} card to space: ${bot.room.title}`);
+      
     } catch (err) {
       let msg = 'Failed to render Agenda card example.';
       logger.error(`${msg} Error:${err.message}`);

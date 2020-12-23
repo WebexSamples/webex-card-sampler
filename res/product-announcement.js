@@ -15,7 +15,7 @@ class ProductAnnouncement {
     this.srcUrl = `${srcBaseUrl}/product_announcement`;
   }
 
-  async renderCard(bot, logger) {
+  async renderCard(bot, logger, cardSelection) {
     try {
       await bot.say('The Product Announcement sample demonstrates the following types of controls:\n' +
       ' * ColumnSet and Columns with the width, spacing and horizontalAlignment attributes\n' +
@@ -25,6 +25,8 @@ class ProductAnnouncement {
       'Cards with images can take a few seconds to render. ' +
       'In the meantime you can see the full source here: ' + this.srcUrl);
       await bot.sendCard(this.card, "If you see this your client cannot render our Food Order example.");
+      logger.info(`Sent the ${cardSelection} card to space: ${bot.room.title}`);
+      
     } catch (err) {
       let msg = 'Failed to render Product Announcement card example.';
       logger.error(`${msg} Error:${err.message}`);

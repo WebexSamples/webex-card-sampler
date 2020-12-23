@@ -17,7 +17,7 @@ class FoodOrder {
     this.srcUrl = `${srcBaseUrl}/food_order`;
   }
 
-  async renderCard(bot, logger) {
+  async renderCard(bot, logger, cardSelection) {
     try {
       await bot.say('The Food Order sample demonstrates the following types of controls:\n' +
         '* Text block with the weight, size, isSubtle, and wrap attributes\n' +
@@ -29,6 +29,8 @@ class FoodOrder {
         'Cards with images can take a few seconds to render. ' +
         'In the meantime you can see the full source here: ' + this.srcUrl);
       await bot.sendCard(this.card, "If you see this your client cannot render our Food Order example.");
+      logger.info(`Sent the ${cardSelection} card to space: ${bot.room.title}`);
+
     } catch (err) {
       let msg = 'Failed to render Food Order card example.';
       logger.error(`${msg} Error:${err.message}`);

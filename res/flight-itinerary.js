@@ -15,7 +15,7 @@ class FlightItinerary {
     this.srcUrl = `${srcBaseUrl}/flight_itinerary`;
   }
 
-  async renderCard(bot, logger) {
+  async renderCard(bot, logger, cardSelection) {
     let message = {};
     try {
       message = await bot.say('The Flight Itinerary sample demonstrates the following types of controls:\n' +
@@ -25,8 +25,12 @@ class FlightItinerary {
         'Cards with images can take a few seconds to render.\n' +
         'In the meantime you can see the full source here: ' + this.srcUrl);
       message = await bot.sendCard(this.card, "If you see this your client cannot render our Flight Itinerary example.");
+      logger.info(`Sent the ${cardSelection} card to space: ${bot.room.title}`);
+
       await bot.reply(message, '...Not a fan of the two stops on the outbound!\n\n' +
         'There is no user input for this card. Post any message to me if you want to see another card.');
+      logger.info(`Sent reply to the ${cardSelection} card to space: ${bot.room.title}`);
+
     } catch (err) {
       let msg = 'Failed to render Flight Itinerary card example.';
       logger.error(`${msg} Error:${err.message}`);

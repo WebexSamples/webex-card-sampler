@@ -16,7 +16,7 @@ class FlightUpdate {
     this.srcUrl = `${srcBaseUrl}/flight_update`;
   }
 
-  async renderCard(bot, logger) {
+  async renderCard(bot, logger, cardSelection) {
     let message = {};
     try {
       message = await bot.say('The Flight Update sample demonstrates the following types of controls:\n' +
@@ -27,8 +27,12 @@ class FlightUpdate {
         'Cards with images can take a few seconds to render. ' +
         'In the meantime you can see the full source here: ' + this.srcUrl);
       message = await bot.sendCard(this.card, "If you see this your client cannot render our Flight Update example.");
+      logger.info(`Sent the ${cardSelection} card to space: ${bot.room.title}`);
+
       bot.reply(message, '...Yay, extra time in Amsterdam!\n\n' +
         'There is no user input for this card. Post any message to me if you want to see another card.')
+      logger.info(`Sent reply to the ${cardSelection} card to space: ${bot.room.title}`);
+      
     } catch (err) {
       let msg = 'Failed to render Flight Update card example.';
       logger.error(`${msg} Error:${err.message}`);
