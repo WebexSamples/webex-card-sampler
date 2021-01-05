@@ -17,7 +17,7 @@ class FlightDetails {
     this.srcUrl = `${srcBaseUrl}/flight_details`;
   }
 
-  async renderCard(bot, logger) {
+  async renderCard(bot, logger, cardSelection) {
     try {
       await bot.say('The Flight Details sample demonstrates the following types of controls:\n' +
         '* ColumnSets and Columns with the spacing, style, width, height verticalContentAlignment, isVisible, and bleed attributes\n' +
@@ -28,6 +28,8 @@ class FlightDetails {
         'Cards with images can take a few seconds to render.\n\n' +
         'In the meantime you can see the full source, with modifications, here: ' + this.srcUrl);
       await bot.sendCard(this.card, "If you see this your client cannot render our Flight Details example.");
+      logger.info(`Sent the ${cardSelection} card to space: ${bot.room.title}`);
+
     } catch (err) {
       let msg = 'Failed to render Flight Details card example.';
       logger.error(`${msg} Error:${err.message}`);

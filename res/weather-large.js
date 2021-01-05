@@ -17,7 +17,7 @@ class WeatherLarge {
     this.srcUrl = `${srcBaseUrl}/weather_large`;
   }
 
-  async renderCard(bot, logger) {
+  async renderCard(bot, logger, cardSelection) {
     let message = {}; 
     try {
       message = await bot.say('The Weather Large sample demonstrates the following types of controls:\n' +
@@ -30,6 +30,7 @@ class WeatherLarge {
         'Cards with images can take a few seconds to render, in the meantime you can see the ' +
         'full source with the modifications here: ' + this.srcUrl);
       message = await bot.sendCard(this.card, "If you see this your client cannot render our Weather Large example.")
+      logger.info(`Sent the ${cardSelection} card to space: ${bot.room.title}`);
     } catch (err) {
       let msg = 'Failed to render Weather Large card example.';
       logger.error(`${msg} Error:${err.message}`);
@@ -39,6 +40,7 @@ class WeatherLarge {
     bot.reply(message, '...bring an umbrella on Wednesday!\n\n' +
         'There is no user input for this card. Post any message to me if you want to see another card.')
       .catch((e) => logger.error(`Failed to post follow-up to Weather Large card. Error:${e.message}`));
+    logger.info(`Sent reply to the ${cardSelection} card to space: ${bot.room.title}`);
   };
 
 };

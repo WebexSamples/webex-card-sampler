@@ -16,7 +16,7 @@ class CalendarReminder {
     this.srcUrl = `${srcBaseUrl}/calendar_reminder`;
   }
 
-  async renderCard(bot, logger) {
+  async renderCard(bot, logger, cardSelection) {
     try {
       await bot.say('The Calendar Reminder sample demonstrates the following types of controls:\n' +
         '* Text block with the size, weight, isSubtle, and spacing attributes\n' +
@@ -24,6 +24,8 @@ class CalendarReminder {
         '* Action.Submit buttons\n\n' +
         'You can see the full source here: ' + this.srcUrl);
       await bot.sendCard(this.card, "If you see this your client cannot render our Calendar Reminder example.");
+      logger.info(`Sent the ${cardSelection} card to space: ${bot.room.title}`);
+      
     } catch (err) {
       let msg = 'Failed to render Calendar Reminder card example.';
       logger.error(`${msg} Error:${err.message}`);

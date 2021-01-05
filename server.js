@@ -236,6 +236,7 @@ framework.on('attachmentAction', function (bot, trigger) {
   let attachmentAction = trigger.attachmentAction;
   if (attachmentAction.inputs.cardType === 'samplePicker') {
     if (attachmentAction.inputs.customRequested) {
+      logger.info(`Got a request to render the ${attachmentAction.inputs.cardType} card from space: ${bot.room.title}`);
       customJsonInput.renderCard(bot, logger);
     } else {
       renderSelectedCard(bot, attachmentAction.inputs.cardSelection);
@@ -251,15 +252,15 @@ function renderSelectedCard(bot, cardSelection) {
   logger.info(`Got a request to render the ${cardSelection} card from space: ${bot.room.title}`);
   switch (cardSelection) {
     case ('activityUpdate'):
-      activityUpdate.renderCard(bot, logger);
+      activityUpdate.renderCard(bot, logger, cardSelection);
       break;
 
     case ('agenda'):
-      agenda.renderCard(bot, logger);;
+      agenda.renderCard(bot, logger, cardSelection);
       break;
 
     case ('calendarReminder'):
-      calendarReminder.renderCard(bot, logger);
+      calendarReminder.renderCard(bot, logger, cardSelection);
       break;
 
     case ('expenseReport'):
@@ -267,59 +268,59 @@ function renderSelectedCard(bot, cardSelection) {
       break;
 
     case ('input'):
-      input.renderCard(bot, logger);
+      input.renderCard(bot, logger, cardSelection);
       break;
 
     case ('inputForm'):
-      inputForm.renderCard(bot, logger);
+      inputForm.renderCard(bot, logger, cardSelection);
       break;
 
     case ('flightDetails'):
-      flightDetails.renderCard(bot, logger);
+      flightDetails.renderCard(bot, logger, cardSelection);
       break;
 
     case ('flightItinerary'):
-      flightItinerary.renderCard(bot, logger);
+      flightItinerary.renderCard(bot, logger, cardSelection);
       break;
 
     case ('flightUpdate'):
-      flightUpdate.renderCard(bot, logger);
+      flightUpdate.renderCard(bot, logger, cardSelection);
       break;
 
     case ('imageGallery'):
-      imageGallery.renderCard(bot, logger);
+      imageGallery.renderCard(bot, logger, cardSelection);
       break;
 
     case ('foodOrder'):
-      foodOrder.renderCard(bot, logger);
+      foodOrder.renderCard(bot, logger, cardSelection);
       break;
     
     case('productAnnouncement'):
-      productAnnouncement.renderCard(bot, logger);
+      productAnnouncement.renderCard(bot, logger, cardSelection);
       break;
     
     case ("restaurant"):
-      restaurant.renderCard(bot, logger);
+      restaurant.renderCard(bot, logger, cardSelection);
       break;
 
     case ('solitaire'):
-      solitaire.renderCard(bot, logger);
+      solitaire.renderCard(bot, logger, cardSelection);
       break;
 
     case ('sportingEvent'):
-      sportingEvent.renderCard(bot, logger);
+      sportingEvent.renderCard(bot, logger, cardSelection);
       break;
 
     case ('stockUpdate'):
-      stockUpdate.renderCard(bot, logger);
+      stockUpdate.renderCard(bot, logger, cardSelection);
       break;
 
     case ('weatherCompact'):
-      weatherCompact.renderCard(bot, logger);
+      weatherCompact.renderCard(bot, logger, cardSelection);
       break;
 
     case ('weatherLarge'):
-      weatherLarge.renderCard(bot, logger);
+      weatherLarge.renderCard(bot, logger, cardSelection);
       break;
 
     default:

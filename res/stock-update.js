@@ -15,7 +15,7 @@ class StockUpdate {
     this.srcUrl = `${srcBaseUrl}/stock_update`;
   }
 
-  async renderCard(bot, logger) {
+  async renderCard(bot, logger, cardSelection) {
     let message = {};
     try {
       message = await bot.say('The Stock Update sample demonstrates the following types of controls:\n' +
@@ -24,6 +24,8 @@ class StockUpdate {
         '* Image elment with the horizontalAlignment attribute\n' +
         'You can see the full source here: ' + this.srcUrl);
       message = await bot.sendCard(this.card, "If you see this your client cannot render our Stock Update example.");
+      logger.info(`Sent the ${cardSelection} card to space: ${bot.room.title}`);
+
     } catch (err) {
       let msg = 'Failed to render Stock Update card example.';
       logger.error(`${msg} Error:${err.message}`);
@@ -33,6 +35,7 @@ class StockUpdate {
     bot.reply(message, '...a little dip on this day, but the trend is still good!\n\n' +
         'There is no user input for this card. Post any message to me if you want to see another card.')
       .catch((e) => logger.error(`Failed to post follow-up to Stock Update card. Error:${e.message}`));
+    logger.info(`Sent reply to the ${cardSelection} card to space: ${bot.room.title}`);
   };
 
 };
