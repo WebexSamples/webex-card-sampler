@@ -1,5 +1,5 @@
 # webex-card-sampler
-This is a Webex Teams bot that helps bot developers and designers learn what is possible with the [Buttons and Cards](https://[adaptivecards.io/samples/](https://developer.webex.com/docs/api/guides/cards)) functionality of Webex Teams.  The bot allows users to experience a set of sample cards which demonstrate how cards can be used to display and collect complex information across a variety of use cases.   User's who create a space with the bot are presented with a drop down list in order to select the sample card they want to interact with.
+This is a Webex Teams bot that helps bot developers and designers learn what is possible with the [Buttons and Cards](https://developer.webex.com/docs/buttons-and-cards) functionality of Webex Teams.  The bot allows users to experience a set of sample cards which demonstrate how cards can be used to display and collect complex information across a variety of use cases.   User's who create a space with the bot are presented with a drop down list in order to select the sample card they want to interact with.
 
 ![Sample Picker](./images/Sample-Picker.png)
 
@@ -44,14 +44,14 @@ Prerequisites:
 - [ ] Fork and download this project
 ----
 
-- [ ] Create a Webex Teams Bot (save the email address and API key): https://developer.webex.com/add-bot.html
+- [ ] Create a Webex Teams Bot (save the email address and API key): [https://developer.webex.com/add-bot.html](https://developer.webex.com/my-apps/new/bot)
 
 - [ ] In the directory where you downloaded this project, download the dependencies by typing `npm install` 
 
 ## Starting the server
 
 Set the following environment variables, for example in a .env file, or however you set them in your run time environment:
-* TOKEN - the token that you got when you created your bot at https://developer.webex.com/add-bot.html
+* TOKEN - the token that you got when you created your bot at [https://developer.webex.com/add-bot.html](https://developer.webex.com/my-apps/new/bot)
 * PORT - the port where your app is running.  This is typically needed when running locally, and set automatically when running in a production environment.
 
 Optional:
